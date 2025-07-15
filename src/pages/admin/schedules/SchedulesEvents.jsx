@@ -4,7 +4,7 @@ import AtomsPanel from '@components/atoms/AtomsPanel';
 import appStore from '@store/appStore';
 import { useStore } from 'zustand';
 import { fetchEventos, fetchCitasByEvento, fetchScheduleBlocks } from '@src/lib/api/apiUser';
-import CompaniesCarousel from "@src/components/organisms/companies/CompaniesCarousel";
+import CompaniesCarousel from "@components/organisms/companies/OrganismsCompaniesCarousel";
 import MoleculesSchedulesItems from "@components/molecules/MoleculesSchedulesItems";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { message, Pagination, Select, Input } from 'antd';

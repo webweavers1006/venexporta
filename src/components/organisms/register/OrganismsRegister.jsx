@@ -1,7 +1,5 @@
 import { useState } from "react";
-import RegisterForm from "@components/register-form";
-import Steps from '@components/molecules/steps/MoleculesSteps';
-import { filterComponents } from '@helpers/filters/filterComponents';
+import RegisterForm from "@components/RegisterForm";
 import ResultComponent from '@components/molecules/result/MoleculesResult';
 import AtomsLink from '@components/atoms/AtomsLink';
 

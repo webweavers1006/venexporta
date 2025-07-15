@@ -1,5 +1,5 @@
-import { Avatar } from "@components/atoms/Avatar"
-import { Text } from "@components/atoms/text"
+import { Avatar } from "@components/atoms/AtomsAvatar"
+import { Text } from "@components/atoms/AtomsText"
 import { MemberDropdown } from "@components/molecules/SelectRole"
 
 export function MemberItem({ name, email, avatarSrc, role }) {

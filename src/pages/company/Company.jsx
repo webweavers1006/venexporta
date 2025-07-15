@@ -5,7 +5,8 @@ import appStore from '@store/appStore';
 import { fetchContactData, fetchCompanyData, fetchActivitiesData } from '@src/lib/api/apiUser';
 import { getConfigTable as getContactConfigTable } from "../contact/config/configTable";
 import { getConfigTable } from "./config/configTable";
-import CompanyInfo from '@components/organisms/company/CompanyInfo';
+import CompanyInfo from '@components/organisms/company/OrganismsCompanyInfo';
+
 const Company = () => {
   const idUser = useStore(useAuthStore, state => state.idUser);
   const idCompany = useStore(appStore, state => state.idCompany);

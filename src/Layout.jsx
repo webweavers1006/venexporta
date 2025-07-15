@@ -1,7 +1,7 @@
 import React from 'react';
 import { Outlet } from "react-router";
 import { data } from "@lib/data/linkSidebar";
-import { AppSidebar } from "@/components/app-sidebar";
+import { AppSidebar } from "@/components/AppSidebar";
 import { Link } from 'react-router';
 import {
   Breadcrumb,

@@ -4,8 +4,8 @@ import AtomsPanel from '@components/atoms/AtomsPanel';
 import { fetchProductsByCompany, fetchCompanyEvents, fetchScheduleBlocks, fetchActivitiesData, fetchDocumentosByEmpresa } from '@src/lib/api/apiUser';
 import { Archive} from 'lucide-react';
 import { Image } from 'antd';
-import CompaniesInfo from '@components/organisms/companies/CompaniesInfo';
-import ScheduleModule from "@components/organisms/schedule/ScheduleModule";
+import CompaniesInfo from '@components/organisms/companies/OrganismsCompaniesInfo';
+import ScheduleModule from "@components/organisms/schedule/OrganismsScheduleModule";
 import MoleculesList from "@components/molecules/MoleculesList";
 
 const CompaniesOnly = () => {  

@@ -1,4 +1,4 @@
-import CompanyRegister from '@components/organisms/company/CompanyRegister';
+import CompanyRegister from '@components/organisms/company/OrganismsCompanyRegister';
 
 const CompanyFormRegister = () => {
 

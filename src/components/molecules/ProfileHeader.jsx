@@ -1,5 +1,5 @@
-import { Avatar } from "../atoms/Avatar"
-import { Badge } from "../atoms/Badge"
+import { Avatar } from "../atoms/AtomsAvatar"
+import { Badge } from "../atoms/AtomsBadge"
 
 export function ProfileHeader({ name, isPro, isModerator, avatarUrl }) {
   return (

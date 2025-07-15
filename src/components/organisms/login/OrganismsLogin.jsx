@@ -1,4 +1,4 @@
-import { LoginForm } from "@src/components/login-form"
+import { LoginForm } from "@src/components/LoginForm"
 
 const OrganismsLogin = ({ SelectCenter, insertSiteCenter, options, inputsConfig, buttonConfig, formRef, handleSubmit }) => {
     return (

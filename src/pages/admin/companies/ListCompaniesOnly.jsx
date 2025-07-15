@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router';
 import AtomsPanel from '@components/atoms/AtomsPanel';
 import { fetchProductsByCompany, fetchCompanyEvents, fetchScheduleBlocks, fetchActivitiesData, fetchDocumentosByEmpresa } from '@src/lib/api/apiUser';
-import CompaniesInfo from '@components/organisms/companies/CompaniesInfo';
-import DocCompanies from '@components/organisms/docCompanies';
+import CompaniesInfo from '@components/organisms/companies/OrganismsCompaniesInfo';
+import OrganismsDocCompanies from '@components/organisms/OrganismsDocCompanies';
 import { uploadFileToDropbox, getDropboxSharedLink } from '@src/lib/api/dropboxApi';
 import { createDocumentoEmpresa, deleteDocumentoEmpresa } from '@src/lib/api/apiUser';
 import { message } from 'antd';
@@ -124,7 +124,7 @@ const ListCompaniesOnly = () => {
         />
       </div>
       <div className='bg-white mt-4 p-5 rounded-2xl'>
-        <DocCompanies 
+        <OrganismsDocCompanies 
           companyId={companyEvents?.id} 
           onSubmit={handleDocCompaniesSubmit}
         />

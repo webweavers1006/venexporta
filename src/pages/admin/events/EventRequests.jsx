@@ -3,7 +3,7 @@ import AtomsPanel from '@components/atoms/AtomsPanel';
 import appStore from '@store/appStore';
 import { useStore } from 'zustand';
 import { fetchEventos, fetchCompaniesByEventAll, updateEventRequestStatus } from '@src/lib/api/apiUser';
-import CompaniesCarousel from "@src/components/organisms/companies/CompaniesCarousel";
+import CompaniesCarousel from "@components/organisms/companies/OrganismsCompaniesCarousel";
 import MoleculesList from "@components/molecules/MoleculesList";
 import { Link } from 'react-router';
 import { SquareX, SquareCheckBig } from "lucide-react";

@@ -3,7 +3,7 @@ import AtomsPanel from '@components/atoms/AtomsPanel';
 import appStore from '@store/appStore';
 import { useStore } from 'zustand';
 import { fetchEventosByEmpresas, fetchCompaniesByEvent } from '@src/lib/api/apiUser';
-import CompaniesCarousel from "@src/components/organisms/companies/CompaniesCarousel";
+import CompaniesCarousel from "@components/organisms/companies/OrganismsCompaniesCarousel";
 import { Building2 } from 'lucide-react'; // Cambiar el ícono a lucide-react
 import { Link } from 'react-router';
 import MoleculesList from "@components/molecules/MoleculesList";
