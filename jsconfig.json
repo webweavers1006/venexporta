@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./src", // Ruta base para tus componentes (generalmente 'src')
+    "paths": {
+      "@components/*": ["components/*"], // Alias para la carpeta 'components'
+      //"@utils/*": ["utils/*"], // Alias para la carpeta 'utils'
+      "@layout/*": ["layout/*"], // Alias para la carpeta 'utils'
+      "@pages/*": ["pages/*"], // Alias para la carpeta 'pages'
+      "@css/*": ["css/*"], // Alias para la carpeta 'pages'
+      "@routes/*": ["routes/*"], // Alias para la carpeta 'pages'
+      "@assets/*": ["assets/*"], // Alias para la carpeta 'pages'
+      "@helpers/*": ["helpers/*"], // Alias para la carpeta 'pages'
+      "@src/*": ["./*"], // Alias para la carpeta 'pages'
+      "@context/*": ["context/*"], // Alias para la carpeta 'pages'
+      "@lib/*": ["lib/*"], // Alias para la carpeta 'pages'
+      "@/*": ["./src/*"],// Alias para la carpeta 'pages'
+      "@store/*": ["store/*"], // Alias para la carpeta 'pages'
+
+      // ... otros alias para tus carpetas
+    }
+  },
+  "include": ["src/**/*", "src/components/Eventos/.jsx"] // Incluye todos los archivos en la carpeta 'src'
+}
