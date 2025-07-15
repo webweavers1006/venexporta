@@ -1,5 +1,4 @@
-import html2canvas from "html2canvas-pro";
-import ExcelJS from "exceljs";
+// importaciones lazy dentro de las funciones
 import { saveAs } from "file-saver";
 import { getExcelColumns, styleExcelHeader, styleExcelRows, autoWidthExcelColumns } from "./excelExportConfig";
 
@@ -27,6 +26,7 @@ export function useChartExport({ exportRef, id, title, data, labelKey, valueKey 
   const handleDownload = async () => {
     if (!exportRef.current) return;
     showExportTitle(true);
+    const { default: html2canvas } = await import("html2canvas-pro");
     const canvas = await html2canvas(exportRef.current, {
       backgroundColor: '#fff',
       useCORS: true
@@ -40,6 +40,7 @@ export function useChartExport({ exportRef, id, title, data, labelKey, valueKey 
 
   // Exportar Excel
   const handleExportExcel = async () => {
+    const { default: ExcelJS } = await import("exceljs");
     const workbook = new ExcelJS.Workbook();
     const worksheet = workbook.addWorksheet(title);
     worksheet.columns = getExcelColumns(labelKey, valueKey);

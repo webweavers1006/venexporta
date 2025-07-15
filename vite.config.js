@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react'
 import path from 'path';
 import tailwindcss from '@tailwindcss/vite'
 import { VitePWA } from "vite-plugin-pwa";
+import { visualizer } from 'rollup-plugin-visualizer';
 import { manifest } from './manifest';
 
 export default defineConfig(({ mode }) => {
@@ -10,7 +11,10 @@ export default defineConfig(({ mode }) => {
   const appVersion = env.VITE_APP_VERSION;
 
   return {
-    plugins: [react(), tailwindcss(), VitePWA({
+    plugins: [
+      react(),
+      tailwindcss(),
+      VitePWA({
       registerType: 'autoUpdate',
       devOptions: {
         enabled: true
@@ -40,10 +44,22 @@ export default defineConfig(({ mode }) => {
         rollupOptions: {
           output: {
             assetFileNames: 'assets/[name]-[hash][extname]',
+            manualChunks(id) {
+              if (id.includes('node_modules/exceljs')) {
+                return 'exceljs';
+              }
+              if (id.includes('node_modules')) {
+                // Agrupa cada dependencia principal en su propio chunk
+                return id.toString().split('node_modules/')[1].split('/')[0].toString();
+              }
+            },
           },
         },
+        chunkSizeWarningLimit: 1000, // Opcional: sube el límite de advertencia
       },
-    })],
+      }),
+      visualizer({ open: true }),
+    ],
     resolve: {
       alias: {
         '@components': path.resolve(__dirname, './src/components'),

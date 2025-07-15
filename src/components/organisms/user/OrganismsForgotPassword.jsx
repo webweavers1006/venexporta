@@ -1,8 +1,10 @@
 import { useState } from "react";
-import RegisterForm from "@components/register-form";
+// import RegisterForm from "@components/register-form";
+// Si necesitas RegisterForm, usa la ruta correcta:
+import RegisterForm from "@components/RegisterForm";
 import ResultComponent from '@components/molecules/result/MoleculesResult';
 import AtomsLink from '@components/atoms/AtomsLink';
-import ForgotPasswordForm from '@components/forgot-password-form';
+import ForgotPasswordForm from '@components/ForgotPasswordForm';
 
 
 const OrganismsForgotPassword = ({ handleSubmit }) => {

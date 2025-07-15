@@ -1,14 +1,15 @@
-import { useEffect, useState } from 'react';
-import RoutesApp from "@routes/RoutesApp";
+import { Suspense, lazy, useEffect, useState } from 'react';
 import appStore from '@src/store/appStore';
 import useAuthStore from '@src/store/authStore';
 import { Spin } from 'antd';
 import logo from '@assets/logo/isologoA.png';
 import { fetchCompanyData, fetchRequestedAppointments } from '@src/lib/api/apiUser';
-import RequisitosModal from '@components/requisitosModal';
 import { excludedPaths } from '@lib/data/routesRequisitos';
-import AtomsBanner from "@components/atoms/AtomsBanner";
 import { Calendar } from "lucide-react";
+
+const RequisitosModal = lazy(() => import('@components/requisitosModal'));
+const AtomsBanner = lazy(() => import('@components/atoms/AtomsBanner'));
+const RoutesApp = lazy(() => import('@routes/RoutesApp'));
 
 function App() {
   const { idUser } = useAuthStore();
@@ -60,7 +61,7 @@ function App() {
   }
 
   return (
-    <div>
+    <Suspense fallback={null}>
       <RequisitosModal excludedPaths={excludedPaths} />
       {showMessage && (
         <AtomsBanner
@@ -71,7 +72,7 @@ function App() {
         />
       )}
       <RoutesApp />
-    </div>
+    </Suspense>
   );
 }
 
