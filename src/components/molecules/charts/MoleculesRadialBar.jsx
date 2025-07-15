@@ -9,6 +9,8 @@ import {
 import { ChartContainer } from "@components/ui/chart";
 
 const MoleculesRadialChart = ({ data, config, endAngle }) => {
+  // ...existing code...
+
   return (
     <ChartContainer
       config={config}
@@ -54,6 +56,7 @@ const MoleculesRadialChart = ({ data, config, endAngle }) => {
                     >
                       {config.visitors.label}
                     </tspan>
+                   
                   </text>
                 );
               }

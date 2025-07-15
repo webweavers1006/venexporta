@@ -1,7 +1,7 @@
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import companySchema from '@src/schema/companySchemaUpdate';
-import ImageUpload from '@components/molecules/upload/ImageUpload';
+import ImageUpload from '@components/molecules/upload/MoleculesImageUpload';
 import { Button } from "@/components/ui/button";
 import {
   DialogContent,
@@ -115,7 +115,6 @@ const UpdateCompanyDialog = ({ companyData, onClose, onUpdate }) => {
   });
 
   // Hooks personalizados para datos
-  const paises = usePaises();
   const actividadesEmpresariales = useActividadesEmpresariales();
   const idPaisValue = form.watch('idPais');
   const idEstadoValue = form.watch('idEstado');

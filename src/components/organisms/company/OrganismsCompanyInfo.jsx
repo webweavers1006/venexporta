@@ -5,7 +5,7 @@ import { Descriptions, Badge, Button, Image as Img } from 'antd';
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import UpdateCompanyDialog from "@components/organisms/company/OrganismsUpdateCompanyDialog";
 import { useState, useEffect } from 'react';
-import ImageUpload from '@components/molecules/upload/ImageUpload';
+import ImageUpload from '@components/molecules/upload/MoleculesImageUpload';
 import { Link } from 'react-router';
 import { fetchProductsByCompany } from '@src/lib/api/apiUser';
 import appStore from '@store/appStore';

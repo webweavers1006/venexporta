@@ -1,4 +1,4 @@
-import ImageUpload from '../components/molecules/upload/ImageUpload';
+import ImageUpload from '../components/molecules/upload/MoleculesImageUpload';
 import appStore from '../store/appStore';
 import { estados } from '@lib/data/estados';
 import { fetchUnidadesMedida } from '../lib/api/apiUser';
