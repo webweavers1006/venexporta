@@ -1,0 +1,1 @@
+export const excludedPaths = ['/company/register', '/company', '/dashboard', '/contacts','/activities', '/product/register'];
