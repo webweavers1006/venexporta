@@ -247,7 +247,7 @@ function MoleculesChartPie({
                 )}
               </span>
               <span className="font-medium text-base" style={{ color: '#6b7280' }}>
-                <span className="font-bold" style={{ color: '#364153' }}>Subsector seleccionado:</span> {selected}
+                <span className="font-bold" style={{ color: '#364153' }}>Seleccionado:</span> {selected}
               </span>
             </div>
           )}
