@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { fetchProductCategories } from "@src/lib/api/apiUser";
+import { fetchProductCategories } from "@src/lib/api/apiIndex";
 import { Table, Button, message } from "antd"; // Importar Button y message de Ant Design
 import { Card, CardContent, CardHeader, CardTitle } from "@src/components/ui/card";
 import categoryColumns from "@src/config/categoryColumns"; // Importar las columnas

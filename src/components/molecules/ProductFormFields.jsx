@@ -8,7 +8,7 @@ import { estados } from "@lib/data/estados";
 import { Form } from "@src/components/ui/form";
 import { extraerMunicipios } from "@lib/data/municipios";
 import { extraerParroquias } from "@lib/data/parroquias";
-import { fetchProductCategories, postCategory, fetchUnidadesMedida, fetchRangoTiempo } from "@src/lib/api/apiUser";
+import { fetchProductCategories, postCategory, fetchUnidadesMedida, fetchRangoTiempo } from "@src/lib/api/apiIndex";
 import CategoryForm from "@src/components/molecules/CategoryForm";
 import { Button } from "@src/components/ui/button";
 import { useForm } from "react-hook-form";
@@ -17,7 +17,6 @@ import { productFormSchema } from "@src/schema/productFormSchema";
 import { message, Modal } from "antd"; // Importar Modal de Ant Design
 import { Plus } from "lucide-react"; // Importar ícono para el botón
 
-import ComboboxField from "@src/components/molecules/ComboboxField";
 
 const ProductFormFields = ({ submit }) => {
   const [municipios, setMunicipios] = useState([]);

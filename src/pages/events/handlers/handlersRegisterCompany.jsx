@@ -1,7 +1,7 @@
 import React from 'react';
 import { Modal, message } from 'antd';
 import { useNavigate } from 'react-router';
-import { registerForEvent } from '@lib/api/apiUser';
+import { registerForEvent } from '@lib/api/apiIndex';
 import ResultComponent from '@components/molecules/result/MoleculesResult';
 
 export const handleRegister = async (idCompany, id, navigate) => {

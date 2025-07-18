@@ -1,45 +1,58 @@
-import { useEffect, useState, lazy } from 'react';
-import { fetchEventos } from '@src/lib/api/apiUser';
-import { Select, message } from 'antd';
+
+import { lazy, useState } from 'react';
+import PropTypes from 'prop-types';
+import { Select } from 'antd';
 import appStore from '@store/appStore';
 import { useStore } from 'zustand';
 import AtomsTitle from '@components/atoms/AtomsTitle';
+import useEventos from './hooks/useEventos';
 const AtomsPanel = lazy(() => import('@components/atoms/AtomsPanel'));
 
-const Reportes = () => {
-  const [eventos, setEventos] = useState([]);
-  const [selectedEvento, setSelectedEvento] = useState(null);
-  const idCompany = useStore(appStore, state => state.idCompany);
 
-  useEffect(() => {
-    // cargar eventos
-    const loadEventos = async () => {
-      try {
-        const data = await fetchEventos(idCompany);
-        setEventos(data);
-      } catch (error) {
-        message.error('Error al cargar eventos');
-      }
-    };
-    loadEventos();
-  }, [idCompany]);
+/**
+ * Componente de reportes administrativos.
+ * Permite descargar reportes generales y por evento.
+ *
+ * @component
+ * @example
+ * // Uso típico:
+ * <Reportes />
+ */
+const Reportes = () => {
+  const idCompany = useStore(appStore, state => state.idCompany);
+  const { eventos, loading } = useEventos(idCompany);
+  const [selectedEvento, setSelectedEvento] = useState(null);
+
+  // Accesibilidad: IDs y ARIA
+  const selectId = 'evento-select';
 
   return (
     <>
-      <AtomsPanel title={'Reportes'} subtitle={'Información de las estadisticas y reportes del sistema'} />
+      <AtomsPanel title={'Reportes'} subtitle={'Información de las estadísticas y reportes del sistema'} />
       <div className="mb-4 mt-4 bg-white p-4 rounded-2xl">
-        <AtomsTitle title={'Reporte de Empresas registradas'} subtitle={'descargue el reporte de todas las empresas registradas en sistema'} className='mb-4' />
+        <AtomsTitle
+          title={'Reporte de Empresas registradas'}
+          subtitle={'Descargue el reporte de todas las empresas registradas en sistema'}
+          className="mb-4"
+        />
         <a
           className="block w-full text-center bg-primary text-white py-2 px-4 rounded-xl"
           href="https://back.venexporta-rn.com/empresas/csv"
+          role="button"
+          aria-label="Descargar reporte de empresas registradas"
+          tabIndex={0}
         >
           Descargar Reporte
         </a>
       </div>
       <div className="flex flex-col gap-2 mb-4 mt-4 bg-white p-4 rounded-2xl w-full">
-        <AtomsTitle title="Reportes por Evento" subtitle="debe seleccionar un evento" />
-        <div className="mb-2 font-semibold text-lg text-gray-700"></div>
+        <AtomsTitle title="Reportes por Evento" subtitle="Debe seleccionar un evento" />
+        <label htmlFor={selectId} className="mb-2 font-semibold text-lg text-gray-700">
+          Seleccione un evento
+        </label>
         <Select
+          id={selectId}
+          aria-label="Selector de evento"
           placeholder="Seleccione un evento"
           style={{ width: '100%' }}
           value={selectedEvento}
@@ -49,6 +62,7 @@ const Reportes = () => {
             label: ev.nombre_evento
           }))}
           allowClear
+          loading={loading}
         />
         <div className="flex flex-col md:flex-row gap-2 mt-2">
           <a
@@ -59,6 +73,11 @@ const Reportes = () => {
                 : 'bg-gray-300 text-gray-500 cursor-not-allowed pointer-events-none'
             }`}
             rel="noopener noreferrer"
+            role="button"
+            aria-disabled={!selectedEvento}
+            tabIndex={selectedEvento ? 0 : -1}
+            aria-label="Descargar citas del evento seleccionado"
+            title={selectedEvento ? 'Descargar citas' : 'Seleccione un evento para descargar'}
           >
             Descargar citas
           </a>
@@ -70,6 +89,11 @@ const Reportes = () => {
                 : 'bg-gray-300 text-gray-500 cursor-not-allowed pointer-events-none'
             }`}
             rel="noopener noreferrer"
+            role="button"
+            aria-disabled={!selectedEvento}
+            tabIndex={selectedEvento ? 0 : -1}
+            aria-label="Descargar empresas del evento seleccionado"
+            title={selectedEvento ? 'Descargar empresas' : 'Seleccione un evento para descargar'}
           >
             Descargar empresas
           </a>
@@ -78,5 +102,7 @@ const Reportes = () => {
     </>
   );
 };
+
+Reportes.propTypes = {};
 
 export default Reportes;

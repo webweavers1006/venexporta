@@ -11,7 +11,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useState, useRef, useEffect } from "react";
-import { fetchTiposArchivo } from "@src/lib/api/apiUser";
+import { fetchTiposArchivo } from "@src/lib/api/apiIndex";
 
 const DocCompanies = ({ companyId, onSubmit: onSubmitProp, className = "" }) => {
   const form = useForm({

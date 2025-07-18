@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router';
 import { message } from 'antd';
-import { loginUser } from '@src/lib/api/apiUser';
+import { loginUser } from '@src/lib/api/apiIndex';
 import useAuthStore from '@src/store/authStore';
 
 export const useHandlers = () => {

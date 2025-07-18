@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { postStepIdentification } from '../../lib/api/apiUser';
+import { postStepIdentification } from '../../lib/api/apiIndex';
 
 const StepNameL = ({ insertStep, insertRegister, register, insertBufetes, bufetes }) => {
     const [name, insertName] = useState(register.name || '');

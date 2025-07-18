@@ -2,8 +2,8 @@
 
 import { Suspense, lazy, useEffect, useState, useMemo } from 'react';
 import { getCurrentDate } from '@lib/utils';
-import { fetchPaises } from '@src/lib/api/apiUser';
-import { getCantSubSectorProductivo, getCantEmpresasAnualidad, getCantEventosAnualidad, getRankParticipacionEventos } from '@src/lib/api/dashboard/dashboard';
+import { fetchPaises } from '@src/lib/api/apiIndex';
+import { getCantSubSectorProductivo, getCantEmpresasAnualidad, getCantEventosAnualidad, getRankParticipacionEventos } from '@src/lib/api/apiIndex';
 import MoleculesEmpresasCard from '@components/molecules/MoleculesEmpresasCard/MoleculesEmpresasCard';
 import { useDashboardData } from './hooks/useDashboardData';
 const AtomsPanel = lazy(() => import('@components/atoms/AtomsPanel'));

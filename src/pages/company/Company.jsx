@@ -1,88 +1,74 @@
-import { useState, useEffect } from 'react';
+
+import React from 'react';
+import PropTypes from 'prop-types';
 import { useStore } from 'zustand';
 import useAuthStore from '@store/authStore';
 import appStore from '@store/appStore';
-import { fetchContactData, fetchCompanyData, fetchActivitiesData } from '@src/lib/api/apiUser';
-import { getConfigTable as getContactConfigTable } from "../contact/config/configTable";
-import { getConfigTable } from "./config/configTable";
+import { getConfigTable as getContactConfigTable } from '../contact/config/configTable';
+import { getConfigTable } from './config/configTable';
 import CompanyInfo from '@components/organisms/company/OrganismsCompanyInfo';
+import { useCompanyData } from './hooks/useCompanyData';
 
+/**
+ * Componente principal para mostrar la información de la compañía, contactos y actividades.
+ * Utiliza hooks personalizados para la obtención de datos y es fácilmente reutilizable.
+ *
+ * @component
+ * @example
+ * // Uso típico dentro de una ruta protegida
+ * <Company />
+ *
+ * @returns {JSX.Element}
+ */
 const Company = () => {
-  const idUser = useStore(useAuthStore, state => state.idUser);
-  const idCompany = useStore(appStore, state => state.idCompany);
-  const [companyData, setCompanyData] = useState(null);
-  const [contactData, setContactData] = useState([]);
-  const [activitiesData, setActivitiesData] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  // Obtención de IDs desde los stores globales
+  const idUser = useStore(useAuthStore, (state) => state.idUser);
+  const idCompany = useStore(appStore, (state) => state.idCompany);
 
-  const fetchCompanyDataAsync = async () => {
-    if (idUser) {
-      try {
-        const data = await fetchCompanyData(idUser);
-        setCompanyData(data);
-      } catch (error) {
-        console.error('Error fetching company data:', error);
-      }
-    }
-    setIsLoading(false);
-  };
-  useEffect(() => {
+  // Hook personalizado para la lógica de datos
+  const {
+    companyData,
+    contactData,
+    activitiesData,
+    isLoading,
+    reloadCompany,
+    reloadContact,
+    reloadActivities,
+  } = useCompanyData(idUser, idCompany);
 
-    fetchCompanyDataAsync();
-  }, [idUser]);
+  // Configuración de tablas
+  const configTable = getConfigTable(activitiesData, reloadActivities);
+  const configTableContact = getContactConfigTable(contactData, reloadContact);
 
-  const fetchContactDataAsync = async () => {
-    if (idCompany) {
-      try {
-        const data = await fetchContactData(idCompany);
-        setContactData(data);
-      } catch (error) {
-        console.error('Error fetching contact data:', error);
-      }
-    }
-  };
-  useEffect(() => {
-
-    fetchContactDataAsync();
-  }, [idCompany]);
-
-  const fetchActivitiesDataAsync = async () => {
-    if (idCompany) {
-      try {
-        const data = await fetchActivitiesData(idCompany);
-        setActivitiesData(data);
-      } catch (error) {
-        console.error('Error fetching activities data:', error);
-      }
-    }
-  };
-  useEffect(() => {
-
-    fetchActivitiesDataAsync();
-  }, [idCompany]);
-
-  const configTable = getConfigTable(activitiesData,fetchActivitiesDataAsync);
-  const configTableContact = getContactConfigTable(contactData, fetchContactDataAsync);
-
-  const onUpdate = () => {
-    fetchCompanyDataAsync();
+  /**
+   * Maneja la actualización de la información de la compañía.
+   */
+  const handleUpdate = () => {
+    reloadCompany();
   };
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div role="status" aria-live="polite" aria-busy="true" style={{ padding: '2rem', textAlign: 'center' }}>
+        <span>Cargando información de la compañía...</span>
+      </div>
+    );
   }
 
   return (
-    <>
-        <CompanyInfo
-          companyData={companyData}
-          configTableContact={configTableContact}
-          configTable={configTable}
-          onUpdate={onUpdate}
-        />
-      
-    </>
+    <section aria-label="Información de la compañía" tabIndex={0}>
+      <CompanyInfo
+        companyData={companyData}
+        configTableContact={configTableContact}
+        configTable={configTable}
+        onUpdate={handleUpdate}
+      />
+    </section>
   );
+};
+
+Company.propTypes = {
+  // Este componente no recibe props directas, pero se deja preparado para extensión futura.
 };
 
 export default Company;

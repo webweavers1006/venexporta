@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Modal, message } from 'antd';
-import { deleteContact } from '@src/lib/api/apiUser';
+import { deleteContact } from '@src/lib/api/apiIndex';
 
 const handleDelete = async (id, loadActivitiesData) => {
   Modal.confirm({

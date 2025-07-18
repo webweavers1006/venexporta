@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@src/components/ui/card";
 import ProductFormFields from "@src/components/molecules/ProductFormFields";
 import { message } from "antd";
-import { postProduct } from "@src/lib/api/apiUser";
+import { postProduct } from "@src/lib/api/apiIndex";
 import appStore from "@src/store/appStore";
 import { useNavigate } from "react-router-dom"; // Importar useNavigate
 

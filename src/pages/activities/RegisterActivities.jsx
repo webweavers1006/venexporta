@@ -1,105 +1,79 @@
-import { useState, useEffect } from 'react';
-import { useForm, Controller } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+import React from 'react';
+import { useForm, Controller } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
 import { message } from 'antd';
+import PropTypes from 'prop-types';
 import AtomsPanel from '@components/atoms/AtomsPanel';
-import MoleculesTable from "@components/molecules/tables/MoleculesTable";
-import appStore from '@store/appStore';
-import { useStore } from 'zustand';
-import { postStepActivity } from '@src/lib/api/apiUser';
-import { getConfigTable } from "../company/config/configTable";
-import { fetchActivitiesData, fetchAllActivities, fetchSectors, fetchSubSectors } from '@src/lib/api/apiUser';
-import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@/components/ui/select";
-import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Loader2 } from "lucide-react"; // Importa el componente Loader2
+import MoleculesTable from '@components/molecules/tables/MoleculesTable';
+import { getConfigTable } from '../company/config/configTable';
+import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from '@/components/ui/select';
+import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Loader2 } from 'lucide-react';
+import { postStepActivity } from '@src/lib/api/apiIndex';
+import { useRegisterActivities } from './hooks/useRegisterActivities';
+import { getMaxLength } from './helpers/getMaxLength';
 
+/**
+ * Componente para registrar actividades económicas de una empresa.
+ *
+ * @component
+ * @example
+ * <RegisterActivities />
+ *
+ * @returns {JSX.Element} Formulario y tabla de actividades económicas.
+ */
 const activitySchema = z.object({
-  idActividadEconomica: z.string().nonempty("La actividad económica es requerida"),
-  idSectorProductivo: z.string().nonempty("El sector productivo es requerido"),
-  idSubSectorProductivo: z.string().nonempty("El sub-sector productivo es requerido"),
+  idActividadEconomica: z.string().nonempty('La actividad económica es requerida'),
+  idSectorProductivo: z.string().nonempty('El sector productivo es requerido'),
+  idSubSectorProductivo: z.string().nonempty('El sub-sector productivo es requerido'),
 });
 
-const RegisterActivities = () => {  
-  const idCompany = useStore(appStore, state => state.idCompany);
-  const [activitiesData, setActivitiesData] = useState([]);
-  const [activities, setActivities] = useState([]);
-  const [sectors, setSectors] = useState([]);
-  const [subSectors, setSubSectors] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+
+function RegisterActivities() {
+  const {
+    idCompany,
+    activitiesData,
+    activities,
+    sectors,
+    subSectors,
+    isLoading,
+    setIsLoading,
+    loadActivitiesData,
+    handleActivityChange,
+    handleSectorChange,
+    resetSelects,
+    configTable,
+  } = useRegisterActivities(getConfigTable);
 
   const form = useForm({
     resolver: zodResolver(activitySchema),
     defaultValues: {
-      idActividadEconomica: "",
-      idSectorProductivo: "",
-      idSubSectorProductivo: "",
+      idActividadEconomica: '',
+      idSectorProductivo: '',
+      idSubSectorProductivo: '',
     },
   });
 
-  const loadActivitiesData = async () => {
-    try {
-      const data = await fetchActivitiesData(idCompany);
-      setActivitiesData(data);
-    } catch (error) {
-      console.error('Error fetching activities data:', error);
-    }
+  // Manejo de cambios en selects
+  const handleChangeActividad = (value) => {
+    form.setValue('idActividadEconomica', value);
+    handleActivityChange(value);
+    form.setValue('idSectorProductivo', '');
+    form.setValue('idSubSectorProductivo', '');
+    resetSelects();
   };
 
-  useEffect(() => {
-    loadActivitiesData();
-  }, [idCompany]);
+  const handleChangeSector = (value) => {
+    form.setValue('idSectorProductivo', value);
+    handleSectorChange(value);
+    form.setValue('idSubSectorProductivo', '');
+  };
 
-  useEffect(() => {
-    const loadAllActivities = async () => {
-      try {
-        const data = await fetchAllActivities();
-        setActivities(data);
-      } catch (error) {
-        console.error('Error fetching activities:', error);
-      }
-    };
-
-    loadAllActivities();
-  }, []);
-
-  useEffect(() => {
-    if (form.watch('idActividadEconomica')) {
-      const loadSectors = async () => {
-        try {
-          const data = await fetchSectors(form.watch('idActividadEconomica'));
-          setSubSectors([]);
-          setSectors(data);
-        } catch (error) {
-          console.error('Error fetching sectors:', error);
-        }
-      };
-
-      loadSectors();
-    }
-  }, [form.watch('idActividadEconomica')]);
-
-  useEffect(() => {
-    if (form.watch('idSectorProductivo')) {
-      const loadSubSectors = async () => {
-        try {
-          const data = await fetchSubSectors(form.watch('idSectorProductivo'));
-          setSubSectors(data);
-        } catch (error) {
-          console.error('Error fetching subsectors:', error);
-        }
-      };
-
-      loadSubSectors();
-    }
-  }, [form.watch('idSectorProductivo')]);
-
-  const resetFormAndSelects = () => {
-    form.reset();
-    setSectors([]);
-    setSubSectors([]);
+  const handleChangeSubSector = (value) => {
+    form.setValue('idSubSectorProductivo', value);
   };
 
   const onSubmit = async (data) => {
@@ -109,36 +83,27 @@ const RegisterActivities = () => {
       id_sector_productivo: data.idSectorProductivo,
       id_sub_sector_productivo: data.idSubSectorProductivo,
       id_empresa: idCompany,
-  }];
+    }];
     try {
       const response = await postStepActivity(datas);
-  
       if (response) {
         message.success('Actividad agregada correctamente');
-        resetFormAndSelects();
+        form.reset();
+        resetSelects();
         loadActivitiesData();
       } else {
         message.error('Error al agregar actividad económica');
-        console.error('Error adding activity');
       }
     } catch (error) {
-      message.error(error.response.data.error.message);
-      console.error('Error:', error);
+      message.error(error?.response?.data?.error?.message || 'Error desconocido');
     } finally {
       setIsLoading(false);
     }
   };
 
-  const getMaxLength = (name) => {
-    const field = activitySchema.shape[name];
-    return field?._def?.checks?.find(check => check.kind === "max")?.value || 500;
-  };
-
-  const configTable = getConfigTable(activitiesData, loadActivitiesData);
-
   return (
-    <>
-      <AtomsPanel title={'Actividades Economicas'} subtitle={'Información de las actividades economicas'} />
+    <section aria-label="Registro de actividades económicas">
+      <AtomsPanel title={'Actividades Económicas'} subtitle={'Información de las actividades económicas'} />
       <div className="flex flex-col gap-6 mt-4">
         <Card>
           <CardHeader className="text-center">
@@ -147,28 +112,31 @@ const RegisterActivities = () => {
           </CardHeader>
           <CardContent>
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)}>
+              <form onSubmit={form.handleSubmit(onSubmit)} aria-label="Formulario de registro de actividad económica">
                 <div className="grid gap-6">
                   <FormField
                     name="idActividadEconomica"
                     control={form.control}
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Actividad Económica</FormLabel>
+                        <FormLabel htmlFor="actividad-economica-select">Actividad Económica</FormLabel>
                         <FormControl>
                           <Controller
                             name="idActividadEconomica"
                             control={form.control}
                             render={({ field }) => (
                               <Select
-                              value={field.value}
-                              onValueChange={field.onChange}>
-                                <SelectTrigger>
+                                value={field.value}
+                                onValueChange={handleChangeActividad}
+                                aria-label="Seleccionar actividad económica"
+                                id="actividad-economica-select"
+                              >
+                                <SelectTrigger tabIndex={0} aria-label="Actividades económicas">
                                   <SelectValue placeholder="Seleccione una opción" />
                                 </SelectTrigger>
                                 <SelectContent>
                                   {activities.map((activity) => (
-                                    <SelectItem key={activity.id} value={activity.id.toString()}>
+                                    <SelectItem key={activity.id} value={activity.id.toString()} aria-label={activity.actividad_economica}>
                                       {activity.actividad_economica}
                                     </SelectItem>
                                   ))}
@@ -186,7 +154,7 @@ const RegisterActivities = () => {
                     control={form.control}
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Sector Productivo</FormLabel>
+                        <FormLabel htmlFor="sector-productivo-select">Sector Productivo</FormLabel>
                         <FormControl>
                           <Controller
                             name="idSectorProductivo"
@@ -194,14 +162,16 @@ const RegisterActivities = () => {
                             render={({ field }) => (
                               <Select
                                 value={field.value}
-                                onValueChange={field.onChange}
+                                onValueChange={handleChangeSector}
+                                aria-label="Seleccionar sector productivo"
+                                id="sector-productivo-select"
                               >
-                                <SelectTrigger>
+                                <SelectTrigger tabIndex={0} aria-label="Sectores productivos">
                                   <SelectValue placeholder="Seleccione una opción" />
                                 </SelectTrigger>
                                 <SelectContent>
                                   {sectors.map((sector) => (
-                                    <SelectItem key={sector.id} value={sector.id.toString()}>
+                                    <SelectItem key={sector.id} value={sector.id.toString()} aria-label={sector.sector_productivo}>
                                       {sector.sector_productivo}
                                     </SelectItem>
                                   ))}
@@ -219,7 +189,7 @@ const RegisterActivities = () => {
                     control={form.control}
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Sub-Sector Productivo</FormLabel>
+                        <FormLabel htmlFor="sub-sector-productivo-select">Sub-Sector Productivo</FormLabel>
                         <FormControl>
                           <Controller
                             name="idSubSectorProductivo"
@@ -227,14 +197,16 @@ const RegisterActivities = () => {
                             render={({ field }) => (
                               <Select
                                 value={field.value}
-                                onValueChange={field.onChange}
+                                onValueChange={handleChangeSubSector}
+                                aria-label="Seleccionar sub-sector productivo"
+                                id="sub-sector-productivo-select"
                               >
-                                <SelectTrigger>
+                                <SelectTrigger tabIndex={0} aria-label="Sub-sectores productivos">
                                   <SelectValue placeholder="Seleccione una opción" />
                                 </SelectTrigger>
                                 <SelectContent>
                                   {subSectors.map((subSector) => (
-                                    <SelectItem key={subSector.id} value={subSector.id.toString()}>
+                                    <SelectItem key={subSector.id} value={subSector.id.toString()} aria-label={subSector.sub_sector_productivo}>
                                       {subSector.sub_sector_productivo}
                                     </SelectItem>
                                   ))}
@@ -247,8 +219,8 @@ const RegisterActivities = () => {
                       </FormItem>
                     )}
                   />
-                  <Button type="submit" className="w-full" disabled={isLoading}>
-                    {isLoading ? <Loader2 className="animate-spin" /> : 'Agregar actividad económica'}
+                  <Button type="submit" className="w-full" disabled={isLoading} aria-busy={isLoading} aria-label="Agregar actividad económica">
+                    {isLoading ? <Loader2 className="animate-spin" aria-label="Cargando" /> : 'Agregar actividad económica'}
                   </Button>
                 </div>
               </form>
@@ -265,8 +237,10 @@ const RegisterActivities = () => {
           </CardContent>
         </Card>
       </div>
-    </>
+    </section>
   );
 }
+
+RegisterActivities.propTypes = {};
 
 export default RegisterActivities;

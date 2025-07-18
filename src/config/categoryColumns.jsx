@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from "react";
 import { Input, Button, Space } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import Highlighter from "react-highlight-words";
-import { fetchProductDetails } from "@src/lib/api/apiUser"; // Importar la función para llamar a la API
+import { fetchProductDetails } from "@src/lib/api/apiIndex"; // Importar la función para llamar a la API
 
 const categoryColumns = (onCategorySelect) => {
   const [searchText, setSearchText] = useState("");

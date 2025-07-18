@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Controller } from "react-hook-form";
 import { FormField, FormItem, FormLabel, FormControl, FormMessage} from "@src/components/ui/form";
 import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@src/components/ui/select";
-import { fetchPaises } from '@lib/api/apiUser'; // Importa la función fetchPaises
+import { fetchPaises } from '@lib/api/apiIndex'; // Importa la función fetchPaises
 import { Input } from "@src/components/ui/input";
 
 const CompanyFormFields = ({ form }) => {

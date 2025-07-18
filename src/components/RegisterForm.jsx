@@ -6,7 +6,7 @@ import { cn } from "@src/lib/utils";
 import { message } from "antd";
 import { Button } from "@src/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
-import { postStepIdentification } from '@lib/api/apiUser';
+import { postStepIdentification } from '@lib/api/apiIndex';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@src/components/ui/card";
 import { Form } from "@src/components/ui/form";
 import RegisterFormFields from "@src/components/molecules/RegisterFormFields";

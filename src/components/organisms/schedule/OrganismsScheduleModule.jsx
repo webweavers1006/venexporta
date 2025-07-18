@@ -10,7 +10,7 @@ import {
 import { BadgeCheck, BadgeX } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Modal, message, Badge } from "antd"; // Import Modal and message from Ant Design
-import { scheduleAppointment } from "@src/lib/api/apiUser"; // Import the new function
+import { scheduleAppointment } from "@src/lib/api/schedules/schedules";
 import appStore from '@src/store/appStore';
 import { Calendar1 } from "lucide-react";
 import {companiesOnlyHelps} from "@/pages/roundtable/helps/companiesOnlyHelps";

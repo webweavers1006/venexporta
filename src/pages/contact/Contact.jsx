@@ -8,7 +8,7 @@ import appStore from '@store/appStore';
 import { contactSchema } from '@src/schema/contactSchema';
 import { useStore } from 'zustand';
 import { getConfigTable } from "../contact/config/configTable";
-import { postStepContact, fetchContactData } from '@src/lib/api/apiUser';
+import { postStepContact, fetchContactData } from '@src/lib/api/apiIndex';
 import { Input } from "@/components/ui/input";
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";

@@ -7,7 +7,7 @@ import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from ".
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "../ui/form";
 import { Button } from "../ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
-import { fetchActividadesEmpresariales, postStepSignature, fetchPaises } from '@lib/api/apiUser'; // Importa la función fetchPaises
+import { fetchActividadesEmpresariales, postStepSignature, fetchPaises } from '@lib/api/apiIndex'; // Importa la función fetchPaises
 import { propiedad } from '@lib/data/propiedad';
 import { estados } from '@lib/data/estados';
 import { extraerMunicipios } from '@lib/data/municipios';
