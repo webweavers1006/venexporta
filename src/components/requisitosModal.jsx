@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Modal, Badge, Button } from 'antd';
-import { fetchRequisitos } from '@src/lib/api/apiUser';
+import { fetchRequisitos } from '@src/lib/api/apiIndex';
 import ResultComponent from '@src/components/molecules/result/MoleculesResult';
 import { useNavigate, useLocation } from 'react-router';
 import useAuthStore from '@src/store/authStore';

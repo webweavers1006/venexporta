@@ -7,7 +7,7 @@ import UpdateCompanyDialog from "@components/organisms/company/OrganismsUpdateCo
 import { useState, useEffect } from 'react';
 import ImageUpload from '@components/molecules/upload/MoleculesImageUpload';
 import { Link } from 'react-router';
-import { fetchProductsByCompany } from '@src/lib/api/apiUser';
+import { fetchProductsByCompany } from '@src/lib/api/apiIndex';
 import appStore from '@store/appStore';
 import MoleculesList from "@components/molecules/MoleculesList";
 

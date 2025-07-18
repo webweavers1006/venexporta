@@ -1,7 +1,7 @@
 import ImageUpload from '../components/molecules/upload/MoleculesImageUpload';
 import appStore from '../store/appStore';
 import { estados } from '@lib/data/estados';
-import { fetchUnidadesMedida } from '../lib/api/apiUser';
+import { fetchUnidadesMedida } from '../lib/api/apiIndex';
 
 const productFormConfig = (categories = [], unidadesMedida = [], rangoTiempos = []) => ({
   img: {

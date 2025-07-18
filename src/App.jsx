@@ -3,7 +3,8 @@ import appStore from '@src/store/appStore';
 import useAuthStore from '@src/store/authStore';
 import { Spin } from 'antd';
 import logo from '@assets/logo/isologoA.png';
-import { fetchCompanyData, fetchRequestedAppointments } from '@src/lib/api/apiUser';
+import { fetchCompanyData } from '@src/lib/api/apiIndex';
+import { fetchRequestedAppointments } from '@src/lib/api/schedules/schedules';
 import { excludedPaths } from '@lib/data/routesRequisitos';
 import { Calendar } from "lucide-react";
 

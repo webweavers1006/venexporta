@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Upload, Modal, message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import { uploadImages } from '@lib/api/apiUser';
+import { uploadImages } from '@lib/api/apiIndex';
 
 // Utilidad para convertir un archivo a Base64
 const toBase64 = (file) => new Promise((resolve, reject) => {

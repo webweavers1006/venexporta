@@ -13,7 +13,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@src/components/ui/select";
-import { updateCompanyData, fetchActividadesEmpresariales, fetchPaises } from "@lib/api/apiUser";
+import { updateCompanyData, fetchActividadesEmpresariales, fetchPaises } from "@lib/api/apiIndex";
 import { estados } from "@lib/data/estados";
 import { extraerMunicipios } from "@lib/data/municipios";
 import { extraerParroquias } from "@lib/data/parroquias";

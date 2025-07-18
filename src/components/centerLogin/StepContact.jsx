@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { postStepContact } from '../../lib/api/apiUser';
+import { postStepContact } from '../../lib/api/apiIndex';
 
 const StepIdentificationP = ({ insertStep, insertRegister, register }) => {
     const [telefono, insertTelefono] = useState(register.telefono);

@@ -1,5 +1,5 @@
 import { Modal, message } from 'antd';
-import { deleteProductById } from '@src/lib/api/apiUser';
+import { deleteProductById } from '@src/lib/api/apiIndex';
 
 export const handleDeleteProduct = async (id, loadProductsData) => {
   Modal.confirm({

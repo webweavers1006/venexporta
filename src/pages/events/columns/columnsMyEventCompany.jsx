@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Modal, message } from 'antd';
-import { deleteEventByCompany } from '@src/lib/api/apiUser';
+import { deleteEventByCompany } from '@src/lib/api/apiIndex';
 
 const handleDelete = async (id, loadEventsData) => {
   Modal.confirm({
