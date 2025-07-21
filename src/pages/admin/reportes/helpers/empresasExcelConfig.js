@@ -6,7 +6,6 @@ const extraColumns = [
   { header: 'Municipio', key: 'municipio' },
   { header: 'Parroquia', key: 'parroquia' },
   { header: 'Evento', key: 'nombre_evento' },
-  { header: 'Evento', key: 'nombre_evento' },
   { header: 'Actividad Económica', key: 'nombre_actividad_economica' },
   { header: 'Sector Productivo', key: 'nombre_sector_productivo' },
   { header: 'Sub Sector Productivo', key: 'nombre_sub_sector_productivo' },
