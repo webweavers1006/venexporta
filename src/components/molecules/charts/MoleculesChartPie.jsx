@@ -229,7 +229,7 @@ function MoleculesChartPie({
           </div>
           {/* Mostrar el total */}
           <div className="mb-2 text-center w-full">
-            <span className="font-bold text-base" style={{ color: '#364153' }}>Total: {total.toLocaleString()}</span>
+            <span className="font-bold text-base" style={{ color: '#364153' }}>Empresas: {total.toLocaleString()}</span>
           </div>
           {/* Mostrar el subsector seleccionado y su valor debajo del gráfico */}
           {selected && (

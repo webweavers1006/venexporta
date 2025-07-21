@@ -87,10 +87,19 @@ const CompanyFormFields = ({ form }) => {
             <FormLabel>Codigo de Area</FormLabel>
             <FormControl>
               <Controller
-                name="codigoArea"
+                name="idPaisCodigo"
                 control={form.control}
                 render={({ field }) => (
-                  <Select {...field} onValueChange={field.onChange}>
+                  <Select
+                    {...field}
+                    onValueChange={(value) => {
+                      // value es el id del país seleccionado
+                      const paisSeleccionado = paises.find((pais) => pais.id.toString() === value);
+                      // Actualiza idPais con el id y codigoArea con el código de área
+                      form.setValue('codigoArea', paisSeleccionado?.codigo.toString() || "");
+                      field.onChange(value);
+                    }}
+                  >
                     <SelectTrigger>
                       <SelectValue placeholder="Seleccione una opción" />
                     </SelectTrigger>
@@ -121,7 +130,7 @@ const CompanyFormFields = ({ form }) => {
                   <span className="ml-1">+</span>
                   <Input
                     value={
-                      paises.find((pais) => pais.id.toString() === form.watch("codigoArea"))?.codigo || ""
+                      paises.find((pais) => pais.id.toString() === form.watch("idPaisCodigo"))?.codigo || ""
                     }
                     readOnly
                     className="text-center border-none focus:ring-0 pl-0"

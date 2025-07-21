@@ -14,28 +14,36 @@ const companySchema = z.object({
   direccion: z.string().nonempty("La dirección es requerida").max(200, "La dirección no puede exceder los 200 caracteres"),
 }).superRefine((data, ctx) => {
   if (data.idPais === '95') {
-    if (!data.idEstado) {
+    if (!data.idEstado || data.idEstado === null || data.idEstado === undefined || data.idEstado === "" || data.idEstado === "26") {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message: "El estado es requerido si el país es Venezuela",
+        message: "El estado es requerido",
         path: ["idEstado"],
       });
     }
-    if (!data.idMunicipio) {
+    if (!data.idMunicipio || data.idMunicipio === null || data.idMunicipio === undefined || data.idMunicipio === "" || data.idMunicipio === "463") {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message: "El municipio es requerido si el país es Venezuela",
+        message: "El municipio es requerido",
         path: ["idMunicipio"],
       });
     }
-    if (!data.idParroquia) {
+    if (!data.idParroquia || data.idParroquia === null || data.idParroquia === undefined || data.idParroquia === "" || data.idParroquia === "1140") {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message: "La parroquia es requerida si el país es Venezuela",
+        message: "La parroquia es requerida",
         path: ["idParroquia"],
       });
     }
+    if (data.idTipoActividadEmpresarial === '5') {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: "Debe seleccionar una actividad empresarial",
+      path: ["idTipoActividadEmpresarial"],
+    });
   }
+  }
+  
 });
 
 export default companySchema;

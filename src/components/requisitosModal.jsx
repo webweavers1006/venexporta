@@ -2,6 +2,9 @@ import { useEffect, useState } from 'react';
 import { Modal, Badge, Button } from 'antd';
 import { fetchRequisitos } from '@src/lib/api/apiIndex';
 import ResultComponent from '@src/components/molecules/result/MoleculesResult';
+import OrganismsUpdateCompanyDialog from '@components/organisms/company/OrganismsUpdateCompanyDialog';
+import { Dialog } from '@/components/ui/dialog';
+import { useCompanyData } from '@src/pages/company/hooks/useCompanyData';
 import { useNavigate, useLocation } from 'react-router';
 import useAuthStore from '@src/store/authStore';
 import appStore from '@src/store/appStore'; // Importar appStore
@@ -11,8 +14,11 @@ const RequisitosModal = ({ excludedPaths }) => {
   const { idCompany } = appStore(); // Obtener idCompany desde appStore
   const [requisitos, setRequisitos] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [showUpdateDialog, setShowUpdateDialog] = useState(false);
+  const [message, setMessage] = useState('');
   const navigate = useNavigate();
   const location = useLocation();
+  const { companyData, reloadCompany } = useCompanyData(idUser, idCompany);
 
   useEffect(() => {
     const fetchRequisitosAsync = async () => {
@@ -70,16 +76,40 @@ const RequisitosModal = ({ excludedPaths }) => {
     });
   }
 
+  // Mostrar el diálogo de actualización solo si el requisito de ubicación está incompleto
+  useEffect(() => {
+    const ubicacionIncompleta = requisitos && requisitos.some(item => item.mensaje === 'Debe terminar de llenar la ubicacion de la empresa (Estado-Municipio-Parroquia)' && item.valor === false);
+    if (ubicacionIncompleta) {
+      setMessage('Debe terminar de completar la informacion de la empresa');
+      setShowUpdateDialog(true);
+      setIsModalVisible(false); // Cierra el modal de requisitos
+    } else {
+      setShowUpdateDialog(false);
+    }
+  }, [requisitos]);
+
   return (
-    isModalVisible && (
-      <Modal
-        visible={isModalVisible}
-        footer={null}
-        closable={false}
-      >
-        <ResultComponent config={config} />
-      </Modal>
-    )
+    <>
+      {isModalVisible && (
+        <Modal
+          visible={isModalVisible}
+          footer={null}
+          closable={false}
+        >
+          <ResultComponent config={config} />
+        </Modal>
+      )}
+      {companyData && (
+        <Dialog open={showUpdateDialog} onOpenChange={setShowUpdateDialog}>
+          <OrganismsUpdateCompanyDialog
+            companyData={companyData}
+            onClose={() => setShowUpdateDialog(false)}
+            onUpdate={reloadCompany}
+            message={message}
+          />
+        </Dialog>
+      )}
+    </>
   );
 };
 

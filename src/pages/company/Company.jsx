@@ -1,6 +1,5 @@
 
-import React from 'react';
-import PropTypes from 'prop-types';
+
 import { useStore } from 'zustand';
 import useAuthStore from '@store/authStore';
 import appStore from '@store/appStore';

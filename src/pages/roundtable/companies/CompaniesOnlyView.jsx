@@ -11,7 +11,7 @@
  * // Uso típico en una ruta:
  * <Route path="/roundtable/companies/:id/:event/:renderSchedule" element={<CompaniesOnly />} />
  */
-import React from 'react';
+
 import PropTypes from 'prop-types';
 import { Archive } from 'lucide-react';
 import { Image } from 'antd';
