@@ -30,6 +30,9 @@ const ListCompanies = lazy(() => import('@pages/admin/companies/ListCompanies'))
 const ListCompaniesOnly = lazy(() => import('@pages/admin/companies/ListCompaniesOnly'));
 const SchedulesEvents = lazy(() => import('@pages/admin/schedules/SchedulesEvents'));
 const Reports = lazy(() => import('@pages/admin/reportes/Reportes'));
+const ReportesCitas = lazy(() => import('@pages/admin/reportes/ReportesCitas'));
+const ReportsDinamics = lazy(() => import('@pages/admin/reportes/ReportesDinamicos'));
+const ReportesDinamicosEventosActividad = lazy(() => import('@pages/admin/reportes/ReportesDinamicosEventosActividad'));
 
 const RoutesApp = () => {
     const idPais = useStore(appStore, state => state.idPais);
@@ -44,6 +47,9 @@ const RoutesApp = () => {
                     <Route path="company" element={<PrivateRoute component={Company} />} />
                     <Route path="dashboard" element={<PrivateRoute component={Dashboard} />} />
                     <Route path="Reports" element={<PrivateRoute component={Reports} />} />
+                    <Route path="Reports/Appointments" element={<PrivateRoute component={ReportesCitas} />} />
+                    <Route path="reports/dinamics" element={<PrivateRoute component={ReportsDinamics} />} />
+                    <Route path="reports/dinamics/ex" element={<PrivateRoute component={ReportesDinamicosEventosActividad} />} />
                     <Route path="list/companies" element={<PrivateRoute component={ListCompanies} />} />
                     <Route path="schedules/event" element={<PrivateRoute component={SchedulesEvents} />} />
                     <Route path="contacts" element={<PrivateRoute component={Contact} />} />

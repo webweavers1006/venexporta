@@ -1,15 +1,18 @@
-import { useState, useEffect } from 'react';
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
+// Removed local fetchPaises and state, moved to hook
 import { zodResolver } from "@hookform/resolvers/zod";
-import { message } from 'antd';
+// message from antd moved to hook
 import AtomsPanel from '@components/atoms/AtomsPanel';
 import MoleculesTable from "@components/molecules/tables/MoleculesTable";
 import appStore from '@store/appStore';
 import { contactSchema } from '@src/schema/contactSchema';
 import { useStore } from 'zustand';
 import { getConfigTable } from "../contact/config/configTable";
-import { postStepContact, fetchContactData } from '@src/lib/api/apiIndex';
+// API calls moved to hook
+import useContacts from './hooks/useContacts';
+
 import { Input } from "@/components/ui/input";
+import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@/components/ui/select";
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -18,54 +21,31 @@ import columns from './columns/columnsCompanyActivities'; // Importa las columna
 
 const RegisterActivities = () => {  
   const idCompany = useStore(appStore, state => state.idCompany);
-  const [activitiesData, setActivitiesData] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const { activitiesData, isLoading, loadActivitiesData, addContact, paises } = useContacts(idCompany);
 
   const form = useForm({
     resolver: zodResolver(contactSchema),
     defaultValues: {
       nombre: "",
       correo: "",
+      idPais: "",
+      codigoArea: "",
       telefono: "",
       cargo: "",
     },
   });
 
-  const loadActivitiesData = async () => {
-    try {
-      const data = await fetchContactData(idCompany);
-      setActivitiesData(data);
-    } catch (error) {
-      console.error('Error fetching activities data:', error);
-    }
-  };
-
-  useEffect(() => {
-    loadActivitiesData();
-  }, [idCompany]);
+  // loadActivitiesData is invoked within the hook when idCompany changes
 
   const onSubmit = async (data) => {
-    setIsLoading(true);
-    try {
-      const response = await postStepContact({ ...data, id_empresa: idCompany });
-      if (response) {
-        message.success('Contacto Exitoso');
-        form.reset();
-        loadActivitiesData();
-      } else {
-        message.error('Error al enviar el contacto');
-      }
-    } catch (error) {
-      console.error('Error submitting contact:', error);
-      message.error(error.response.data.error.message);
-    } finally {
-      setIsLoading(false);
-    }
+    const success = await addContact(data);
+    if (success) form.reset();
   };
 
   const getMaxLength = (name) => {
-    const field = contactSchema.shape[name];
-    return field?._def?.checks?.find(check => check.kind === "max")?.value || 500;
+    const field = contactSchema._def.schema._def.shape()[name];
+    return field?._def?.checks?.find(check => check.kind === "max")?.value || 100;
+
   };
 
   const configTable = getConfigTable(activitiesData, loadActivitiesData);
@@ -127,6 +107,41 @@ const RegisterActivities = () => {
                       </FormItem>
                     )}
                   />
+                  {/* Código de Área con país */}
+                  <FormField
+                    name="codigoArea"
+                    control={form.control}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Código de Área</FormLabel>
+                        <FormControl>
+                          <Select
+                            {...field}
+                            onValueChange={(value) => {
+                              field.onChange(value);
+                              const selected = paises.find((p) => p.codigo.toString() === value);
+                              if (selected) form.setValue('idPais', selected.id.toString());
+                            }}
+                          >
+                            <SelectTrigger>
+                              <SelectValue placeholder="Seleccione código de área" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {paises.map(p => (
+                                <SelectItem key={p.id} value={p.codigo.toString()}>
+                                  <div className="flex justify-between">
+                                    <span>{`+${p.codigo}`}</span>
+                                    <span className="text-gray-500">{p.pais}</span>
+                                  </div>
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </FormControl>
+                        <FormMessage>{form.formState.errors.codigoArea?.message}</FormMessage>
+                      </FormItem>
+                    )}
+                  />
                   <FormField
                     name="telefono"
                     control={form.control}
@@ -141,7 +156,7 @@ const RegisterActivities = () => {
                               maxLength={getMaxLength("telefono")}
                             />
                             <span className="absolute right-2 bottom-2 text-sm text-gray-500">
-                              {field.value.length}/{getMaxLength("telefono")}
+                              {/* {field.value.length}/{getMaxLength("telefono")} */}
                             </span>
                           </div>
                         </FormControl>

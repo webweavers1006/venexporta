@@ -14,7 +14,8 @@ export const registerSchema = z.object({
   identification: z.string()
     .nonempty("La identificación es requerida"),
   idPais: z.string("requerido").nonempty("El tipo de propiedad es requerido"),
-  codigoArea: z.string("requerido").nonempty("El tipo de propiedad es requerido"),
+  idPaisCodigo: z.string("requerido").nonempty("El código de país es requerido"),
+  codigoArea: z.string().nonempty("El código de área es requerido"),
   pass: z.string()
     .nonempty("La contraseña es requerida")
     .min(8, "La contraseña debe tener al menos 8 caracteres")
@@ -22,7 +23,6 @@ export const registerSchema = z.object({
     .regex(/[!@#$%^&*(),.?":{}|<>]/, "La contraseña debe tener al menos un carácter especial"),
 }).superRefine((data, ctx) => {
   const idPaisValue = data.idPais; // Accede al valor de idPais
-  const codigoAreaValue = data.codigoArea; // Accede al valor de codigoArea
 
   if (idPaisValue === "95") {
     if (!rifRegex.test(data.rif)) {
@@ -84,7 +84,7 @@ export const registerSchema = z.object({
     }
   }
 
-  if (codigoAreaValue === "95") {
+  if (idPaisValue === "95") {
     if (data.telefono.length < 10 || data.telefono.length > 11) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,

@@ -1,5 +1,4 @@
 import {
-  UserRoundPen,
   House,
   CalendarPlus,
   LifeBuoy,
@@ -15,7 +14,8 @@ import {
   ArchiveRestore,
   ArrowLeftRight,
   CalendarCheck,
-  ClipboardPlus
+  ClipboardPlus,
+  TrendingUpDown
 } from "lucide-react";
 import logo from '@assets/logo/isologoC.png';
 import avatar from "@assets/logo/avatar.png";
@@ -38,6 +38,37 @@ export const data = () => {
       isActive: true,
     },
     tipoUsuario === 'ADMINISTRADOR' && {
+      title: "Reportes",
+      icon: BriefcaseBusiness,
+      badge : "Nuevo",
+      color: "#2D044A",
+      isActive: true,
+      items: [
+        {
+          title: "Reportes de Empresas",
+          url: "reports",
+          icon: ClipboardPlus,
+          color: "#2D044A",
+          isActive: true,
+        },
+        {
+          title: "Dinamico Masivo Empresas",
+          url: "reports/dinamics",
+          icon: TrendingUpDown,
+          color: "#2D044A",
+          isActive: true,
+          
+        },
+        {
+          title: "Reportes de Citas",
+          url: "Reports/Appointments",
+          icon: CalendarHeart,
+          color: "#2D044A",
+          isActive: true,
+        }
+      ],
+    },
+    tipoUsuario === 'ADMINISTRADOR' && {
       title: "Administrador",
       icon: BriefcaseBusiness,
       badge : "Nuevo",
@@ -48,13 +79,6 @@ export const data = () => {
           title: "Dashboard",
           url: "dashboard",
           icon: PieChart,
-          color: "#2D044A",
-          isActive: true,
-        },
-        {
-          title: "Reportes",
-          url: "reports",
-          icon: ClipboardPlus,
           color: "#2D044A",
           isActive: true,
         },

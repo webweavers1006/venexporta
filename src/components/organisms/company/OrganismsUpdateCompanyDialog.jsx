@@ -97,7 +97,7 @@ const SelectField = ({ name, control, label, options, placeholder, getOptionLabe
 );
 
 
-const UpdateCompanyDialog = ({ companyData, onClose, onUpdate }) => {
+const UpdateCompanyDialog = ({ companyData, onClose, onUpdate, message }) => {
   // Formulario react-hook-form
   const form = useForm({
     resolver: zodResolver(companySchema),
@@ -151,6 +151,9 @@ const UpdateCompanyDialog = ({ companyData, onClose, onUpdate }) => {
         <DialogTitle>Actualizar Empresa</DialogTitle>
         <DialogDescription>
           Actualice la información de la empresa aquí. Haga clic en guardar cuando haya terminado.
+          {message && (
+            <span className="text-red-500 block text-center p-4 bg-red-200 rounded-lg">{message}</span>
+          )}
         </DialogDescription>
       </DialogHeader>
       <Form {...form}>

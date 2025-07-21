@@ -12,6 +12,7 @@ import { Form } from "@src/components/ui/form";
 import RegisterFormFields from "@src/components/molecules/RegisterFormFields";
 import CompanyFormFields from "@src/components/molecules/CompanyFormFields";
 
+
 export function RegisterForm({ className, ...props }) {
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
@@ -28,6 +29,9 @@ export function RegisterForm({ className, ...props }) {
             nombreEmpresa: "",
             rif: "",
             telefono: "",
+            idPais: "",
+            idPaisCodigo: "",
+            codigoArea: "",
         },
     });
 
