@@ -80,19 +80,19 @@ const ReportesDinamicosEventosActividad = () => {
 
   // Exportar a Excel
   const handleExportExcel = async () => {
-    await exportEmpresasToExcel(reporteData);
+    await exportEmpresasToExcel(reporteData, 'LISTADO DE EMPRESAS POR EVENTOS');
   };
 
   // Exportar a PDF
   const handleExportPDF = () => {
-    exportEmpresasToPDF(reporteData);
+    exportEmpresasToPDF(reporteData, null, null, 'LISTADO DE EMPRESAS POR EVENTOS');
   };
 
   return (
     <div>
       <div className='bg-white p-4 rounded-2xl mt-4'>
         <AtomsTitle
-          title={'Reporte Evento - Actividad - Sector - Sub-Sector'}
+          title={'LISTADO DE EMPRESAS POR EVENTOS'}
           subtitle={'Filtros'}
           className="mb-4"
         />

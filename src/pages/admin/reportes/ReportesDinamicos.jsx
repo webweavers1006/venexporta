@@ -1,7 +1,5 @@
-import { jsPDF } from 'jspdf';
-import autoTable from 'jspdf-autotable';
 import { FileSpreadsheet, FileText } from 'lucide-react';
-import { lazy, useState, useRef, useEffect } from 'react';
+import { lazy, useState, useRef } from 'react';
 import { exportEmpresasToExcel } from './helpers/exportEmpresasExcel';
 import { exportEmpresasToPDF } from './helpers/exportEmpresasPDF';
 import { message } from 'antd';
@@ -82,12 +80,27 @@ const Reportes = () => {
 
   // Exportar a Excel
   const handleExportExcel = async () => {
-    await exportEmpresasToExcel(reporteData);
+    // Solo incluir filtros relevantes y con valor
+    const filtrosAplicados = {};
+    Object.entries(values).forEach(([key, val]) => {
+      if (val !== undefined && val !== null && val !== '' && !(Array.isArray(val) && val.length === 0)) {
+        filtrosAplicados[key] = val;
+      }
+    });
+    await exportEmpresasToExcel(reporteData, filtrosAplicados, filterConfig);
   };
 
   // Exportar a PDF
   const handleExportPDF = () => {
-    exportEmpresasToPDF(reporteData);
+    // Solo incluir filtros relevantes y con valor
+    const filtrosAplicados = {};
+    Object.entries(values).forEach(([key, val]) => {
+      if (val !== undefined && val !== null && val !== '' && !(Array.isArray(val) && val.length === 0)) {
+        filtrosAplicados[key] = val;
+      }
+    });
+    // Pasar también la configuración de filtros para los colores
+    exportEmpresasToPDF(reporteData, filtrosAplicados, filterConfig);
   };
 
   return (

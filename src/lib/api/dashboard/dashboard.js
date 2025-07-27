@@ -7,7 +7,7 @@ export const getCantSubSectorProductivo = async () => {
   const controller = new AbortController();
   let response;
   try {
-    response = await axios.get(`${API_BASE_URL}/dash/cant_sub_sector_productivo`, {
+    response = await axios.get(`${API_BASE_URL}/dash/cant_empresas_sector_economico`, {
       signal: controller.signal,
     });
     return response.data;

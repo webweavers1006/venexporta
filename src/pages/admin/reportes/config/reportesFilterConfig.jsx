@@ -52,7 +52,46 @@ export const useReportesFilterConfig = (selectedActividad, selectedSector) => {
   const sectorProductivoOptions = sectorProductivo.map(item => ({ value: item.id.toString(), label: item.sector_productivo }));
   const subSectorProductivoOptions = subSectorProductivo.map(item => ({ value: item.id.toString(), label: item.sub_sector_productivo }));
 
-  const config = [
+  // Paleta de colores para los fields (no repetir)
+  const colorPalette = [
+    '#34a853', // verde
+    '#4285f4', // azul
+    '#fbbc05', // amarillo
+    '#ea4335', // rojo
+    '#a142f4', // morado
+    '#00bcd4', // cyan
+    '#ff9800', // naranja
+    '#8bc34a', // lima
+    '#e91e63', // rosa
+    '#607d8b', // gris
+    '#795548', // marrón
+    '#9c27b0', // púrpura
+    '#3f51b5', // azul oscuro
+    '#009688', // teal
+    '#cddc39', // amarillo lima
+    '#ff5722', // naranja oscuro
+    '#673ab7', // púrpura oscuro
+    '#2196f3', // azul claro
+    '#4caf50', // verde medio
+    '#f44336', // rojo fuerte
+  ];
+
+  // Asignar color único a cada field (opcional)
+  let colorIndex = 0;
+  function assignColors(config) {
+    return config.map(group => ({
+      ...group,
+      fields: group.fields.map(field => {
+        // Solo asignar color si hay colores disponibles
+        const color = colorPalette[colorIndex % colorPalette.length];
+        const fieldWithColor = { ...field, color };
+        colorIndex++;
+        return fieldWithColor;
+      })
+    }));
+  }
+
+  const config = assignColors([
     {
       title: 'Filtros de empresa',
       fields: [
@@ -95,7 +134,7 @@ export const useReportesFilterConfig = (selectedActividad, selectedSector) => {
         { name: 'id_role', type: 'select', label: 'Rol', placeholder: 'Seleccione rol', options: roles },
       ],
     }, */
-  ];
+  ]);
 
   // Retornar config y setters para uso externo
   return { config, setSelectedEstado, setSelectedMunicipio, setSelectedActividad, setSelectedSector };

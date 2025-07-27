@@ -80,19 +80,19 @@ const ReportesDinamicosEventosActividad = () => {
 
   // Exportar a Excel
   const handleExportExcel = async () => {
-    await exportEmpresasToExcel(reporteData);
+    await exportEmpresasToExcel(reporteData, 'LISTADO DE EMPRESAS POR UBICACIÓN GEOGRÁFICA');
   };
 
   // Exportar a PDF
   const handleExportPDF = () => {
-    exportEmpresasToPDF(reporteData);
+    exportEmpresasToPDF(reporteData, null, null, 'LISTADO DE EMPRESAS POR UBICACIÓN GEOGRÁFICA');
   };
 
   return (
     <div>
       <div className='bg-white p-4 rounded-2xl mt-4'>
         <AtomsTitle
-          title={'Reporte Pais - Estado - Municipio - Parroquia'}
+          title={'LISTADO DE EMPRESAS POR UBICACIÓN GEOGRÁFICA '}
           subtitle={'Filtros'}
           className="mb-4"
         />
