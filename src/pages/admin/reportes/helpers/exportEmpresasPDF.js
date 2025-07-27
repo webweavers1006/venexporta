@@ -1,100 +1,175 @@
 import { jsPDF } from 'jspdf';
 import autoTable from 'jspdf-autotable';
-import { getEmpresasExcelColumns } from './empresasExcelConfig';
-import banner from '@assets/banner/banner.webp'; // Asegúrate de tener una imagen de banner
 
-export const exportEmpresasToPDF = (data) => {
+
+import { PDF_DEFAULTS } from '@src/lib/data/pdf/pdfDefaults';
+import { hexToRgb, drawFiltrosSection } from '@src/lib/data/pdf/pdfHelpers';
+import { getReadableFilters } from '@src/lib/data/pdf/readableFilters';
+import { buildEmpresasColumns } from './pdf/empresasColumns';
+import { getFiltrosColors } from '../helpers/getFiltrosColors';
+
+/**
+ * Exporta datos tabulares a PDF de forma flexible y reutilizable.
+ * @param {Object[]} data - Array de objetos a exportar.
+ * @param {Object} options - Opciones de configuración.
+ * @param {Array} options.columns - Columnas a mostrar [{header, dataKey, cellWidth?}].
+ * @param {string|undefined} options.banner - Imagen (base64 o import) para el encabezado.
+ * @param {string} [options.filename] - Nombre del archivo PDF.
+ * @param {string} [options.totalLabel] - Texto para la caja de total.
+ * @param {function} [options.getTotal] - Función para obtener el total (por defecto data.length).
+ * @param {function} [options.formatCell] - Función para formatear celdas (row, col, idx) => valor.
+ * @param {Object} [options.columnStyles] - Estilos de columnas para autoTable.
+ * @param {Object} [options.tableStyles] - Estilos generales de autoTable.
+ * @param {Object} [options.headStyles] - Estilos de cabecera de autoTable.
+ * @param {Object} [options.margin] - Márgenes de autoTable.
+ * @param {function} [options.getTotalRow] - Función para la fila de totales personalizada.
+ * @param {Object} [options.filtros] - Objeto de filtros aplicados (opcional).
+ * @param {string} [options.title] - Título para el PDF (aparece en la página y en el filename si no se especifica otro).
+ */
+
+
+
+export function exportTableToPDF(data, options = {}) {
   if (!Array.isArray(data) || data.length === 0) return;
-  // Cambiar orientación a landscape
-  const doc = new jsPDF({ orientation: 'landscape', format: [356, 216] });
-  // Definir anchos personalizados para rif y pais
-  const customWidths = {
-    rif: 28, // más angosto
-    pais: 32, // más ancho
-  };
-  // Reordenar columnas para que 'país' esté antes de 'estado' y agregar dinámicas
-  // Excluir 'created_user' (Fecha Creación) del PDF
-  const columnsRaw = getEmpresasExcelColumns(data).filter(col => col.key !== 'created_user');
-  const columns = [];
-  for (let i = 0; i < columnsRaw.length; i++) {
-    const col = columnsRaw[i];
-    if (col.key === 'pais') {
-      columns.push(col);
-      // Buscar y agregar 'estado' justo después de 'pais' si viene después
-      const estadoIdx = columnsRaw.findIndex(c => c.key === 'estado');
-      if (estadoIdx > i) {
-        columns.push(columnsRaw[estadoIdx]);
-        i = estadoIdx; // saltar 'estado' en el siguiente ciclo
-      }
-    } else if (col.key !== 'estado') {
-      columns.push(col);
-    }
-    // Si 'estado' ya fue agregado después de 'pais', se omite aquí
-  }
-  // Mapear a formato esperado por autoTable
-  const columnsFinal = columns.map(col => ({
-    header: col.header,
-    dataKey: col.key,
-    ...(customWidths[col.key] ? { cellWidth: customWidths[col.key] } : {})
-  }));
+  const {
+    columns = [],
+    banner,
+    filename,
+    totalLabel = 'Total de registros:',
+    getTotal = d => d.length,
+    formatCell,
+    columnStyles = {},
+    tableStyles = PDF_DEFAULTS.table,
+    headStyles = PDF_DEFAULTS.head,
+    margin = PDF_DEFAULTS.margin,
+    getTotalRow,
+    filtros = null,
+    config = null,
+    title = '',
+  } = options;
 
-  // Agregar imagen de encabezado ocupando todo el ancho
-  const headerImg = banner;
+  const doc = new jsPDF(PDF_DEFAULTS.page);
   const pageWidth = doc.internal.pageSize.getWidth();
-  // Altura del banner (ajusta según la proporción de tu imagen)
-  const bannerHeight = 40; // Puedes ajustar este valor según tu imagen
-  doc.addImage(headerImg, 'PNG', 0, 0, pageWidth, bannerHeight);
+  // Banner opcional
+  let bannerHeight = 0;
+  if (banner) {
+    bannerHeight = 40;
+    doc.addImage(banner, 'PNG', 0, 0, pageWidth, bannerHeight);
+  }
 
-  // Mostrar total de empresas en una caja estilizada debajo del banner
-  const totalEmpresas = data.length;
-  const boxWidth = 65;
-  const boxHeight = 14;
-  const boxX = (pageWidth - boxWidth) / 2;
-  const boxY = bannerHeight + 3;
-  // Caja blanca con borde gris claro
-  doc.setDrawColor(180, 180, 180);
-  doc.setFillColor(255, 255, 255);
-  doc.roundedRect(boxX, boxY, boxWidth, boxHeight, 5, 5, 'FD');
-  // Centramos verticalmente el texto y el número dentro de la caja
-  // Altura de la caja: boxHeight
-  // Altura aproximada de las fuentes (en puntos):
-  const labelFontSize = 12;
-  const numberFontSize = 15;
-  // Aproximación: 1pt ≈ 1.33px, pero jsPDF usa pt para setFontSize y px para posiciones
-  // Centramos usando la altura de la fuente y la caja
-  doc.setFontSize(labelFontSize);
-  doc.setTextColor(120, 120, 120);
-  // Medimos la altura de la fuente (aprox)
-  const labelTextHeight = labelFontSize * 0.35; // jsPDF: 1pt ≈ 0.35 px
-  const labelY = boxY + (boxHeight / 2) + (labelTextHeight / 2) - 1;
-  doc.text('Total de empresas:', boxX + 8, labelY);
-  // Número en color destacado (morado)
-  doc.setFontSize(numberFontSize);
-  doc.setTextColor(44, 4, 73);
-  const numberTextHeight = numberFontSize * 0.35;
-  const numberY = boxY + (boxHeight / 2) + (numberTextHeight / 2) - 1;
-  doc.text(String(totalEmpresas), boxX + boxWidth - 8, numberY, { align: 'right' });
+  // Título visual (después del banner) solo si se pasa explícitamente
+  // Se aumenta el espacio entre el banner y el título
+  let titleY = bannerHeight + 20;
+  if (title && typeof title === 'string' && title.trim() !== '') {
+    doc.setFontSize(18);
+    doc.setTextColor(44, 4, 73);
+    doc.text(title, pageWidth / 2, titleY, { align: 'center' });
+    titleY += 14;
+  }
+
+  // Filtros aplicados
+  let filtrosY = titleY;
+  if (filtros && config) {
+    const { filtrosToShow, total, max } = getReadableFilters(filtros, config, getFiltrosColors, PDF_DEFAULTS.filtrosMax);
+    filtrosY = drawFiltrosSection(doc, filtrosToShow, total, max, filtrosY, hexToRgb);
+  }
+
+  // (Caja de total eliminada por requerimiento)
+  const total = typeof getTotal === 'function' ? getTotal(data) : data.length;
+  const boxHeight = 0;
+  const boxY = filtrosY;
+
+  // Construcción de body
+  const body = data.map((row, idx) =>
+    columns.map(col => {
+      if (typeof formatCell === 'function') return formatCell(row, col, idx);
+      if (col.dataKey === '__rowNum__') return idx + 1;
+      return row[col.dataKey] ?? '';
+    })
+  );
+  // Fila de total
+  let totalRow = [];
+  if (typeof getTotalRow === 'function') {
+    totalRow = getTotalRow({ columns, data, total });
+  } else {
+    for (let i = 0; i < columns.length; i++) {
+      if (i === columns.length - 2) totalRow.push('TOTAL');
+      else if (i === columns.length - 1) totalRow.push(total);
+      else totalRow.push('');
+    }
+  }
+  body.push(totalRow);
+
   autoTable(doc, {
-    startY: boxY + boxHeight + 4, // Bajar la tabla para que no tape la caja
-    head: [columnsFinal.map(col => col.header)],
-    body: data.map(row =>
-      columnsFinal.map(col => {
-        if (col.dataKey === 'direccion') {
-          const val = row[col.dataKey];
-          if (val === undefined || val === null || val === '') {
-            return 'Sin Dirección';
-          }
+    startY: boxY + 4,
+    head: [columns.map(col => col.header)],
+    body,
+    columnStyles,
+    styles: tableStyles,
+    headStyles,
+    margin,
+    didParseCell: function (dataCell) {
+      // Solo para la última fila (totales)
+      if (
+        dataCell.section === 'body' &&
+        dataCell.row.index === body.length - 1
+      ) {
+        // Columna de 'TOTAL' (penúltima)
+        if (dataCell.column.index === columns.length - 2) {
+          dataCell.cell.styles.fillColor = [120, 120, 120]; // gris más claro
+          dataCell.cell.styles.fontStyle = 'bold';
+          dataCell.cell.styles.textColor = [255,255,255];
         }
-        return row[col.dataKey] ?? '';
-      })
-    ),
+        // Columna de total numérico (última)
+        if (dataCell.column.index === columns.length - 1) {
+          dataCell.cell.styles.fillColor = [150, 150, 150]; // gris medio
+          dataCell.cell.styles.fontStyle = 'bold';
+          dataCell.cell.styles.textColor = [255,255,255];
+        }
+      }
+    },
+  });
+  // Título del documento (metadatos PDF) solo si se pasa explícitamente
+  if (title && typeof title === 'string' && title.trim() !== '') {
+    doc.setProperties({ title });
+  }
+  // Si no se pasa filename, usar el título para el nombre del archivo, si no, 'reporte_empresas.pdf'
+  let fileToSave = filename;
+  if (!fileToSave) {
+    if (title && typeof title === 'string' && title.trim() !== '') {
+      fileToSave = `${title.replace(/\s+/g, '_').toLowerCase()}.pdf`;
+    } else {
+      fileToSave = 'reporte_empresas.pdf';
+    }
+  }
+  doc.save(fileToSave);
+}
+
+
+import banner from '@assets/banner/bannerGreen.webp';
+
+export const exportEmpresasToPDF = (data, filtros = null, config = null, title) => {
+  const { columnsFinal, customWidths } = buildEmpresasColumns(data);
+  return exportTableToPDF(data, {
+    columns: columnsFinal,
+    banner,
+    // filename se genera a partir del título si no se pasa explícito
+    totalLabel: 'Total de empresas:',
     columnStyles: {
       rif: { cellWidth: customWidths.rif },
       pais: { cellWidth: customWidths.pais },
+      __rowNum__: { cellWidth: 12, halign: 'center' },
     },
-    styles: { fontSize: 9, cellPadding: 2, lineWidth: 0, lineColor: [255, 255, 255] },
-    headStyles: { fillColor: [44, 4, 73], textColor: 255, fontStyle: 'bold', lineWidth: 0, lineColor: [255, 255, 255] },
-    margin: { left: 7, right: 7 },
+    formatCell: (row, col, idx) => {
+      if (col.dataKey === '__rowNum__') return idx + 1;
+      if (col.dataKey === 'direccion') {
+        const val = row[col.dataKey];
+        if (val === undefined || val === null || val === '') return 'Sin Dirección';
+      }
+      return row[col.dataKey] ?? '';
+    },
+    filtros,
+    config,
+    title,
   });
-  doc.save('reporte_empresas.pdf');
 };

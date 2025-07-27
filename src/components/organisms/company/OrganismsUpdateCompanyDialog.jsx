@@ -46,8 +46,10 @@ function useUbicacionVenezuela(idEstado, idMunicipio, companyData) {
   useEffect(() => {
     if (idEstado) {
       setMunicipios(extraerMunicipios(idEstado));
+      setParroquias([]);
     } else {
       setMunicipios([]);
+      setParroquias([]);
     }
   }, [idEstado]);
 
