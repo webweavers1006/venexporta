@@ -1,262 +1,48 @@
 
 
-import { Suspense, lazy, useEffect, useState, useMemo } from 'react';
-import { getCurrentDate } from '@lib/utils';
-import { fetchPaises } from '@src/lib/api/apiIndex';
-import { getCantSubSectorProductivo, getCantEmpresasAnualidad, getCantEventosAnualidad, getRankParticipacionEventos } from '@src/lib/api/apiIndex';
-import MoleculesEmpresasCard from '@components/molecules/MoleculesEmpresasCard/MoleculesEmpresasCard';
-import { useDashboardData } from './hooks/useDashboardData';
-const AtomsPanel = lazy(() => import('@components/atoms/AtomsPanel'));
-const MoleculesChartPie = lazy(() => import('@components/molecules/charts/MoleculesChartPie'));
-const ChartAreaMeses = lazy(() => import('@components/molecules/charts/MoleculesChartAreaMeses'));
+// import { Suspense, lazy, useEffect, useState, useMemo } from 'react';
+// import { getCurrentDate } from '@lib/utils';
+// import { fetchPaises } from '@src/lib/api/apiIndex';
+// import { getCantSubSectorProductivo, getCantEmpresasAnualidad, getCantEventosAnualidad, getRankParticipacionEventos } from '@src/lib/api/apiIndex';
+// import MoleculesEmpresasCard from '@components/molecules/MoleculesEmpresasCard/MoleculesEmpresasCard';
+// import { useDashboardData } from './hooks/useDashboardData';
+// const AtomsPanel = lazy(() => import('@components/atoms/AtomsPanel'));
+// const MoleculesChartPie = lazy(() => import('@components/molecules/charts/MoleculesChartPie'));
+// const ChartAreaMeses = lazy(() => import('@components/molecules/charts/MoleculesChartAreaMeses'));
 
 
-/**
- * Loader de estado para el dashboard.
- * @returns {JSX.Element}
- */
-const Loading = () => <div role="status" aria-label="Cargando dashboard">Loading...</div>;
+// /**
+//  * Loader de estado para el dashboard.
+//  * @returns {JSX.Element}
+//  */
+// const Loading = () => <div role="status" aria-label="Cargando dashboard">Loading...</div>;
 
 
 
-/**
- * Dashboard de administración
- *
- * Muestra gráficos y estadísticas de empresas, usuarios y sectores productivos.
- *
- * @component
- * @example
- * <Dashboard />
- */
+// /**
+//  * Dashboard de administración
+//  *
+//  * Muestra gráficos y estadísticas de empresas, usuarios y sectores productivos.
+//  *
+//  * @component
+//  * @example
+//  * <Dashboard />
+//  */
+// function Dashboard() {
+//   ...existing code...
+// }
+
+// Dashboard.propTypes = {};
+
+// export default Dashboard;
+
+// COMPONENTE EN MANTENIMIENTO
 function Dashboard() {
-  const currentDate = getCurrentDate();
-  const [paises, setPaises] = useState([]);
-  const [selectedPais, setSelectedPais] = useState(95); // Venezuela por defecto
-  const [cantSubSector, setCantSubSector] = useState(null);
-  const [cantEmpresasAnualidad, setCantEmpresasAnualidad] = useState(null);
-  const [anioEmpresas, setAnioEmpresas] = useState(new Date().getFullYear());
-  const [anioEventos, setAnioEventos] = useState(new Date().getFullYear());
-  const [cantEventosAnualidad, setCantEventosAnualidad] = useState(null);
-  const [eventosByEmpresasRanks, setEventosByEmpresasRanks] = useState([]);
-
-  // Datos principales del dashboard
-  const { firstApiData, secondApiData, loading } = useDashboardData(selectedPais);
-
-  // Cargar países al montar
-  useEffect(() => {
-    const loadPaises = async () => {
-      try {
-        const paisesData = await fetchPaises();
-        setPaises(paisesData);
-      } catch {
-        // Error silenciado
-      }
-    };
-    loadPaises();
-  }, []);
-
-  // Cargar datos de subsectores, empresas y eventos por anualidad, y ranking de participación
-  useEffect(() => {
-    const fetchDashboardData = async () => {
-      try {
-        const [subSector, empresasAnualidad, eventosAnualidad, ranking] = await Promise.all([
-          getCantSubSectorProductivo(),
-          getCantEmpresasAnualidad(anioEmpresas),
-          getCantEventosAnualidad(anioEventos),
-          getRankParticipacionEventos()
-        ]);
-        setCantSubSector(subSector);
-        setCantEmpresasAnualidad(empresasAnualidad);
-        setCantEventosAnualidad(eventosAnualidad);
-        if (ranking && Array.isArray(ranking.eventosByEmpresasRanks)) {
-          setEventosByEmpresasRanks(ranking.eventosByEmpresasRanks);
-        }
-      } catch {
-        // Error silenciado
-      }
-    };
-    fetchDashboardData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  // Actualizar eventos por anualidad al cambiar año
-  useEffect(() => {
-    const fetchEventos = async () => {
-      try {
-        const eventos = await getCantEventosAnualidad(anioEventos);
-        setCantEventosAnualidad(eventos);
-      } catch {
-        // Error silenciado
-      }
-    };
-    fetchEventos();
-  }, [anioEventos]);
-
-  // Años disponibles para el selector de anualidad (últimos 6 años)
-  const aniosDisponibles = useMemo(() => {
-    const actual = new Date().getFullYear();
-    return Array.from({ length: 6 }, (_, i) => actual - i);
-  }, []);
-
-  // Maneja el cambio de país
-  const handleSelectPais = (value) => {
-    setSelectedPais(value);
-  };
-
-  if (loading) {
-    return <Loading />;
-  }
-
   return (
-    <Suspense fallback={<Loading />}>
-      <AtomsPanel title={'Dashboard'} subtitle={'Graficos del sistema'} />
-      <div className="flex flex-1 flex-col gap-4 mt-4">
-        <div className="grid auto-rows-min gap-4 md:grid-cols-3 items-stretch">
-          <div className="col-span-1 h-full">
-            <MoleculesEmpresasCard
-              currentDate={currentDate}
-              paises={paises}
-              selectedPais={selectedPais}
-              onSelectPais={handleSelectPais}
-              firstApiData={firstApiData}
-              secondApiData={secondApiData}
-              aria-label="Tarjeta de empresas"
-            />
-          </div>
-          <div className="col-span-1 md:col-span-2 h-full flex flex-col gap-4">
-            {/* Eventos por anualidad (gráfico de área) */}
-            {cantEventosAnualidad && Array.isArray(cantEventosAnualidad.eventosAnuals) && (
-              <ChartAreaMeses
-                data={cantEventosAnualidad.eventosAnuals.map(ev => ({
-                  mes: ev.mes,
-                  eventos: Number(ev.cantidad_eventos)
-                }))}
-                anio={String(anioEventos)}
-                onChangeAnio={(anio) => {
-                  setAnioEventos(anio);
-                }}
-                aniosDisponibles={aniosDisponibles}
-                label="Eventos"
-                valueKey="eventos"
-                xKey="mes"
-                color="var(--green)"
-                title="Eventos por Mes"
-                description="Total de eventos realizados por mes en el año seleccionado"
-                aria-label="Gráfico de eventos por mes"
-              />
-            )}
-          </div>
-          <div className="col-span-1 md:col-span-3 h-full flex flex-col gap-4">
-            {/* Empresas por anualidad */}
-            {cantEmpresasAnualidad && Array.isArray(cantEmpresasAnualidad.empresasAnuals) && (
-              <ChartAreaMeses
-                data={cantEmpresasAnualidad.empresasAnuals.map(ev => ({
-                  mes: ev.mes,
-                  empresas: Number(ev.cantidad_empresa)
-                }))}
-                anio={String(anioEmpresas)}
-                onChangeAnio={(anio) => {
-                  setAnioEmpresas(anio);
-                  getCantEmpresasAnualidad(anio).then(setCantEmpresasAnualidad);
-                }}
-                aniosDisponibles={aniosDisponibles}
-                label="Empresas"
-                valueKey="empresas"
-                xKey="mes"
-                color="var(--primary)"
-                title="Empresas por Mes"
-                description="Total de empresas registradas por mes en el año seleccionado"
-                aria-label="Gráfico de empresas por mes"
-              />
-            )}
-          </div>
-        </div>
-        <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-
-          <div className="col-span-1">
-            {cantSubSector && Array.isArray(cantSubSector.actividadesEconomicas) && (
-              <MoleculesChartPie
-                data={cantSubSector.actividadesEconomicas.filter(item => item.actividad_economica).map(item => ({
-                  label: item.actividad_economica,
-                  value: item.total,
-                  fill: item.color || undefined
-                }))}
-                config={cantSubSector.actividadesEconomicas.filter(item => item.actividad_economica).reduce((acc, item) => {
-                  acc[item.actividad_economica] = {
-                    label: item.actividad_economica,
-                    color: item.color || undefined
-                  };
-                  return acc;
-                }, {})}
-                title="Actividades Economicas"
-                description="Distribución por actividad economica"
-                labelTotal="Total de Empresas"
-                aria-label="Gráfico de actividades economicas"
-                showMoreThreshold={10}
-                showMoreCount={15}
-              />
-            )}
-          </div>
-
-          <div className="col-span-1">
-            {cantSubSector && Array.isArray(cantSubSector.sectoresEconomicos) && (
-              <MoleculesChartPie
-                data={cantSubSector.sectoresEconomicos.filter(item => item.sector_productivo).map(item => ({
-                  label: item.sector_productivo,
-                  value: item.total,
-                  fill: item.color || undefined
-                }))}
-                config={cantSubSector.sectoresEconomicos.filter(item => item.sector_productivo).reduce((acc, item) => {
-                  acc[item.sector_productivo] = {
-                    label: item.sector_productivo,
-                    color: item.color || undefined
-                  };
-                  return acc;
-                }, {})}
-                title="Sectores Economicos"
-                description="Distribución por sector productivo"
-                labelTotal="Total de Empresas"
-                aria-label="Gráfico de sectores productivos"
-                showMoreThreshold={10}
-                showMoreCount={15}
-              />
-            )}
-          </div>
-
-          <div className="col-span-1 flex items-center justify-center min-h-[400px]">
-            <div className="w-full text-center p-6 bg-yellow-50 border border-yellow-200 rounded-lg shadow-sm">
-              <span className="text-lg font-semibold text-yellow-800">Módulo en mantenimiento</span>
-              <p className="text-yellow-700 mt-2">El gráfico de subsectores productivos no está disponible temporalmente.</p>
-            </div>
-          </div>
-          {/* Ranking de participación en eventos (gráfico de pastel) */}
-          <div className="col-span-1">
-            <MoleculesChartPie
-              data={eventosByEmpresasRanks?.map(ev => ({
-                label: ev.evento,
-                value: Number(ev.participantes_por_eventos),
-                fill: undefined
-              }))}
-              config={eventosByEmpresasRanks?.reduce((acc, ev) => {
-                acc[ev.evento] = {
-                  label: ev.evento,
-                  color: undefined
-                };
-                return acc;
-              }, {})}
-              title="Ranking de participación en eventos"
-              description="Eventos con mayor número de participantes"
-              aria-label="Gráfico de ranking de participación en eventos"
-              showMoreThreshold={10}
-              showMoreCount={15}
-            />
-          </div>
-        </div>
-      </div>
-    </Suspense>
+    <div style={{ minHeight: '300px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '2rem', color: '#888' }}>
+      Este módulo se encuentra en mantenimiento.
+    </div>
   );
 }
-
-Dashboard.propTypes = {};
 
 export default Dashboard;
