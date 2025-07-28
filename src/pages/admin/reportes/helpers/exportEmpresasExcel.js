@@ -1,9 +1,5 @@
-import ExcelJS from 'exceljs';
-import { saveAs } from 'file-saver';
-
-
+// Lazy load de ExcelJS y file-saver
 import { getEmpresasExcelColumns, styleEmpresasExcelHeader, styleEmpresasExcelRows, autoWidthEmpresasExcelColumns } from './empresasExcelConfig';
-
 
 /**
  * Exporta empresas a Excel, con título opcional y filename personalizado.
@@ -11,6 +7,11 @@ import { getEmpresasExcelColumns, styleEmpresasExcelHeader, styleEmpresasExcelRo
  * @param {string} [title] - Título opcional (aparece arriba y como filename)
  */
 export const exportEmpresasToExcel = async (data, title) => {
+  // Lazy load de dependencias
+  const [{ default: ExcelJS }, { saveAs }] = await Promise.all([
+    import('exceljs'),
+    import('file-saver')
+  ]);
   if (!Array.isArray(data) || data.length === 0) return;
   const workbook = new ExcelJS.Workbook();
   const worksheet = workbook.addWorksheet('Empresas');
