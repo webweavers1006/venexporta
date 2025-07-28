@@ -171,29 +171,63 @@ function Dashboard() {
             )}
           </div>
         </div>
-        <div className="grid auto-rows-min gap-4 md:grid-cols-2">
+        <div className="grid auto-rows-min gap-4 md:grid-cols-3">
+
           <div className="col-span-1">
-            {cantSubSector && Array.isArray(cantSubSector.actividadesEconomicasByEmpresasCants) && (
+            {cantSubSector && Array.isArray(cantSubSector.actividadesEconomicas) && (
               <MoleculesChartPie
-                data={cantSubSector.actividadesEconomicasByEmpresasCants.filter(item => item.sub_sector_productivo).map(item => ({
-                  label: item.sub_sector_productivo,
+                data={cantSubSector.actividadesEconomicas.filter(item => item.actividad_economica).map(item => ({
+                  label: item.actividad_economica,
                   value: item.total,
                   fill: item.color || undefined
                 }))}
-                config={cantSubSector.actividadesEconomicasByEmpresasCants.filter(item => item.sub_sector_productivo).reduce((acc, item) => {
-                  acc[item.sub_sector_productivo] = {
-                    label: item.sub_sector_productivo,
+                config={cantSubSector.actividadesEconomicas.filter(item => item.actividad_economica).reduce((acc, item) => {
+                  acc[item.actividad_economica] = {
+                    label: item.actividad_economica,
                     color: item.color || undefined
                   };
                   return acc;
                 }, {})}
-                title="Sub Sectores Productivos"
-                description="Distribución por sub sector productivo"
-                aria-label="Gráfico de subsectores productivos"
+                title="Actividades Economicas"
+                description="Distribución por actividad economica"
+                labelTotal="Total de Empresas"
+                aria-label="Gráfico de actividades economicas"
                 showMoreThreshold={10}
                 showMoreCount={15}
               />
             )}
+          </div>
+
+          <div className="col-span-1">
+            {cantSubSector && Array.isArray(cantSubSector.sectoresEconomicos) && (
+              <MoleculesChartPie
+                data={cantSubSector.sectoresEconomicos.filter(item => item.sector_productivo).map(item => ({
+                  label: item.sector_productivo,
+                  value: item.total,
+                  fill: item.color || undefined
+                }))}
+                config={cantSubSector.sectoresEconomicos.filter(item => item.sector_productivo).reduce((acc, item) => {
+                  acc[item.sector_productivo] = {
+                    label: item.sector_productivo,
+                    color: item.color || undefined
+                  };
+                  return acc;
+                }, {})}
+                title="Sectores Economicos"
+                description="Distribución por sector productivo"
+                labelTotal="Total de Empresas"
+                aria-label="Gráfico de sectores productivos"
+                showMoreThreshold={10}
+                showMoreCount={15}
+              />
+            )}
+          </div>
+
+          <div className="col-span-1 flex items-center justify-center min-h-[400px]">
+            <div className="w-full text-center p-6 bg-yellow-50 border border-yellow-200 rounded-lg shadow-sm">
+              <span className="text-lg font-semibold text-yellow-800">Módulo en mantenimiento</span>
+              <p className="text-yellow-700 mt-2">El gráfico de subsectores productivos no está disponible temporalmente.</p>
+            </div>
           </div>
           {/* Ranking de participación en eventos (gráfico de pastel) */}
           <div className="col-span-1">

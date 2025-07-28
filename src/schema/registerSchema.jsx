@@ -15,6 +15,7 @@ export const registerSchema = z.object({
     .nonempty("La identificación es requerida"),
   idPais: z.string("requerido").nonempty("El tipo de propiedad es requerido"),
   idPaisCodigo: z.string("requerido").nonempty("El código de país es requerido"),
+  descripcion: z.string().nonempty("La descripción es requerida").max(280, "La dirección no puede exceder los 280 caracteres"),
   codigoArea: z.string().nonempty("El código de área es requerido"),
   pass: z.string()
     .nonempty("La contraseña es requerida")
