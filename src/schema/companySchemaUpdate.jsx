@@ -8,6 +8,7 @@ const companySchema = z.object({
   idTipoActividadEmpresarial: z.string().nonempty("El tipo de actividad empresarial es requerido"),
   idTipoPropiedad: z.string().nonempty("El tipo de propiedad es requerido"),
   idPais: z.string().optional(),
+  descripcion: z.string().nonempty("La descripción es requerida").min(30, "La dirección no puede contener menos de 30 caracteres").max(280, "La dirección no puede exceder los 280 caracteres"),
   idEstado: z.string().optional(),
   idMunicipio: z.string().optional(),
   idParroquia: z.string().optional(),

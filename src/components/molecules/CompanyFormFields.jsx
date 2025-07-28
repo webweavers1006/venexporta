@@ -4,6 +4,7 @@ import { FormField, FormItem, FormLabel, FormControl, FormMessage} from "@src/co
 import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@src/components/ui/select";
 import { fetchPaises } from '@lib/api/apiIndex'; // Importa la función fetchPaises
 import { Input } from "@src/components/ui/input";
+import { Textarea } from "@src/components/ui/textarea";
 
 const CompanyFormFields = ({ form }) => {
   const [paises, setPaises] = useState([]); // Estado para almacenar los países
@@ -31,6 +32,19 @@ const CompanyFormFields = ({ form }) => {
             <FormLabel>Nombre de la Empresa</FormLabel>
             <FormControl>
               <Input {...field} placeholder="Nombre de la Empresa" />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+      <FormField
+        name="descripcion"
+        control={form.control}
+        render={({ field }) => (
+          <FormItem className="col-span-2 sm:col-span-2">
+            <FormLabel>Descripción de la Empresa</FormLabel>
+            <FormControl>
+              <Textarea {...field} placeholder="Descripción de la Empresa" />
             </FormControl>
             <FormMessage />
           </FormItem>

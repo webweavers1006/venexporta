@@ -12,7 +12,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { cn } from "@/lib/utils";
 import { pieSubSectorColors } from "@/lib/data/pieSubSectorColors";
 import { useChartExport } from "./useChartExport";
-import { assignColors, sortDataDesc, getTotal } from "./chartPieHelpers";
+import { assignColors, sortDataDesc } from "./chartPieHelpers";
 
 
 
@@ -30,6 +30,13 @@ import { assignColors, sortDataDesc, getTotal } from "./chartPieHelpers";
  * @param {string} [props.valueKey="value"] - Clave del valor numérico en cada objeto de data.
  * @param {string} [props.title="Sub Sectores Productivos"] - Título del gráfico.
  * @param {string} [props.description] - Descripción opcional.
+ * @param {number} [props.showMoreThreshold=10] - Umbral de cantidad de elementos para mostrar el filtro de top N.
+ * @param {number} [props.showMoreCount=10] - Cantidad de elementos a mostrar en el filtro de top N.
+ * @param {string} [props.labelTotal="Total"] - Etiqueta para mostrar el total.
+ * @param {Array<string>} [props.colors] - Array de colores personalizados para los sectores del gráfico.
+ * @param {function} [props.getTotal] - Función para calcular el total a partir de los datos y valueKey.
+ * @param {function} [props.renderTotal] - Render personalizado para el total (sobrescribe el render por defecto).
+ * @param {function} [props.renderSelected] - Render personalizado para el elemento seleccionado (sobrescribe el render por defecto).
  *
  * @example
  * <MoleculesChartPie
@@ -37,19 +44,32 @@ import { assignColors, sortDataDesc, getTotal } from "./chartPieHelpers";
  *   config={{}}
  *   title="Mi gráfico"
  *   description="Descripción opcional"
+ *   showMoreThreshold={5}
+ *   showMoreCount={5}
+ *   labelTotal="Total general"
+ *   colors={["#FF0000", "#00FF00"]}
+ *   getTotal={(data, valueKey) => data.reduce((acc, item) => acc + item[valueKey], 0)}
+ *   renderTotal={(total) => <div>Total: {total}</div>}
+ *   renderSelected={(selected, item, total) => <div>{selected}: {item.value} de {total}</div>}
  * />
  */
 function MoleculesChartPie({
-  data,
-  config,
+  data = [],
+  config = {},
   labelKey = "label",
   valueKey = "value",
-  title = "Sub Sectores Productivos",
+  title = "",
   description = "",
   showMoreThreshold = 10,
-  showMoreCount = 10
+  showMoreCount = 10,
+  labelTotal = "Total",
+  colors = [],
+  getTotal = (data, valueKey) => data.reduce((acc, item) => acc + (Number(item[valueKey]) || 0), 0),
+  renderTotal,
+  renderSelected
 }) {
-  const id = "pie-subsector";
+  // id único por instancia
+  const id = useMemo(() => `pie-chart-${Math.random().toString(36).slice(2, 10)}`,[/*empty*/]);
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState(data?.[0]?.[labelKey] || "");
   const chartRef = useRef(null);
@@ -66,11 +86,12 @@ function MoleculesChartPie({
   });
 
   // Helpers para datos
-  const coloredData = useMemo(() => assignColors(data, pieSubSectorColors), [data]);
+  // Permitir customizar colores o usar los default
+  const coloredData = useMemo(() => assignColors(data, colors.length ? colors : pieSubSectorColors), [data, colors]);
   // Siempre ordenar para el combobox de mayor a menor
   const sortedData = useMemo(() => sortDataDesc(coloredData, valueKey), [coloredData, valueKey]);
   const options = useMemo(() => sortedData.map((item) => item[labelKey]), [sortedData, labelKey]);
-  const total = useMemo(() => getTotal(coloredData, valueKey), [coloredData, valueKey]);
+  const total = useMemo(() => getTotal(coloredData, valueKey), [coloredData, valueKey, getTotal]);
   // Estado para mostrar solo los top N o todos
   const [showTop, setShowTop] = useState(false);
   // Estado para el input de top N
@@ -112,7 +133,8 @@ function MoleculesChartPie({
         <div className="grid gap-1 w-full place-items-center">
           <CardTitle className="text-center w-full">{title}</CardTitle>
           {description && <CardDescription className="mt-1 text-muted-foreground text-center w-full">{description}</CardDescription>}
-          {/* Botón y input para mostrar top N arriba del gráfico */}
+
+          { /*
           {coloredData.length > showMoreCount && (
             <div className="flex items-center gap-2 mt-2">
               <Button
@@ -139,6 +161,7 @@ function MoleculesChartPie({
               />
             </div>
           )}
+          */}
           <div className="mt-2 w-full max-w-xs mx-auto flex flex-col items-center gap-2">
             <Popover open={open} onOpenChange={setOpen}>
               <PopoverTrigger asChild>
@@ -198,59 +221,68 @@ function MoleculesChartPie({
             {title}
           </div>
           <div ref={chartRef} className="w-full flex flex-col items-center">
-            <ChartContainer id={id} config={config} className="mx-auto aspect-square w-full max-w-[300px]">
-              <PieChart aria-label="Gráfico de torta de subsectores">
-                <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
-                <Pie
-                  data={displayedData}
-                  dataKey={valueKey}
-                  nameKey={labelKey}
-                  innerRadius={60}
-                  strokeWidth={5}
-                  activeIndex={activeIndex}
-                  activeShape={({ outerRadius = 0, ...props }) => (
-                    <g>
-                      <Sector {...props} outerRadius={outerRadius + 10} />
-                      <Sector {...props} outerRadius={outerRadius + 25} innerRadius={outerRadius + 12} />
-                    </g>
-                  )}
-                  onClick={(_, idx) => {
-                    setSelected(displayedData[idx]?.[labelKey]);
-                  }}
-                  isAnimationActive={false}
-                  cursor="pointer"
-                  aria-label="Sector del gráfico"
-                  tabIndex={0}
-                >
-                  {/* Sin Label en el centro */}
-                </Pie>
-              </PieChart>
-            </ChartContainer>
-          </div>
-          {/* Mostrar el total */}
-          <div className="mb-2 text-center w-full">
-            <span className="font-bold text-base" style={{ color: '#364153' }}>Empresas: {total.toLocaleString()}</span>
-          </div>
-          {/* Mostrar el subsector seleccionado y su valor debajo del gráfico */}
-          {selected && (
-            <div className="text-center w-full flex flex-col items-center gap-2">
-              <span
-                className="text-foreground font-bold px-4 py-1 rounded"
-                style={{ background: coloredData.find(item => item[labelKey] === selected)?.fill || '#eee', color: '#fff', display: 'inline-block', minWidth: 60 }}
-                aria-label={`Valor de ${selected}`}
-              >
-                {coloredData.find(item => item[labelKey] === selected)?.[valueKey]?.toLocaleString()}
-                {total > 0 && (
-                  <span className="ml-2 text-xs text-white/80">
-                    ({(((coloredData.find(item => item[labelKey] === selected)?.[valueKey] || 0) / total) * 100).toFixed(2)}%)
-                  </span>
-                )}
-              </span>
-              <span className="font-medium text-base" style={{ color: '#6b7280' }}>
-                <span className="font-bold" style={{ color: '#364153' }}>Seleccionado:</span> {selected}
-              </span>
+            {/* Contenedor fijo y padding extra para evitar que el layout se mueva al seleccionar sectores */}
+            <div style={{ width: 340, height: 360, display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', overflow: 'visible', paddingBottom: 30 }}>
+              <ChartContainer id={id} config={config} className="mx-auto aspect-square w-full max-w-[320px] min-w-[320px] min-h-[320px]">
+                <PieChart width={320} height={320} aria-label="Gráfico de torta de subsectores" style={{ overflow: 'visible' }}>
+                  <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
+                  <Pie
+                    data={displayedData}
+                    dataKey={valueKey}
+                    nameKey={labelKey}
+                    innerRadius={60}
+                    strokeWidth={5}
+                    activeIndex={activeIndex}
+                    activeShape={({ outerRadius = 0, ...props }) => (
+                      <g>
+                        <Sector {...props} outerRadius={outerRadius + 10} />
+                        <Sector {...props} outerRadius={outerRadius + 25} innerRadius={outerRadius + 12} />
+                      </g>
+                    )}
+                    onClick={(_, idx) => {
+                      setSelected(displayedData[idx]?.[labelKey]);
+                    }}
+                    isAnimationActive={false}
+                    cursor="pointer"
+                    aria-label="Sector del gráfico"
+                    tabIndex={0}
+                  >
+                    {/* Sin Label en el centro */}
+                  </Pie>
+                </PieChart>
+              </ChartContainer>
             </div>
-          )}
+          </div>
+          {/* Contenedor fijo para total y seleccionado, evita movimiento */}
+          <div style={{ minHeight: 80, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' }}>
+            {/* Mostrar el total, permite custom render */}
+            {/* Mostrar el seleccionado, permite custom render */}
+            {selected && (
+              renderSelected
+                ? renderSelected(selected, coloredData.find(item => item[labelKey] === selected), total)
+                : (
+                  <div className="text-center w-full flex flex-col items-center gap-2">
+                    <span className="font-medium text-base" style={{ color: '#6b7280' }}>
+                      <span className="font-bold" style={{ color: '#364153' }}>Seleccionado:</span> {selected}
+                    </span>
+                    <span
+                      className="text-foreground font-bold px-4 py-1 rounded"
+                      style={{ background: coloredData.find(item => item[labelKey] === selected)?.fill || '#eee', color: '#fff', display: 'inline-block', minWidth: 60 }}
+                      aria-label={`Valor de ${selected}`}
+                    >
+                      {labelTotal ? `${labelTotal}: ` : ''}
+                      {coloredData.find(item => item[labelKey] === selected)?.[valueKey]?.toLocaleString()}
+                      {total > 0 && (
+                        <span className="ml-2 text-xs text-white/80">
+                          ({(((coloredData.find(item => item[labelKey] === selected)?.[valueKey] || 0) / total) * 100).toFixed(2)}%)
+                        </span>
+                      )}
+                    </span>
+                    
+                  </div>
+                )
+            )}
+          </div>
         </div>
       </CardContent>
     </Card>
@@ -258,13 +290,7 @@ function MoleculesChartPie({
 }
 
 MoleculesChartPie.propTypes = {
-  data: PropTypes.arrayOf(
-    PropTypes.shape({
-      label: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-      value: PropTypes.number,
-      fill: PropTypes.string
-    })
-  ).isRequired,
+  data: PropTypes.arrayOf(PropTypes.object),
   config: PropTypes.object,
   labelKey: PropTypes.string,
   valueKey: PropTypes.string,
@@ -272,6 +298,10 @@ MoleculesChartPie.propTypes = {
   description: PropTypes.string,
   showMoreThreshold: PropTypes.number,
   showMoreCount: PropTypes.number,
+  colors: PropTypes.array,
+  getTotal: PropTypes.func,
+  renderTotal: PropTypes.func,
+  renderSelected: PropTypes.func,
 };
 
 export default MoleculesChartPie;

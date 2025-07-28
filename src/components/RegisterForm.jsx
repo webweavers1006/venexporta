@@ -27,6 +27,7 @@ export function RegisterForm({ className, ...props }) {
             identification: "",
             pass: "",
             nombreEmpresa: "",
+            descripcion: "",
             rif: "",
             telefono: "",
             idPais: "",
@@ -48,6 +49,7 @@ export function RegisterForm({ className, ...props }) {
                 },
                 empresa:{
                     nombre_empresa: data.nombreEmpresa,
+                    descripcion: data.descripcion,
                     rif: data.rif,
                     id_pais:data.idPais
                 },

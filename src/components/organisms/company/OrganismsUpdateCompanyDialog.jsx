@@ -19,6 +19,7 @@ import { extraerMunicipios } from "@lib/data/municipios";
 import { extraerParroquias } from "@lib/data/parroquias";
 import { propiedad } from "@lib/data/propiedad";
 import { useState, useEffect, useCallback } from 'react';
+import { Textarea } from "@src/components/ui/textarea";
 
 // Hook personalizado para cargar países
 function usePaises() {
@@ -105,6 +106,7 @@ const UpdateCompanyDialog = ({ companyData, onClose, onUpdate, message }) => {
     resolver: zodResolver(companySchema),
     defaultValues: {
       nombreEmpresa: companyData?.empresa || "",
+      descripcion: companyData?.descripcion || "",
       rif: companyData?.rif || "",
       direccion: companyData?.direccion || "",
       idTipoActividadEmpresarial: companyData?.id_tipo_actividad_empresarial?.toString() || "",
@@ -127,6 +129,7 @@ const UpdateCompanyDialog = ({ companyData, onClose, onUpdate, message }) => {
   const onSubmit = async (data) => {
     const formattedData = {
       nombre_empresa: data.nombreEmpresa,
+      descripcion: data.descripcion,
       direccion: data.direccion,
       id_tipo_actividad_empresarial: data.idTipoActividadEmpresarial,
       id_tipo_propiedad: data.idTipoPropiedad,
@@ -179,6 +182,19 @@ const UpdateCompanyDialog = ({ companyData, onClose, onUpdate, message }) => {
                   <FormLabel>Nombre de la Empresa</FormLabel>
                   <FormControl>
                     <Input {...field} placeholder="Nombre de la Empresa" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              name="descripcion"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem className="col-span-2 sm:col-span-2">
+                  <FormLabel>Descripción de la Empresa</FormLabel>
+                  <FormControl>
+                    <Textarea {...field} placeholder="Descripción de la Empresa" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
