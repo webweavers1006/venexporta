@@ -401,19 +401,6 @@ function Dashboard() {
         <section className='bg-gray-50 p-4 rounded-lg'>
           <h2 className="text-lg font-semibold mb-2">Indicadores de Eventos</h2>
           <div className="flex flex-col gap-4">
-            <div className="flex flex-row items-center gap-4 mb-2">
-              <label htmlFor="anioEventos" className="font-medium">Año:</label>
-              <select
-                id="anioEventos"
-                value={anioEventos}
-                onChange={e => setAnioEventos(Number(e.target.value))}
-                className="border rounded px-2 py-1"
-              >
-                {aniosDisponibles.map(anio => (
-                  <option key={anio} value={anio}>{anio}</option>
-                ))}
-              </select>
-            </div>
             <div className="grid auto-rows-min gap-4 md:grid-cols-3">
               <div className="col-span-1">
                 <MoleculesChartBarMultiple
