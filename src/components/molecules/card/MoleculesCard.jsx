@@ -5,9 +5,9 @@ import {
   CardHeader,
 } from "@/components/ui/card";
 
-const CustomCard = ({ header, children, footer }) => {
+const CustomCard = ({ header, children, footer, className = "" }) => {
   return (
-    <Card className="flex flex-col">
+    <Card className={`flex flex-col ${className}`}>
       <CardHeader className="items-center pb-0">
         {header}
       </CardHeader>
