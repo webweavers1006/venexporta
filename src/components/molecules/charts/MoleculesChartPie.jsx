@@ -10,47 +10,49 @@ import MoleculesChartPieExportIcons from "./MoleculesChartPieExportIcons";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
-import { pieSubSectorColors } from "@/lib/data/pieSubSectorColors";
 import { useChartExport } from "./useChartExport";
-import { assignColors, sortDataDesc } from "./chartPieHelpers";
 
 
 
 
 /**
- * MoleculesChartPie
+/**
+ * PieChart genérico y reutilizable para cualquier tipo de datos.
  *
- * Gráfico de torta interactivo con selección y exportación (imagen y Excel).
+ * Permite personalizar:
+ * - Las claves de label y valor.
+ * - La función de asignación de colores.
+ * - El ordenamiento de los datos.
+ * - El renderizado del total y del segmento seleccionado.
+ * - La exportación (imagen, Excel).
  *
  * @component
  * @param {Object} props
  * @param {Array<Object>} props.data - Datos a graficar. Cada objeto debe tener una clave de label y value.
- * @param {Object} [props.config] - Configuración visual del gráfico.
+ * @param {Object} [props.config] - Configuración visual y de colores.
  * @param {string} [props.labelKey="label"] - Clave del label en cada objeto de data.
  * @param {string} [props.valueKey="value"] - Clave del valor numérico en cada objeto de data.
- * @param {string} [props.title="Sub Sectores Productivos"] - Título del gráfico.
+ * @param {string} [props.title] - Título del gráfico.
  * @param {string} [props.description] - Descripción opcional.
- * @param {number} [props.showMoreThreshold=10] - Umbral de cantidad de elementos para mostrar el filtro de top N.
+ * @param {number} [props.showMoreThreshold=10] - Umbral para mostrar filtro de top N.
  * @param {number} [props.showMoreCount=10] - Cantidad de elementos a mostrar en el filtro de top N.
  * @param {string} [props.labelTotal="Total"] - Etiqueta para mostrar el total.
- * @param {Array<string>} [props.colors] - Array de colores personalizados para los sectores del gráfico.
- * @param {function} [props.getTotal] - Función para calcular el total a partir de los datos y valueKey.
- * @param {function} [props.renderTotal] - Render personalizado para el total (sobrescribe el render por defecto).
- * @param {function} [props.renderSelected] - Render personalizado para el elemento seleccionado (sobrescribe el render por defecto).
+ * @param {Array<string>} [props.colors] - Array de colores personalizados.
+ * @param {function} [props.getTotal] - Función para calcular el total.
+ * @param {function} [props.assignColors] - Función para asignar colores a los datos (data, colors) => dataConColores.
+ * @param {function} [props.sortData] - Función para ordenar los datos (data, valueKey) => dataOrdenada.
+ * @param {function} [props.renderTotal] - Render personalizado para el total.
+ * @param {function} [props.renderSelected] - Render personalizado para el elemento seleccionado.
+ * @param {function} [props.onSelect] - Callback al seleccionar un segmento.
+ * @param {string} [props.selectedLabel] - Label seleccionado externamente.
  *
  * @example
  * <MoleculesChartPie
- *   data={[{ label: "Sector A", value: 10 }, { label: "Sector B", value: 20 }]}
- *   config={{}}
+ *   data={[{ label: "A", value: 10 }, { label: "B", value: 20 }]}
+ *   assignColors={(data, colors) => data.map((d, i) => ({ ...d, fill: colors[i % colors.length] }))}
+ *   sortData={(data, valueKey) => [...data].sort((a, b) => b[valueKey] - a[valueKey])}
  *   title="Mi gráfico"
- *   description="Descripción opcional"
- *   showMoreThreshold={5}
- *   showMoreCount={5}
- *   labelTotal="Total general"
- *   colors={["#FF0000", "#00FF00"]}
- *   getTotal={(data, valueKey) => data.reduce((acc, item) => acc + item[valueKey], 0)}
- *   renderTotal={(total) => <div>Total: {total}</div>}
- *   renderSelected={(selected, item, total) => <div>{selected}: {item.value} de {total}</div>}
+ *   onSelect={item => console.log(item)}
  * />
  */
 function MoleculesChartPie({
@@ -60,18 +62,30 @@ function MoleculesChartPie({
   valueKey = "value",
   title = "",
   description = "",
-  showMoreThreshold = 10,
-  showMoreCount = 10,
   labelTotal = "Total",
   colors = [],
   getTotal = (data, valueKey) => data.reduce((acc, item) => acc + (Number(item[valueKey]) || 0), 0),
-  renderTotal,
-  renderSelected
+  assignColors = (data, colors) => data.map((d, i) => ({ ...d, fill: colors[i % colors.length] })),
+  sortData = (data, valueKey) => [...data].sort((a, b) => b[valueKey] - a[valueKey]),
+  renderSelected,
+  onSelect,
+  selectedLabel
 }) {
   // id único por instancia
   const id = useMemo(() => `pie-chart-${Math.random().toString(36).slice(2, 10)}`,[/*empty*/]);
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState(data?.[0]?.[labelKey] || "");
+
+  // Sincronizar selección interna con el valor del padre si cambia
+  useEffect(() => {
+    if (selectedLabel && selectedLabel !== selected) {
+      setSelected(selectedLabel);
+    }
+    if (!selectedLabel && selected) {
+      setSelected("");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedLabel]);
   const chartRef = useRef(null);
   const exportRef = useRef(null);
 
@@ -85,40 +99,38 @@ function MoleculesChartPie({
     valueKey
   });
 
-  // Helpers para datos
-  // Permitir customizar colores o usar los default
-  const coloredData = useMemo(() => assignColors(data, colors.length ? colors : pieSubSectorColors), [data, colors]);
-  // Siempre ordenar para el combobox de mayor a menor
-  const sortedData = useMemo(() => sortDataDesc(coloredData, valueKey), [coloredData, valueKey]);
+  // Helpers para datos (totalmente parametrizables)
+  const coloredData = useMemo(() => assignColors(data, colors), [data, colors, assignColors]);
+  const sortedData = useMemo(() => sortData(coloredData, valueKey), [coloredData, valueKey, sortData]);
   const options = useMemo(() => sortedData.map((item) => item[labelKey]), [sortedData, labelKey]);
   const total = useMemo(() => getTotal(coloredData, valueKey), [coloredData, valueKey, getTotal]);
-  // Estado para mostrar solo los top N o todos
-  const [showTop, setShowTop] = useState(false);
-  // Estado para el input de top N
-  const [topN, setTopN] = useState(showMoreThreshold);
   // Por defecto mostrar todos
-  const displayedData = useMemo(() => {
-    if (showTop && coloredData.length > topN) {
-      // Ordenar por valor descendente y tomar los top N
-      return [...coloredData].sort((a, b) => b[valueKey] - a[valueKey]).slice(0, topN);
-    }
-    return coloredData;
-  }, [showTop, coloredData, topN, valueKey]);
+  const displayedData = sortedData;
   const activeIndex = useMemo(() => displayedData.findIndex((item) => item[labelKey] === selected), [selected, displayedData, labelKey]);
 
   // Si el seleccionado no existe en los datos, seleccionar el primero
   useEffect(() => {
     if (options.length > 0 && !options.includes(selected)) {
       setSelected(options[0]);
+      if (onSelect) {
+        const found = coloredData.find(item => item[labelKey] === options[0]);
+        onSelect(found);
+      }
     }
-  }, [options, selected]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [options]);
 
-  // Si al cambiar el filtro, el seleccionado no está visible, selecciona el primero visible
+  // Si al cambiar los datos, el seleccionado no está visible, selecciona el primero visible
   useEffect(() => {
     if (displayedData.length > 0 && !displayedData.some(item => item[labelKey] === selected)) {
       setSelected(displayedData[0][labelKey]);
+      if (onSelect) {
+        const found = coloredData.find(item => item[labelKey] === displayedData[0][labelKey]);
+        onSelect(found);
+      }
     }
-  }, [displayedData, selected, labelKey]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [displayedData]);
 
   // Accesibilidad: aria-labels y roles
   return (
@@ -134,33 +146,8 @@ function MoleculesChartPie({
           <CardTitle className="text-center w-full">{title}</CardTitle>
           {description && <CardDescription className="mt-1 text-muted-foreground text-center w-full">{description}</CardDescription>}
 
-          { /*
-          {coloredData.length > showMoreCount && (
-            <div className="flex items-center gap-2 mt-2">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setShowTop((prev) => !prev)}
-                aria-label={showTop ? `Ver todos` : `Ver top ${topN} con más valor`}
-              >
-                {showTop ? `Ver todos` : `Ver top ${topN} con más valor`}
-              </Button>
-              <input
-                type="number"
-                min={1}
-                max={coloredData.length}
-                value={topN}
-                onChange={e => {
-                  const val = Math.max(1, Math.min(coloredData.length, Number(e.target.value)));
-                  setTopN(val);
-                }}
-                className="border rounded px-2 py-1 w-16 text-sm"
-                style={{ width: 50 }}
-                aria-label="Cantidad de elementos a mostrar"
-                disabled={!showTop}
-              />
-            </div>
-          )}
+          {/*
+          Funcionalidad de top N desactivada. Si se requiere, reactivar y ajustar lógica.
           */}
           <div className="mt-2 w-full max-w-xs mx-auto flex flex-col items-center gap-2">
             <Popover open={open} onOpenChange={setOpen}>
@@ -191,6 +178,9 @@ function MoleculesChartPie({
                           onSelect={() => {
                             setSelected(item[labelKey]);
                             setOpen(false);
+                            if (onSelect) {
+                              onSelect(item);
+                            }
                           }}
                           aria-label={`Seleccionar ${item[labelKey]}`}
                         >
@@ -241,6 +231,9 @@ function MoleculesChartPie({
                     )}
                     onClick={(_, idx) => {
                       setSelected(displayedData[idx]?.[labelKey]);
+                      if (onSelect) {
+                        onSelect(displayedData[idx]);
+                      }
                     }}
                     isAnimationActive={false}
                     cursor="pointer"
@@ -289,19 +282,56 @@ function MoleculesChartPie({
   );
 }
 
+
+
 MoleculesChartPie.propTypes = {
-  data: PropTypes.arrayOf(PropTypes.object),
+  /** Datos a graficar. Cada objeto debe tener una clave de label y value. */
+  data: PropTypes.arrayOf(PropTypes.object).isRequired,
+  /** Configuración visual y de colores. */
   config: PropTypes.object,
+  /** Clave del label en cada objeto de data. */
   labelKey: PropTypes.string,
+  /** Clave del valor numérico en cada objeto de data. */
   valueKey: PropTypes.string,
+  /** Título del gráfico. */
   title: PropTypes.string,
+  /** Descripción opcional. */
   description: PropTypes.string,
-  showMoreThreshold: PropTypes.number,
-  showMoreCount: PropTypes.number,
-  colors: PropTypes.array,
+  /** Etiqueta para mostrar el total. */
+  labelTotal: PropTypes.string,
+  /** Array de colores personalizados. */
+  colors: PropTypes.arrayOf(PropTypes.string),
+  /** Función para calcular el total. */
   getTotal: PropTypes.func,
-  renderTotal: PropTypes.func,
+  /** Función para asignar colores a los datos. */
+  assignColors: PropTypes.func,
+  /** Función para ordenar los datos. */
+  sortData: PropTypes.func,
+  /** Render personalizado para el elemento seleccionado. */
   renderSelected: PropTypes.func,
+  /** Callback al seleccionar un segmento. */
+  onSelect: PropTypes.func,
+  /** Label seleccionado externamente. */
+  selectedLabel: PropTypes.string,
 };
+
+MoleculesChartPie.defaultProps = {
+  config: {},
+  labelKey: 'label',
+  valueKey: 'value',
+  title: '',
+  description: '',
+  labelTotal: 'Total',
+  colors: [],
+  getTotal: (data, valueKey) => data.reduce((acc, item) => acc + (Number(item[valueKey]) || 0), 0),
+  assignColors: (data, colors) => data.map((d, i) => ({ ...d, fill: colors[i % colors.length] })),
+  sortData: (data, valueKey) => [...data].sort((a, b) => b[valueKey] - a[valueKey]),
+  renderSelected: undefined,
+  onSelect: undefined,
+  selectedLabel: undefined,
+};
+
+// Sugerencia de extensión: si se requiere lógica de filtrado avanzada, considerar un hook personalizado
+// Ejemplo: usePieChartData({ data, labelKey, valueKey, ... })
 
 export default MoleculesChartPie;

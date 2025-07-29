@@ -9,20 +9,21 @@ import MoleculesCountrySelector from "./MoleculesCountrySelector";
  */
 function MoleculesEmpresasCard({ currentDate, paises, selectedPais, onSelectPais, firstApiData, secondApiData }) {
   return (
-    <CustomCard
-      header={
-        <>
-          <CardTitle>Empresas Registradas</CardTitle>
-          <CardDescription>{currentDate}</CardDescription>
-          <MoleculesCountrySelector paises={paises} selectedPais={selectedPais} onSelectPais={onSelectPais} />
-        </>
-      }
-    >
-      <MolueculesRadialChart data={firstApiData} config={{
-        visitors: { label: "Empresas" },
-        safari: { label: "Safari", color: "hsl(var(--chart-2))" },
-      }} endAngle={secondApiData?.[0]?.visitors} />
-    </CustomCard>
+      <CustomCard 
+        className="h-full"
+        header={
+          <>
+            <CardTitle>Empresas Registradas</CardTitle>
+            <CardDescription>{currentDate}</CardDescription>
+            <MoleculesCountrySelector paises={paises} selectedPais={selectedPais} onSelectPais={onSelectPais} />
+          </>
+        }
+      >
+        <MolueculesRadialChart data={firstApiData} config={{
+          visitors: { label: "Empresas" },
+          safari: { label: "Safari", color: "hsl(var(--chart-2))" },
+        }} endAngle={secondApiData?.[0]?.visitors} />
+      </CustomCard>
   );
 }
 
