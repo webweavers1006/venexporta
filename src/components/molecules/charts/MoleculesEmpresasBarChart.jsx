@@ -113,12 +113,12 @@ export default function MoleculesEmpresasBarChart({
         {/* Área exportable */}
         <div ref={exportRef}>
           <ChartContainer config={chartConfig}>
-            <BarChart width={600} height={350} data={data} barGap={16}>
+            <BarChart width={160} height={40} data={data} barGap={8}>
               <CartesianGrid vertical={false} />
               <XAxis
                 dataKey="mes"
                 tickLine={false}
-                tickMargin={10}
+                tickMargin={6}
                 axisLine={false}
                 tickFormatter={value => value.slice(0, 3)}
               />
