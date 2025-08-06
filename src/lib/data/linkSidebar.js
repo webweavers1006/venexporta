@@ -117,7 +117,7 @@ export const data = () => {
       isActive: true,
       items: [
         {
-          title: "Lista de Eventos",
+          title: "Eventos Disponibles",
           url: "event/feed",
           icon: CalendarPlus,
           color: "#2D044A",
