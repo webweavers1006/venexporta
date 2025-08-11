@@ -71,6 +71,7 @@ export const data = () => {
     tipoUsuario === 'ADMINISTRADOR' && {
       title: "Administrador",
       icon: BriefcaseBusiness,
+      badge : "Nuevo",
       color: "#2D044A",
       isActive: true,
       items: [
@@ -132,6 +133,7 @@ export const data = () => {
     {
       title: "Rueda de Negocios",
       icon: BriefcaseBusiness,
+      badge : "Nuevo",
       color: "#2D044A",
       isActive: true,
       items: [
