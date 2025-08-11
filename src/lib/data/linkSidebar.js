@@ -76,7 +76,7 @@ export const data = () => {
       isActive: true,
       items: [
         {
-          title: "Dashboard",
+          title: "Panel de control",
           url: "dashboard",
           icon: PieChart,
           color: "#2D044A",
@@ -117,7 +117,7 @@ export const data = () => {
       isActive: true,
       items: [
         {
-          title: "Lista de Eventos",
+          title: "Eventos Disponibles",
           url: "event/feed",
           icon: CalendarPlus,
           color: "#2D044A",

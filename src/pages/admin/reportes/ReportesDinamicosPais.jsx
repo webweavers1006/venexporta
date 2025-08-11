@@ -13,6 +13,8 @@ import AtomsTitle from '@components/atoms/AtomsTitle';
 import MoleculesFiltersGroup from '@components/molecules/filters/MoleculesFiltersGroups';
 import { buildDefaultValues } from './helpers/filtersHelpers';
 import { useFiltersSubmit } from './hooks/useFiltersSubmit';
+import MoleculesItemsForReports from '@components/molecules/itemsForReports/MoleculesItemsForReports';
+import itemsForReportsConfig from './config/itemsForReportsPais';
 
 
 
@@ -35,6 +37,15 @@ const ReportesDinamicosEventosActividad = () => {
   const [loading, setLoading] = useState(false);
   const [reporteData, setReporteData] = useState(null);
   const listRef = useRef(null);
+
+  // Estado para los campos seleccionados en el reporte
+  const [itemsForReports, setItemsForReports] = useState(itemsForReportsConfig);
+  // Manejar cambios en los checkboxes de campos del reporte
+  const handleItemsForReportsChange = (id, checked) => {
+    setItemsForReports(prev => prev.map(item =>
+      item.id === id ? { ...item, checked } : item
+    ));
+  };
 
   // Grupos de filtros definidos en config y setters para selects dependientes
   const {
@@ -80,12 +91,16 @@ const ReportesDinamicosEventosActividad = () => {
 
   // Exportar a Excel
   const handleExportExcel = async () => {
-    await exportEmpresasToExcel(reporteData, 'LISTADO DE EMPRESAS POR UBICACIÓN GEOGRÁFICA');
+    // Filtrar solo los campos seleccionados (checked)
+    const columnasSeleccionadas = itemsForReports.filter(item => item.checked);
+    await exportEmpresasToExcel(reporteData, null, null, columnasSeleccionadas, 'LISTADO DE EMPRESAS POR UBICACIÓN GEOGRÁFICA');
   };
 
   // Exportar a PDF
   const handleExportPDF = () => {
-    exportEmpresasToPDF(reporteData, null, null, 'LISTADO DE EMPRESAS POR UBICACIÓN GEOGRÁFICA');
+    // Filtrar solo los campos seleccionados (checked)
+    const columnasSeleccionadas = itemsForReports.filter(item => item.checked);
+    exportEmpresasToPDF(reporteData, null, null, columnasSeleccionadas, 'LISTADO DE EMPRESAS POR UBICACIÓN GEOGRÁFICA');
   };
 
   return (
@@ -93,7 +108,7 @@ const ReportesDinamicosEventosActividad = () => {
       <div className='bg-white p-4 rounded-2xl mt-4'>
         <AtomsTitle
           title={'LISTADO DE EMPRESAS POR UBICACIÓN GEOGRÁFICA '}
-          subtitle={'Filtros'}
+          subtitle={'Reporte de empresas por ubicación geográfica registradas'}
           className="mb-4"
         />
         <Form {...form} >
@@ -119,6 +134,19 @@ const ReportesDinamicosEventosActividad = () => {
                 />
               </div>
             ))}
+
+            {/* Selección de campos a mostrar en el reporte */}
+            <div className="mb-4 bg-gray-100 px-6 py-4 rounded-2xl">
+              <AtomsTitle
+                title="Campos del reporte"
+                className="mb-2"
+              />
+              <MoleculesItemsForReports
+                items={itemsForReports}
+                onChange={handleItemsForReportsChange}
+              />
+            </div>
+
             <div className="flex justify-end mt-4 gap-2">
               <Button type="submit" disabled={loading}>
                 {loading ? (
