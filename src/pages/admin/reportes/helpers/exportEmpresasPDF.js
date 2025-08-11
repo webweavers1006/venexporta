@@ -25,6 +25,7 @@ import { getFiltrosColors } from '../helpers/getFiltrosColors';
  * @param {function} [options.getTotalRow] - Función para la fila de totales personalizada.
  * @param {Object} [options.filtros] - Objeto de filtros aplicados (opcional).
  * @param {string} [options.title] - Título para el PDF (aparece en la página y en el filename si no se especifica otro).
+ * @param {Array} [options.columnasSeleccionadas] - Columnas seleccionadas dinámicamente (opcional).
  */
 
 
@@ -46,9 +47,21 @@ export function exportTableToPDF(data, options = {}) {
     filtros = null,
     config = null,
     title = '',
+    columnasSeleccionadas = null,
   } = options;
 
-  const doc = new jsPDF(PDF_DEFAULTS.page);
+  // Ajuste de tamaño de página dinámico si columnasSeleccionadas > 7
+  let pageConf = { ...PDF_DEFAULTS.page };
+  if (Array.isArray(columnasSeleccionadas) && columnasSeleccionadas.length > 7) {
+    // Ancho base A4: 297mm (landscape). Por cada columna extra, sumar 25mm
+    const baseWidth = 297; // A4 landscape
+    const extraCols = columnasSeleccionadas.length - 6;
+    const increment = 30; // mm por columna extra
+    pageConf.format = [baseWidth + extraCols * increment, 210]; // [ancho, alto] en mm
+    pageConf.orientation = 'landscape';
+  }
+
+  const doc = new jsPDF(pageConf);
   const pageWidth = doc.internal.pageSize.getWidth();
   // Banner opcional
   let bannerHeight = 0;
@@ -148,8 +161,17 @@ export function exportTableToPDF(data, options = {}) {
 
 import banner from '@assets/banner/bannerGreen.webp';
 
-export const exportEmpresasToPDF = (data, filtros = null, config = null, title) => {
-  const { columnsFinal, customWidths } = buildEmpresasColumns(data);
+/**
+ * Exporta empresas a PDF usando columnas dinámicas seleccionadas.
+ * @param {Array} data - Datos a exportar
+ * @param {Object} filtros - Filtros aplicados
+ * @param {Object} config - Configuración de filtros
+ * @param {Array} columnasSeleccionadas - Columnas seleccionadas dinámicamente (opcional)
+ * @param {string} [title] - Título del reporte
+ */
+export const exportEmpresasToPDF = (data, filtros = null, config = null, columnasSeleccionadas = null, title) => {
+  // Si se pasan columnas seleccionadas, construir columnas a partir de ellas
+  const { columnsFinal, customWidths } = buildEmpresasColumns(data, columnasSeleccionadas);
   return exportTableToPDF(data, {
     columns: columnsFinal,
     banner,
@@ -171,5 +193,6 @@ export const exportEmpresasToPDF = (data, filtros = null, config = null, title) 
     filtros,
     config,
     title,
+    columnasSeleccionadas,
   });
 };

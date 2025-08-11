@@ -14,7 +14,6 @@ function MoleculesEmpresasCard({ currentDate, paises, selectedPais, onSelectPais
         header={
           <>
             <CardTitle>Empresas Registradas</CardTitle>
-            <CardDescription>{currentDate}</CardDescription>
             <MoleculesCountrySelector paises={paises} selectedPais={selectedPais} onSelectPais={onSelectPais} />
           </>
         }

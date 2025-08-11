@@ -9,9 +9,9 @@ import { getReportesDinamicosEmpresas } from '@lib/api/reports/reports';
  */
 export function useFiltersSubmit(onSuccess) {
   // Puedes agregar aquí lógica de transformación, validación extra, etc.
-  const handleFiltersSubmit = useCallback(async (data) => {
+  const handleFiltersSubmit = useCallback(async (data, type) => {
     // Filtra los elementos vacíos (null, undefined, '', [])
-    const filteredData = Object.fromEntries(
+    let filteredData = Object.fromEntries(
       Object.entries(data).filter(
         ([, value]) =>
           value !== undefined &&
@@ -20,8 +20,9 @@ export function useFiltersSubmit(onSuccess) {
           !(Array.isArray(value) && value.length === 0)
       )
     );
+  // type ya no se agrega a filteredData
     try {
-      const response = await getReportesDinamicosEmpresas(filteredData);
+  const response = await getReportesDinamicosEmpresas(filteredData, type);
       if (onSuccess) onSuccess(response);
     } catch (error) {
       console.error('Error al obtener reportes dinámicos:', error);
