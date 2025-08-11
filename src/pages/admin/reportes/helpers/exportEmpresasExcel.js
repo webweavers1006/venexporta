@@ -1,12 +1,16 @@
 // Lazy load de ExcelJS y file-saver
 import { getEmpresasExcelColumns, styleEmpresasExcelHeader, styleEmpresasExcelRows, autoWidthEmpresasExcelColumns } from './empresasExcelConfig';
 
+
 /**
- * Exporta empresas a Excel, con título opcional y filename personalizado.
+ * Exporta empresas a Excel, permitiendo columnas seleccionadas dinámicamente.
  * @param {Array} data - Datos a exportar
+ * @param {Object} filtros - Filtros aplicados (opcional, para futuro uso)
+ * @param {Object} config - Configuración de filtros (opcional, para futuro uso)
+ * @param {Array} columnasSeleccionadas - Columnas seleccionadas dinámicamente (opcional)
  * @param {string} [title] - Título opcional (aparece arriba y como filename)
  */
-export const exportEmpresasToExcel = async (data, title) => {
+export const exportEmpresasToExcel = async (data, filtros = null, config = null, columnasSeleccionadas = null, title) => {
   // Lazy load de dependencias
   const [{ default: ExcelJS }, { saveAs }] = await Promise.all([
     import('exceljs'),
@@ -15,8 +19,26 @@ export const exportEmpresasToExcel = async (data, title) => {
   if (!Array.isArray(data) || data.length === 0) return;
   const workbook = new ExcelJS.Workbook();
   const worksheet = workbook.addWorksheet('Empresas');
-  // Columnas dinámicas
-  const columns = getEmpresasExcelColumns(data);
+
+  // Si se pasan columnas seleccionadas, construir columnas y filtrar datos
+  let columns;
+  let filteredData = data;
+  if (Array.isArray(columnasSeleccionadas) && columnasSeleccionadas.length > 0) {
+    columns = columnasSeleccionadas.map(item => ({
+      header: item.label,
+      key: item.id
+    }));
+    // Filtrar los datos para solo incluir las claves seleccionadas
+    filteredData = data.map(row => {
+      const filteredRow = {};
+      columnasSeleccionadas.forEach(item => {
+        filteredRow[item.id] = row[item.id];
+      });
+      return filteredRow;
+    });
+  } else {
+    columns = []
+  }
   worksheet.columns = columns;
 
   let dataStartRow = 1;
@@ -31,12 +53,12 @@ export const exportEmpresasToExcel = async (data, title) => {
   }
 
   // Agregar los datos a partir de la fila correspondiente
-  worksheet.addRows(data, 'i');
+  worksheet.addRows(filteredData, 'i');
   // Fila de total
   const totalRow = Array(columns.length).fill("");
   if (columns.length >= 2) {
     totalRow[columns.length - 2] = "TOTAL";
-    totalRow[columns.length - 1] = data.length;
+    totalRow[columns.length - 1] = filteredData.length;
   }
   worksheet.addRow(totalRow);
 
@@ -46,7 +68,6 @@ export const exportEmpresasToExcel = async (data, title) => {
 
   // Ajustar header si hay título (header está en la fila 2)
   if (dataStartRow === 2) {
-    // Mover estilos de header a la fila 2
     worksheet.getRow(2).eachCell((cell) => {
       cell.font = { bold: true, color: { argb: 'FFFFFFFF' }, size: 12 };
       cell.fill = {
@@ -83,7 +104,7 @@ export const exportEmpresasToExcel = async (data, title) => {
     };
   });
 
-  autoWidthEmpresasExcelColumns(worksheet, columns, data);
+  autoWidthEmpresasExcelColumns(worksheet, columns, filteredData);
   const buffer = await workbook.xlsx.writeBuffer();
   // Nombre de archivo: si hay título, usarlo, si no, por defecto
   let fileName = 'reporte_empresas.xlsx';

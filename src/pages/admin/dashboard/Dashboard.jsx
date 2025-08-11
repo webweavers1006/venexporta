@@ -1,26 +1,22 @@
-
-
 import { Suspense, lazy, useEffect, useState, useMemo } from 'react';
-import PropTypes from 'prop-types';
 import { getCurrentDate } from '@lib/utils';
 import { fetchPaises } from '@src/lib/api/apiIndex';
 import { getCantSubSectorProductivo, getCantEmpresasAnualidad, getCantEventosAnualidad, getRankParticipacionEventos } from '@src/lib/api/apiIndex';
 import MoleculesEmpresasCard from '@components/molecules/MoleculesEmpresasCard/MoleculesEmpresasCard';
 import { useDashboardData } from './hooks/useDashboardData';
+import { mapPieData, pieConfig } from './helpers/dashboardHelpers';
+import { DefaultPieSelected } from './helpers/DefaultPieSelected';
 const AtomsPanel = lazy(() => import('@components/atoms/AtomsPanel'));
 const MoleculesChartPie = lazy(() => import('@components/molecules/charts/MoleculesChartPie'));
 const MoleculesChartBarMultiple = lazy(() => import('@components/molecules/charts/MoleculesChartBarMultiple'));
 // const ChartAreaMeses = lazy(() => import('@components/molecules/charts/MoleculesChartAreaMeses'));
 const MoleculesEmpresasBarChart = lazy(() => import('@components/molecules/charts/MoleculesEmpresasBarChart'));
 
-
 /**
  * Loader de estado para el dashboard.
  * @returns {JSX.Element}
  */
 const Loading = () => <div role="status" aria-label="Cargando dashboard">Loading...</div>;
-
-
 
 /**
  * Dashboard de administración
@@ -33,82 +29,9 @@ const Loading = () => <div role="status" aria-label="Cargando dashboard">Loading
  * <Dashboard />
  */
 
-// Helpers para transformar datos y configs de los gráficos de torta
-function mapPieData(array, {
-  labelKey,
-  valueKey,
-  colorKey = 'color',
-  extra = () => ({}),
-  filter = () => true
-}) {
-  return (array || [])
-    .filter(filter)
-    .map(item => ({
-      label: item[labelKey],
-      value: item[valueKey],
-      fill: item[colorKey] || undefined,
-      ...extra(item)
-    }));
-}
-
-function pieConfig(array, {
-  labelKey,
-  colorKey = 'color',
-  filter = () => true
-}) {
-  return (array || [])
-    .filter(filter)
-    .reduce((acc, item) => {
-      acc[item[labelKey]] = {
-        label: item[labelKey],
-        color: item[colorKey] || undefined
-      };
-      return acc;
-    }, {});
-}
-
-// Renderizador por defecto para el seleccionado
-/**
- * Renderizador por defecto para el segmento seleccionado en el gráfico de torta.
- * @param {Object} props
- * @param {string} props.selected - Label seleccionado.
- * @param {Object} props.item - Objeto de datos seleccionado.
- * @param {number} props.total - Total general.
- * @param {string} [props.labelTotal] - Etiqueta para el total.
- */
-function DefaultPieSelected({ selected, item, total, labelTotal = 'Total' }) {
-DefaultPieSelected.propTypes = {
-  selected: PropTypes.string,
-  item: PropTypes.object,
-  total: PropTypes.number,
-  labelTotal: PropTypes.string
-};
-  if (!item) return null;
-  return (
-    <div className="text-center w-full flex flex-col items-center gap-2">
-      <span className="font-medium text-base" style={{ color: '#6b7280' }}>
-        <span className="font-bold" style={{ color: '#364153' }}>Seleccionado:</span> {selected}
-      </span>
-      <span
-        className="text-foreground font-bold px-4 py-1 rounded"
-        style={{ background: item?.fill || '#eee', color: '#fff', display: 'inline-block', minWidth: 60 }}
-        aria-label={`Valor de ${selected}`}
-      >
-        {labelTotal ? `${labelTotal}: ` : ''}{item?.value?.toLocaleString()}
-        {total > 0 && (
-          <span className="ml-2 text-xs text-white/80">
-            ({(((item?.value || 0) / total) * 100).toFixed(2)}%)
-          </span>
-        )}
-      </span>
-    </div>
-  );
-}
-
-
-
 import { useDashboardColors } from './hooks/useDashboardColors';
 import { SubSectoresTable } from '@components/molecules/SubSectoresTable';
+import { ChartTooltipContent } from '@components/ui/chart';
 
 function Dashboard() {
   const currentDate = getCurrentDate();
@@ -117,7 +40,7 @@ function Dashboard() {
   const [cantSubSector, setCantSubSector] = useState(null);
   const [cantEmpresasAnualidad, setCantEmpresasAnualidad] = useState(null);
   const [anioEmpresas, setAnioEmpresas] = useState(new Date().getFullYear());
-  const [anioEventos, setAnioEventos] = useState(new Date().getFullYear());
+  const anioEventos = new Date().getFullYear();
   // const [cantEventosAnualidad, setCantEventosAnualidad] = useState(null); // Eliminado porque no se usa
   const [eventosByEmpresasRanks, setEventosByEmpresasRanks] = useState([]);
   // Estado para la actividad económica seleccionada
@@ -220,11 +143,10 @@ function Dashboard() {
 
   return (
     <Suspense fallback={<Loading />}>
-      <AtomsPanel title={'Dashboard'} subtitle={'Graficos del sistema'} />
-      <div className="flex flex-1 flex-col gap-8 mt-4">
+      <AtomsPanel title={'Panel de control'} subtitle={'Graficos del sistema'} />
+      <div className="flex flex-1 flex-col gap-4 mt-4">
         {/* Indicadores de empresas */}
-        <section className="bg-gray-50 p-4 rounded-lg shadow">
-          <h2 className="text-lg font-semibold mb-2">Indicadores de empresas</h2>
+        <section className="">
           <div className="grid auto-rows-min gap-4 md:grid-cols-3 items-stretch">
             <div className="col-span-1 h-full">
               <MoleculesEmpresasCard
@@ -253,6 +175,7 @@ function Dashboard() {
                   aniosDisponibles={aniosDisponibles}
                   title="Empresas por Mes"
                   description="Total de empresas registradas por mes en el año seleccionado"
+                  tooltipLabel="Empresas"
                   aria-label="Gráfico de empresas por mes"
                 />
               )}
@@ -261,12 +184,12 @@ function Dashboard() {
         </section>
 
         {/* Segmentación de Actividades Económicas */}
-        <section className='bg-gray-50 p-4 rounded-lg shadow'>
-          <h2 className="text-lg font-semibold mb-2">Indicadores de Actividades Económicas</h2>
+        <section className=''>
           <div className="grid auto-rows-min gap-4 md:grid-cols-2">
-            <div className="col-span-1">
+            <div className="col-span-2 lg:col-span-1">
               {cantSubSector && Array.isArray(cantSubSector.actividadesEconomicas) && (
                 <MoleculesChartPie
+                  showLegend={true}
                   data={mapPieData(cantSubSector.actividadesEconomicas, {
                     labelKey: 'actividad_economica',
                     valueKey: 'total',
@@ -278,7 +201,6 @@ function Dashboard() {
                     filter: item => !!item.actividad_economica
                   })}
                   title="Actividades Economicas"
-                  description="Distribución por actividad economica"
                   labelTotal="Total de Empresas"
                   aria-label="Gráfico de actividades economicas"
                   showMoreThreshold={10}
@@ -297,9 +219,10 @@ function Dashboard() {
                 />
               )}
             </div>
-            <div className="col-span-1">
+            <div className="col-span-2 lg:col-span-1">
               {cantSubSector && Array.isArray(cantSubSector.sectoresEconomicos) && (
                 <MoleculesChartPie
+                  showLegend={true}
                   data={mapPieData(cantSubSector.sectoresEconomicos, {
                     labelKey: 'sector_productivo',
                     valueKey: 'total',
@@ -315,7 +238,6 @@ function Dashboard() {
                     filter: item => item.sector_productivo && (!selectedActividadId || item.id_actividad_economica_sector === selectedActividadId)
                   })}
                   title="Sectores Economicos"
-                  description="Distribución por sector productivo"
                   labelTotal="Total de Empresas"
                   aria-label="Gráfico de sectores productivos"
                   showMoreThreshold={10}
@@ -335,40 +257,60 @@ function Dashboard() {
               )}
             </div>
             <div className="col-span-2">
-              {cantSubSector && Array.isArray(cantSubSector.subSectoresEconomicos) && selectedSectorId && (
-                (() => {
-                  const subSectoresData = mapPieData(cantSubSector.subSectoresEconomicos, {
-                    labelKey: 'sub_sector_productivo',
-                    valueKey: 'total',
-                    extra: item => ({
-                      id_actividad_economica_sub_sector: item.id_actividad_economica_sub_sector,
-                      id_sector_productivo_sub: item.id_sector_productivo_sub
-                    }),
-                    filter: item => item.sub_sector_productivo && selectedActividadId && item.id_sector_productivo_sub === selectedSectorId
-                  });
-                  return (
-                    <MoleculesChartPie
-                      data={subSectoresData}
-                      config={pieConfig(cantSubSector.subSectoresEconomicos, {
-                        labelKey: 'sub_sector_productivo',
-                        filter: item => item.sub_sector_productivo && selectedActividadId && item.id_actividad_economica_sub_sector === selectedActividadId && item.id_sector_productivo_sub === selectedSectorId
-                      })}
-                      title="Sub Sectores Productivos"
-                      description="Distribución por sub sector productivo"
-                      labelTotal="Total de Empresas"
-                      aria-label="Gráfico de subsectores productivos"
-                      showMoreThreshold={10}
-                      showMoreCount={15}
-                      // Asignar degradados monocromáticos según el sector seleccionado
-                      colors={subSectoresPalette}
-                      assignColors={(data, colors) => data.map((d, i) => ({ ...d, fill: colors[i % colors.length] }))}
-                      renderSelected={(selected, item, total) => (
-                        <DefaultPieSelected selected={selected} item={item} total={total} labelTotal="Total de Empresas" />
-                      )}
-                    />
-                  );
-                })()
-              )}
+              {cantSubSector && Array.isArray(cantSubSector.subSectoresEconomicos) && selectedSectorId && (() => {
+                const subSectoresData = mapPieData(cantSubSector.subSectoresEconomicos, {
+                  labelKey: 'sub_sector_productivo',
+                  valueKey: 'total',
+                  extra: item => ({
+                    id_actividad_economica_sub_sector: item.id_actividad_economica_sub_sector,
+                    id_sector_productivo_sub: item.id_sector_productivo_sub
+                  }),
+                  filter: item => item.sub_sector_productivo && selectedActividadId && item.id_sector_productivo_sub === selectedSectorId
+                });
+                // Asignar los mismos colores que la tabla
+                const barData = subSectoresData.map((d, i) => ({
+                  mes: d.label,
+                  empresas: d.value,
+                  fill: subSectoresPalette[i % subSectoresPalette.length]
+                }));
+                return (
+                  <MoleculesEmpresasBarChart
+                    data={barData}
+                    anio={String(anioEmpresas)}
+                    onChangeAnio={() => {}}
+                    aniosDisponibles={[anioEmpresas]}
+                    title="Sub Sectores Productivos"
+                    description="Total de empresas por sub sector productivo"
+                    useCustomColors={true}
+                    tooltipLabel="Subsector"
+                    showLegend={true} // oculta la leyenda
+                    sortDesc={true}
+                    tooltipContent={props => (
+                      <ChartTooltipContent
+                        {...props}
+                        label="Subsector"
+                        labelKey="mes"
+                        formatter={(value, name, item, idx, payload) => (
+                          <>
+                            <span
+                              style={{
+                                display: 'inline-block',
+                                width: 10,
+                                height: 10,
+                                borderRadius: 2,
+                                background: payload?.fill || '#8884d8',
+                                marginRight: 6,
+                                verticalAlign: 'middle',
+                              }}
+                            />
+                            <span className="font-semibold">{item?.payload?.mes}</span>: {value}
+                          </>
+                        )}
+                      />
+                    )}
+                  />
+                );
+              })()}
             </div>
             {/* Tabla de subsectores productivos fuera del gráfico */}
             {cantSubSector && Array.isArray(cantSubSector.subSectoresEconomicos) && selectedSectorId && (() => {
@@ -398,8 +340,7 @@ function Dashboard() {
         </section>
 
         {/* Eventos */}
-        <section className='bg-gray-50 p-4 rounded-lg'>
-          <h2 className="text-lg font-semibold mb-2">Indicadores de Eventos</h2>
+        <section className='rounded-lg'>
           <div className="flex flex-col gap-4">
             <div className="grid auto-rows-min gap-4 md:grid-cols-3">
               <div className="col-span-1">

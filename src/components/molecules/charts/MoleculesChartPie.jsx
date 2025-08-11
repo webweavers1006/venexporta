@@ -1,7 +1,7 @@
 
-import React, { useState, useRef, useMemo, useEffect } from "react";
+import { useRef, useMemo, useState } from "react";
 import PropTypes from "prop-types";
-import { Pie, PieChart, Sector } from "recharts";
+import { Pie, PieChart, Sector, Legend } from "recharts";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChartContainer, ChartStyle, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { Button } from "@/components/ui/button";
@@ -11,7 +11,9 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, Command
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { useChartExport } from "./useChartExport";
+import { renderLabel } from "@helpers/charts/charts";
 
+import { usePieChartData } from "./usePieChartData";
 
 
 
@@ -45,6 +47,8 @@ import { useChartExport } from "./useChartExport";
  * @param {function} [props.renderSelected] - Render personalizado para el elemento seleccionado.
  * @param {function} [props.onSelect] - Callback al seleccionar un segmento.
  * @param {string} [props.selectedLabel] - Label seleccionado externamente.
+ * @param {boolean} [props.showLegend=false] - Si se debe mostrar la leyenda de colores debajo del gráfico.
+ * @param {string} [props.selectedLabel] - Label seleccionado externamente.
  *
  * @example
  * <MoleculesChartPie
@@ -69,25 +73,36 @@ function MoleculesChartPie({
   sortData = (data, valueKey) => [...data].sort((a, b) => b[valueKey] - a[valueKey]),
   renderSelected,
   onSelect,
-  selectedLabel
+  selectedLabel,
+  showLegend = false,
 }) {
   // id único por instancia
   const id = useMemo(() => `pie-chart-${Math.random().toString(36).slice(2, 10)}`,[/*empty*/]);
   const [open, setOpen] = useState(false);
-  const [selected, setSelected] = useState(data?.[0]?.[labelKey] || "");
-
-  // Sincronizar selección interna con el valor del padre si cambia
-  useEffect(() => {
-    if (selectedLabel && selectedLabel !== selected) {
-      setSelected(selectedLabel);
-    }
-    if (!selectedLabel && selected) {
-      setSelected("");
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedLabel]);
   const chartRef = useRef(null);
   const exportRef = useRef(null);
+
+  // Usar hook para lógica de datos y selección
+  const {
+    coloredData,
+    sortedData,
+    options,
+    total,
+    displayedData,
+    activeIndex,
+    selected,
+    setSelected,
+  } = usePieChartData({
+    data,
+    labelKey,
+    valueKey,
+    colors,
+    getTotal,
+    assignColors,
+    sortData,
+    selectedLabel,
+    onSelect,
+  });
 
   // Export hooks
   const { handleDownload, handleExportExcel } = useChartExport({
@@ -98,39 +113,6 @@ function MoleculesChartPie({
     labelKey,
     valueKey
   });
-
-  // Helpers para datos (totalmente parametrizables)
-  const coloredData = useMemo(() => assignColors(data, colors), [data, colors, assignColors]);
-  const sortedData = useMemo(() => sortData(coloredData, valueKey), [coloredData, valueKey, sortData]);
-  const options = useMemo(() => sortedData.map((item) => item[labelKey]), [sortedData, labelKey]);
-  const total = useMemo(() => getTotal(coloredData, valueKey), [coloredData, valueKey, getTotal]);
-  // Por defecto mostrar todos
-  const displayedData = sortedData;
-  const activeIndex = useMemo(() => displayedData.findIndex((item) => item[labelKey] === selected), [selected, displayedData, labelKey]);
-
-  // Si el seleccionado no existe en los datos, seleccionar el primero
-  useEffect(() => {
-    if (options.length > 0 && !options.includes(selected)) {
-      setSelected(options[0]);
-      if (onSelect) {
-        const found = coloredData.find(item => item[labelKey] === options[0]);
-        onSelect(found);
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [options]);
-
-  // Si al cambiar los datos, el seleccionado no está visible, selecciona el primero visible
-  useEffect(() => {
-    if (displayedData.length > 0 && !displayedData.some(item => item[labelKey] === selected)) {
-      setSelected(displayedData[0][labelKey]);
-      if (onSelect) {
-        const found = coloredData.find(item => item[labelKey] === displayedData[0][labelKey]);
-        onSelect(found);
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [displayedData]);
 
   // Accesibilidad: aria-labels y roles
   return (
@@ -205,28 +187,30 @@ function MoleculesChartPie({
         <div ref={exportRef}>
           {/* Título solo para la imagen exportada */}
           <div
-            className="w-full text-center mb-2 only-export-title"
-            style={{ fontWeight: 700, fontSize: 18, color: '#364153', display: 'none' }}
+            className="w-full text-center mb-2 only-export-title font-bold text-[18px] text-[#364153] hidden"
           >
             {title}
           </div>
           <div ref={chartRef} className="w-full flex flex-col items-center">
             {/* Contenedor fijo y padding extra para evitar que el layout se mueva al seleccionar sectores */}
-            <div style={{ width: 340, height: 360, display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', overflow: 'visible', paddingBottom: 30 }}>
-              <ChartContainer id={id} config={config} className="mx-auto aspect-square w-full max-w-[320px] min-w-[320px] min-h-[320px]">
-                <PieChart width={320} height={320} aria-label="Gráfico de torta de subsectores" style={{ overflow: 'visible' }}>
+            <div className="w-[500px] h-[275px] flex items-center justify-center relative overflow-visible">
+              <ChartContainer id={id} config={config} className="mx-auto aspect-square w-full max-w-[320px] min-w-[320px] min-h-[275px]">
+                <PieChart width={160} height={100} aria-label="Gráfico de torta de subsectores" style={{ overflow: 'visible' }}>
                   <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
                   <Pie
+                    labelLine={{ className: 'color-white' }}
+                    line
                     data={displayedData}
                     dataKey={valueKey}
                     nameKey={labelKey}
-                    innerRadius={60}
+                    innerRadius={40}
+                    outerRadius={100}
                     strokeWidth={5}
                     activeIndex={activeIndex}
                     activeShape={({ outerRadius = 0, ...props }) => (
                       <g>
-                        <Sector {...props} outerRadius={outerRadius + 10} />
-                        <Sector {...props} outerRadius={outerRadius + 25} innerRadius={outerRadius + 12} />
+                        <Sector {...props} outerRadius={outerRadius + 5} />
+                        <Sector {...props} outerRadius={outerRadius + 12} innerRadius={outerRadius + 7} />
                       </g>
                     )}
                     onClick={(_, idx) => {
@@ -239,15 +223,55 @@ function MoleculesChartPie({
                     cursor="pointer"
                     aria-label="Sector del gráfico"
                     tabIndex={0}
+                    
                   >
-                    {/* Sin Label en el centro */}
+                    {/* Etiqueta personalizada: nombre y cantidad */}
                   </Pie>
                 </PieChart>
               </ChartContainer>
             </div>
           </div>
+          {/* Leyenda opcional */}
+          {showLegend && (
+            <div
+              className="w-full flex justify-center"
+              style={{ minWidth: 0 }}
+            >
+              <div
+                className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 gap-x-2 gap-y-1  mb-1 px-1 text-[11px] leading-[1.1] max-w-[400px] w-full"
+                aria-label="Leyenda del gráfico de pastel"
+              >
+                {[...displayedData]
+                  .sort((a, b) => (b[valueKey] || 0) - (a[valueKey] || 0))
+                  .map((item) => (
+                    <div
+                      key={item[labelKey]}
+                      className="flex items-center gap-1 min-w-0 whitespace-nowrap overflow-hidden text-ellipsis"
+                    >
+                      <span
+                        className="inline-block rounded-full border border-gray-300 mr-[3px] flex-shrink-0 w-[10px] h-[10px]"
+                        style={{ background: item.fill }}
+                        aria-label={`Color de ${item[labelKey]}`}
+                      ></span>
+                      <span
+                        className="font-semibold min-w-[24px] text-right text-[#364153] flex-shrink-0"
+                      >
+                        {item[valueKey]?.toLocaleString()}
+                      </span>
+                      <span
+                        className="ml-1 text-[.95em] text-[#364153] inline-block truncate min-w-[80px] max-w-[180px] align-middle"
+                        title={item[labelKey]}
+                      >
+                        {item[labelKey]}
+                      </span>
+                    </div>
+                  ))}
+              </div>
+            </div>
+          )}
+
           {/* Contenedor fijo para total y seleccionado, evita movimiento */}
-          <div style={{ minHeight: 80, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' }}>
+          <div className="flex flex-col justify-start min-h-[80px]">
             {/* Mostrar el total, permite custom render */}
             {/* Mostrar el seleccionado, permite custom render */}
             {selected && (
@@ -255,12 +279,12 @@ function MoleculesChartPie({
                 ? renderSelected(selected, coloredData.find(item => item[labelKey] === selected), total)
                 : (
                   <div className="text-center w-full flex flex-col items-center gap-2">
-                    <span className="font-medium text-base" style={{ color: '#6b7280' }}>
-                      <span className="font-bold" style={{ color: '#364153' }}>Seleccionado:</span> {selected}
+                    <span className="font-medium text-base text-gray-500">
+                      <span className="font-bold text-[#364153]">Seleccionado:</span> {selected}
                     </span>
                     <span
-                      className="text-foreground font-bold px-4 py-1 rounded"
-                      style={{ background: coloredData.find(item => item[labelKey] === selected)?.fill || '#eee', color: '#fff', display: 'inline-block', minWidth: 60 }}
+                      className="text-foreground font-bold px-4 py-1 rounded inline-block min-w-[60px] text-white"
+                      style={{ background: coloredData.find(item => item[labelKey] === selected)?.fill || '#eee' }}
                       aria-label={`Valor de ${selected}`}
                     >
                       {labelTotal ? `${labelTotal}: ` : ''}
@@ -278,6 +302,7 @@ function MoleculesChartPie({
           </div>
         </div>
       </CardContent>
+
     </Card>
   );
 }
@@ -313,6 +338,8 @@ MoleculesChartPie.propTypes = {
   onSelect: PropTypes.func,
   /** Label seleccionado externamente. */
   selectedLabel: PropTypes.string,
+  /** Si se debe mostrar la leyenda de colores debajo del gráfico. */
+  showLegend: PropTypes.bool,
 };
 
 MoleculesChartPie.defaultProps = {
@@ -329,6 +356,7 @@ MoleculesChartPie.defaultProps = {
   renderSelected: undefined,
   onSelect: undefined,
   selectedLabel: undefined,
+  showLegend: false,
 };
 
 // Sugerencia de extensión: si se requiere lógica de filtrado avanzada, considerar un hook personalizado

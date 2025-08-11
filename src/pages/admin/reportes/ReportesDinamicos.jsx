@@ -11,9 +11,13 @@ import { Form } from '@src/components/ui/form';
 import { Button } from '@/components/ui/button';
 import AtomsTitle from '@components/atoms/AtomsTitle';
 import MoleculesFiltersGroup from '@components/molecules/filters/MoleculesFiltersGroups';
+
 import { buildDefaultValues } from './helpers/filtersHelpers';
 import { useFiltersSubmit } from './hooks/useFiltersSubmit';
 const AtomsPanel = lazy(() => import('@components/atoms/AtomsPanel'));
+
+import MoleculesItemsForReports from '@components/molecules/itemsForReports/MoleculesItemsForReports';
+import itemsForReportsConfig from './config/itemsForReports';
 
 
 
@@ -35,6 +39,14 @@ const Reportes = () => {
   const [loading, setLoading] = useState(false);
   const [reporteData, setReporteData] = useState(null);
   const listRef = useRef(null);
+  // Estado para los campos seleccionados en el reporte
+  const [itemsForReports, setItemsForReports] = useState(itemsForReportsConfig);
+  // Manejar cambios en los checkboxes de campos del reporte
+  const handleItemsForReportsChange = (id, checked) => {
+    setItemsForReports(prev => prev.map(item =>
+      item.id === id ? { ...item, checked } : item
+    ));
+  };
 
   // Grupos de filtros definidos en config y setters para selects dependientes
   const {
@@ -78,7 +90,10 @@ const Reportes = () => {
     // El resultado queda en reporteData
   };
 
-  // Exportar a Excel
+  /**
+   * Exporta el reporte a Excel usando solo las columnas seleccionadas (checked) en itemsForReports.
+   * @function
+   */
   const handleExportExcel = async () => {
     // Solo incluir filtros relevantes y con valor
     const filtrosAplicados = {};
@@ -87,10 +102,16 @@ const Reportes = () => {
         filtrosAplicados[key] = val;
       }
     });
-    await exportEmpresasToExcel(reporteData, filtrosAplicados, filterConfig);
+    // Filtrar solo los campos seleccionados (checked)
+    const columnasSeleccionadas = itemsForReports.filter(item => item.checked);
+    // Pasar columnasSeleccionadas a la función de exportación
+    await exportEmpresasToExcel(reporteData, filtrosAplicados, filterConfig, columnasSeleccionadas);
   };
 
-  // Exportar a PDF
+  /**
+   * Exporta el reporte a PDF usando solo las columnas seleccionadas (checked) en itemsForReports.
+   * @function
+   */
   const handleExportPDF = () => {
     // Solo incluir filtros relevantes y con valor
     const filtrosAplicados = {};
@@ -99,8 +120,10 @@ const Reportes = () => {
         filtrosAplicados[key] = val;
       }
     });
-    // Pasar también la configuración de filtros para los colores
-    exportEmpresasToPDF(reporteData, filtrosAplicados, filterConfig);
+    // Filtrar solo los campos seleccionados (checked)
+    const columnasSeleccionadas = itemsForReports.filter(item => item.checked);
+    // Pasar columnasSeleccionadas a la función de exportación
+    exportEmpresasToPDF(reporteData, filtrosAplicados, filterConfig, columnasSeleccionadas);
   };
 
   return (
@@ -110,8 +133,8 @@ const Reportes = () => {
       {/* Formulario de filtros */}
       <div className='bg-white p-4 rounded-2xl mt-4'>
         <AtomsTitle
-          title={'Filtros'}
-          subtitle={'Defina los criterios de filtrado'}
+          title={'Filtros y Campos'}
+          subtitle={'Defina los criterios de filtrado y campos a mostrar en el reporte'}
           className="mb-4"
         />
         <Form {...form} >
@@ -137,6 +160,19 @@ const Reportes = () => {
                 />
               </div>
             ))}
+
+            {/* Selección de campos a mostrar en el reporte */}
+            <div className="mb-4 bg-gray-100 px-6 py-4 rounded-2xl">
+              <AtomsTitle
+                title="Campos del reporte"
+                className="mb-2"
+              />
+              <MoleculesItemsForReports
+                items={itemsForReports}
+                onChange={handleItemsForReportsChange}
+              />
+            </div>
+
             <div className="flex justify-end mt-4 gap-2">
               <Button type="submit" disabled={loading}>
                 {loading ? (
