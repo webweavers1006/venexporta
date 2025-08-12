@@ -6,11 +6,15 @@ import { BrowserRouter } from "react-router";
 import '@fortawesome/fontawesome-free/css/all.css'
 import '@ant-design/v5-patch-for-react-19' ; 
 import { initAxiosInterceptors } from '@helpers/auth/auth';
+
+// Configuración de i18next
+import './i18n/i18nConfig'; // ✅ configuración centralizada
+
   initAxiosInterceptors();
-createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  </StrictMode>,
-)
+  createRoot(document.getElementById('root')).render(
+    <StrictMode>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </StrictMode>,
+  )
