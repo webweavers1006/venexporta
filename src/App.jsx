@@ -8,6 +8,9 @@ import { fetchRequestedAppointments } from '@src/lib/api/schedules/schedules';
 import { excludedPaths } from '@lib/data/routesRequisitos';
 import { Calendar } from "lucide-react";
 
+// Componente de idioma
+import LanguageSelector from '@components/LanguageSelector';
+
 const RequisitosModal = lazy(() => import('@components/requisitosModal'));
 const AtomsBanner = lazy(() => import('@components/atoms/AtomsBanner'));
 const RoutesApp = lazy(() => import('@routes/RoutesApp'));
@@ -72,9 +75,14 @@ function App() {
           link="/appointmentsReceived"
         />
       )}
+     
+      <LanguageSelector />
+
       <RoutesApp />
     </Suspense>
   );
+
+ 
 }
 
 export default App;
