@@ -6,7 +6,11 @@ import { fetchPaises } from '@lib/api/apiIndex'; // Importa la función fetchPai
 import { Input } from "@src/components/ui/input";
 import { Textarea } from "@src/components/ui/textarea";
 
+//✅Components traduction
+import { useTranslation } from "react-i18next";
+
 const CompanyFormFields = ({ form }) => {
+  const { t } = useTranslation();
   const [paises, setPaises] = useState([]); // Estado para almacenar los países
 
   useEffect(() => {
@@ -29,9 +33,9 @@ const CompanyFormFields = ({ form }) => {
         control={form.control}
         render={({ field }) => (
           <FormItem className="col-span-2 sm:col-span-2">
-            <FormLabel>Nombre de la Empresa</FormLabel>
+            <FormLabel>{t("company_name_label")}</FormLabel>
             <FormControl>
-              <Input {...field} placeholder="Nombre de la Empresa" />
+              <Input {...field} placeholder={t("company_name_placeholder")} />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -42,9 +46,9 @@ const CompanyFormFields = ({ form }) => {
         control={form.control}
         render={({ field }) => (
           <FormItem className="col-span-2 sm:col-span-2">
-            <FormLabel>Descripción de la Empresa</FormLabel>
+            <FormLabel>{t("company_description_label")}</FormLabel>
             <FormControl>
-              <Textarea {...field} placeholder="Descripción de la Empresa" />
+              <Textarea {...field} placeholder={t("company_description_placeholder")} />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -55,7 +59,7 @@ const CompanyFormFields = ({ form }) => {
         control={form.control}
         render={({ field }) => (
           <FormItem className="col-span-2 sm:col-span-1">
-            <FormLabel>País</FormLabel>
+            <FormLabel>{t("company_country_label")}</FormLabel>
             <FormControl>
               <Controller
                 name="idPais"
@@ -63,7 +67,7 @@ const CompanyFormFields = ({ form }) => {
                 render={({ field }) => (
                   <Select {...field} onValueChange={field.onChange}>
                     <SelectTrigger>
-                      <SelectValue placeholder="Seleccione una opción" />
+                      <SelectValue placeholder={t("company_country_placeholder")} />
                     </SelectTrigger>
                     <SelectContent>
                       {paises.map((pais) => (
@@ -85,9 +89,9 @@ const CompanyFormFields = ({ form }) => {
         control={form.control}
         render={({ field }) => (
           <FormItem className="col-span-2 sm:col-span-1">
-            <FormLabel>Número de Identificación Fiscal</FormLabel>
+            <FormLabel>{t("company_rif_label")}</FormLabel>
             <FormControl>
-              <Input {...field} placeholder="Número de Identificación Fiscal" />
+              <Input {...field} placeholder={t("company_rif_placeholder")} />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -98,7 +102,7 @@ const CompanyFormFields = ({ form }) => {
         control={form.control}
         render={({ field }) => (
           <FormItem className="col-span-2 sm:col-span-1">
-            <FormLabel>Codigo de Area</FormLabel>
+            <FormLabel>{t("company_area_code_label")}</FormLabel>
             <FormControl>
               <Controller
                 name="idPaisCodigo"
@@ -107,15 +111,13 @@ const CompanyFormFields = ({ form }) => {
                   <Select
                     {...field}
                     onValueChange={(value) => {
-                      // value es el id del país seleccionado
                       const paisSeleccionado = paises.find((pais) => pais.id.toString() === value);
-                      // Actualiza idPais con el id y codigoArea con el código de área
                       form.setValue('codigoArea', paisSeleccionado?.codigo.toString() || "");
                       field.onChange(value);
                     }}
                   >
                     <SelectTrigger>
-                      <SelectValue placeholder="Seleccione una opción" />
+                      <SelectValue placeholder={t("company_area_code_placeholder")} />
                     </SelectTrigger>
                     <SelectContent>
                       {paises.map((pais) => (
@@ -137,7 +139,7 @@ const CompanyFormFields = ({ form }) => {
         control={form.control}
         render={({ field }) => (
           <FormItem className="col-span-2 sm:col-span-1">
-            <FormLabel>Telefono de Contacto</FormLabel>
+            <FormLabel>{t("company_phone_label")}</FormLabel>
             <div className="flex items-center gap-2">
               <FormControl>
                 <div className="flex items-center border border-gray-300 rounded-md w-20 text-center">
@@ -153,7 +155,7 @@ const CompanyFormFields = ({ form }) => {
               </FormControl>
               <div className="flex-1">
                 <FormControl>
-                  <Input {...field} placeholder="04123456789" />
+                  <Input {...field} placeholder={t("company_phone_placeholder")} />
                 </FormControl>
               </div>
             </div>
@@ -162,6 +164,7 @@ const CompanyFormFields = ({ form }) => {
         )}
       />
     </div>
+
   );
 };
 

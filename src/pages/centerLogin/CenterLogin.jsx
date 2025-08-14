@@ -1,6 +1,9 @@
 import { useState, useRef } from 'react';
 import 'animate.css';
 
+//✅ Components traduction
+import { useTranslation } from "react-i18next";
+
 // Componentes
 import Register from '@components/centerLogin/Register';
 import Login from '@components/organisms/login/OrganismsLogin';
@@ -18,6 +21,9 @@ import { useHandlers } from './handlers/handlersCenterLogin';
 import { useInputConfig, useButtonConfig, useOptions } from './config/configInputs';
 
 const CenterLoginRegister = () => {
+    // Traducción
+    const { t } = useTranslation();
+    
     // Estado y Referencias
     const [siteCenter, insertSiteCenter] = useState('Login');
     const formRef = useRef(null);
@@ -29,7 +35,7 @@ const CenterLoginRegister = () => {
     const inputsConfig = useInputConfig(handleUserChange, handlePassChange);
     const buttonConfig = useButtonConfig(handleSubmit);
     const options = useOptions();
-
+    
     // Renderizado
     const Render = ({ ...rest }) => {
         return filterComponents(
@@ -37,7 +43,7 @@ const CenterLoginRegister = () => {
                 Register: <Register {...rest} />,
                 Login: <Login {...rest} formRef={formRef} />
             }, siteCenter);
-    };
+        };
 
     return (
         <section className="hero is-fullheight">
@@ -45,8 +51,8 @@ const CenterLoginRegister = () => {
                 <PopoverComponent trigger={<CircleHelp className='text-primary' />}>
                     <Card>
                         <CardHeader className="text-center">
-                            <CardTitle className="text-xl">¿Necesitas ayuda?</CardTitle>
-                            <CardDescription>Estamos aquí para ayudarte</CardDescription>
+                            <CardTitle className="text-xl">{t("help_title")}</CardTitle>
+                            <CardDescription>{t("help_description")}</CardDescription>
                         </CardHeader>
                         <CardContent>
                             <CardDescription>

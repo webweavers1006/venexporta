@@ -1,4 +1,8 @@
 import { useForm } from "react-hook-form";
+
+//✅Components traduction
+import { useTranslation } from "react-i18next";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema } from "@/schema/loginSchema";
 import { cn } from "@src/lib/utils";
@@ -16,6 +20,7 @@ import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "
 import { useHandlers } from "@src/pages/centerLogin/handlers/handlersCenterLogin";
 
 export function LoginForm({ className, ...props }) {
+  const { t } = useTranslation();
   const { handleSubmit } = useHandlers();
   const form = useForm({
     resolver: zodResolver(loginSchema),
@@ -29,9 +34,9 @@ export function LoginForm({ className, ...props }) {
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
         <CardHeader className="text-center">
-          <CardTitle className="text-xl">Bienvenido a Venexporta</CardTitle>
+          <CardTitle className="text-xl">{t("welcome")}</CardTitle>
           <CardDescription>
-            Inicia Sesion
+           {t("login")}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -43,7 +48,7 @@ export function LoginForm({ className, ...props }) {
                   control={form.control}
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Correo</FormLabel>
+                      <FormLabel>{t("email")}</FormLabel>
                       <FormControl>
                         <Input {...field} placeholder="m@example.com" name="user" />
                       </FormControl>
@@ -57,9 +62,9 @@ export function LoginForm({ className, ...props }) {
                   render={({ field }) => (
                     <FormItem>
                       <div className="flex items-center justify-between">
-                        <FormLabel>Contraseña</FormLabel>
+                        <FormLabel>{t("password")}</FormLabel>
                         <Link to="/forgot-password" className="text-sm underline-offset-4 hover:underline">
-                          Olvide mi contraseña
+                          {t("forgot_password")}
                         </Link>
                       </div>
                       <FormControl>
@@ -70,7 +75,7 @@ export function LoginForm({ className, ...props }) {
                   )}
                 />
                 <Button type="submit" className="w-full">
-                  Ingresar
+                  {t("submit")}
                 </Button>
               </div>
             </form>
@@ -78,9 +83,9 @@ export function LoginForm({ className, ...props }) {
         </CardContent>
       </Card>
       <div className="text-center text-sm text-white">
-        No posees una cuenta?{" "}
+        {t("no_account")}{" "}
         <Link to="/signup" className="underline underline-offset-4">
-          Registrarme
+          {t("signup")}
         </Link>
       </div>
     </div>

@@ -2,17 +2,22 @@ import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@src/c
 import { Input } from "@src/components/ui/input";
 import { Button } from "@src/components/ui/button";
 
+
+//✅Components traduction
+import { useTranslation } from "react-i18next";
 const RegisterFormFields = ({ form, loading }) => {
+  const { t } = useTranslation();
+
   return (
-    <div className="grid grid-cols-2 gap-6 mt-8">
+     <div className="grid grid-cols-2 gap-6 mt-8">
       <FormField
         name="name"
         control={form.control}
         render={({ field }) => (
           <FormItem className="col-span-2 sm:col-span-1">
-            <FormLabel>Nombre</FormLabel>
+            <FormLabel>{t("form_name_label")}</FormLabel>
             <FormControl>
-              <Input {...field} placeholder="Nombre completo" />
+              <Input {...field} placeholder={t("form_name_placeholder")} />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -23,9 +28,9 @@ const RegisterFormFields = ({ form, loading }) => {
         control={form.control}
         render={({ field }) => (
           <FormItem className="col-span-2 sm:col-span-1">
-            <FormLabel>Correo</FormLabel>
+            <FormLabel>{t("form_email_label")}</FormLabel>
             <FormControl>
-              <Input {...field} placeholder="m@example.com" />
+              <Input {...field} placeholder={t("form_email_placeholder")} />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -36,9 +41,9 @@ const RegisterFormFields = ({ form, loading }) => {
         control={form.control}
         render={({ field }) => (
           <FormItem className="col-span-2 sm:col-span-1">
-            <FormLabel>Numero de Identificación</FormLabel>
+            <FormLabel>{t("form_id_label")}</FormLabel>
             <FormControl>
-              <Input {...field} placeholder="Nº Identificación" />
+              <Input {...field} placeholder={t("form_id_placeholder")} />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -49,15 +54,16 @@ const RegisterFormFields = ({ form, loading }) => {
         control={form.control}
         render={({ field }) => (
           <FormItem className="col-span-2 sm:col-span-1">
-            <FormLabel>Contraseña</FormLabel>
+            <FormLabel>{t("form_password_label")}</FormLabel>
             <FormControl>
-              <Input {...field} type="password" placeholder="Contraseña" />
+              <Input {...field} type="password" placeholder={t("form_password_placeholder")} />
             </FormControl>
             <FormMessage />
           </FormItem>
         )}
       />
     </div>
+
   );
 };
 

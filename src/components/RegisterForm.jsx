@@ -12,11 +12,15 @@ import { Form } from "@src/components/ui/form";
 import RegisterFormFields from "@src/components/molecules/RegisterFormFields";
 import CompanyFormFields from "@src/components/molecules/CompanyFormFields";
 
+//✅Components traduction
+import { useTranslation } from "react-i18next";
 
 export function RegisterForm({ className, ...props }) {
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
     const navigate = useNavigate();
+    const { t } = useTranslation();
+
 
     const form = useForm({
         resolver: zodResolver(registerSchema),
@@ -74,9 +78,9 @@ export function RegisterForm({ className, ...props }) {
         <div className={cn("flex flex-col gap-6 mt-6", className)} {...props}>
             <Card>
                 <CardHeader className="text-center">
-                    <CardTitle className="text-xl">Registrar Usuario</CardTitle>
+                     <CardTitle className="text-xl">{t("register_title")}</CardTitle>
                     <CardDescription>
-                        Complete el formulario para registrar un nuevo usuario
+                       {t("register_description")}
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -86,20 +90,21 @@ export function RegisterForm({ className, ...props }) {
                             <hr className="my-6" />
                             <CompanyFormFields form={form} />
                             <Button type="submit" className="w-full mt-5" disabled={loading}>
-                                {loading ? 'Registrando...' : 'Registrar'}
+                                {loading ? t("registering") : t("register_button")}
+                                {/* {loading ? "Registrando..." : "Registrarse"} */}
                             </Button>
                         </form>
                     </Form>
                 </CardContent>
             </Card>
             <div className="text-center text-sm text-white">
-                Ya posees una cuenta?{" "}
+                {t("already_have_account")}{" "}
                 <Link to="/login" className="underline underline-offset-4">
-                    Iniciar Sesión
+                    {t("login_link")}
                 </Link>
             </div>
             <div className="text-muted-foreground *:[a]:hover:text-primary text-center text-xs text-balance *:[a]:underline *:[a]:underline-offset-4">
-                Al hacer clic en Continuar, acepta nuestros Términos de servicio y Política de privacidad.
+                {t("terms_notice")}
             </div>
         </div>
     );

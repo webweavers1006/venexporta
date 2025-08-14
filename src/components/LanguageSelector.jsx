@@ -14,6 +14,7 @@ function LanguageSelector() {
       <select
         onChange={(e) => FuncionCambiarLenguaje(e.target.value)}
         value={i18n.language}
+  //Agrega estilos con tailwind CSS
         style={{
           backgroundColor: 'transparent',
           border: 'none',

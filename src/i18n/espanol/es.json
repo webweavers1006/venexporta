@@ -1,3 +1,45 @@
 {
-    "MENSAJE": "Bienvenido a Venexporta"
+    "MENSAJE": "Bienvenido a Venexporta",
+    "welcome": "Bienvenido a Venexporta",
+    "login": "Inicia Sesión",
+    "email": "Correo",
+    "password": "Contraseña",
+    "forgot_password": "Olvidé mi contraseña",
+    "submit": "Ingresar",
+    "no_account": "¿No posees una cuenta?",
+    "signup": "Registrarme",
+    "developed_by": "Desarrollado por:",
+    "help_title": "¿Necesitas ayuda?",
+    "help_description": "Estamos aquí para ayudarte",
+    "register_title": "Registrar Usuario",
+    "register_description": "Complete el formulario para registrar un nuevo usuario",
+    "register_button": "Registrar",
+    "registering": "Registrando...",
+    "already_have_account": "¿Ya posees una cuenta?",
+    "login_link": "Iniciar Sesión",
+    "terms_notice": "Al hacer clic en Continuar, acepta nuestros Términos de servicio y Política de privacidad.",
+    "form_name_label": "Nombre",
+    "form_name_placeholder": "Nombre completo",
+    "form_email_label": "Correo",
+    "form_email_placeholder": "m@example.com",
+    "form_id_label": "Número de Identificación",
+    "form_id_placeholder": "Nº Identificación",
+    "form_password_label": "Contraseña",
+    "form_password_placeholder": "Contraseña",
+    "company_name_label": "Nombre de la Empresa",
+    "company_name_placeholder": "Nombre de la Empresa",
+    "company_description_label": "Descripción de la Empresa",
+    "company_description_placeholder": "Descripción de la Empresa",
+    "company_country_label": "País",
+    "company_country_placeholder": "Seleccione una opción",
+    "company_rif_label": "Número de Identificación Fiscal",
+    "company_rif_placeholder": "Número de Identificación Fiscal",
+    "company_area_code_label": "Código de Área",
+    "company_area_code_placeholder": "Seleccione una opción",
+    "company_phone_label": "Teléfono de Contacto",
+    "company_phone_placeholder": "04123456789"
+
+
+
 }
+
