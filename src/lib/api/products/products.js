@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { API_BASE_URL } from '@lib/api/variables';
+import { uploadImage } from '../apiIndex';
 
 export const fetchProductCategories = async () => {
   try {
@@ -25,7 +26,7 @@ export const postCategory = async (data) => {
   }
 };
 
-export const postProduct = async (data, uploadImage) => {
+export const postProduct = async (data) => {
   try {
     if (data.img && data.img !== 'no hay imagen cargada') {
       const uploadedImage = await uploadImage(data.img);
