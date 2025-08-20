@@ -118,7 +118,7 @@ SubSectoresTable.propTypes = {
   // Título: nombre y color del sub sector seleccionado (primer elemento de data)
   const selectedSubSector = data && data.length > 0 ? data[0] : null;
   return (
-    <div className="w-full bg-white shadow-md rounded-lg p-4">
+    <div className="w-full bg-white  rounded-2xl p-4 mt-4">
       {selectedSubSector && (
         <div className="flex flex-col items-center mb-4">
           <span
