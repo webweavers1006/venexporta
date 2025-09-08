@@ -1,14 +1,14 @@
 {
     "MENSAJE": "Bienvenido a Venexporta",
     "welcome": "Bienvenido a Venexporta",
+    "developed_by": "Desarrollado por:",
     "login": "Inicia Sesión",
     "email": "Correo",
-    "password": "Contraseña",
     "forgot_password": "Olvidé mi contraseña",
+    "password": "Contraseña",
     "submit": "Ingresar",
     "no_account": "¿No posees una cuenta?",
     "signup": "Registrarme",
-    "developed_by": "Desarrollado por:",
     "help_title": "¿Necesitas ayuda?",
     "help_description": "Estamos aquí para ayudarte",
     "register_title": "Registrar Usuario",
@@ -37,9 +37,25 @@
     "company_area_code_label": "Código de Área",
     "company_area_code_placeholder": "Seleccione una opción",
     "company_phone_label": "Teléfono de Contacto",
-    "company_phone_placeholder": "04123456789"
+    "company_phone_placeholder": "04123456789",
+    "recover_title": "Recuperar Contraseña",
+    "recover_description": "Ingrese su correo para recibir el código de verificación",
+    "recover_email_label": "Correo",
+    "recover_email_placeholder": "correo@ejemplo.com",
+    "recover_button": "Enviar Código",
+    "verification_sent": "Código de verificación enviado a su correo.",
+    "verification_error": "Error al enviar el correo. Inténtelo de nuevo.",
+    "register": {
+    "success": {
+      "title": "Registro exitoso",
+      "subtitle": "Se ha registrado exitosamente su empresa",
+      "linkText": "Volver al inicio"
+        }
+    }
+
+
+
 
 
 
 }
-

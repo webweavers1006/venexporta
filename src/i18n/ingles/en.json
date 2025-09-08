@@ -1,14 +1,14 @@
 {
     "MENSAJE": "Welcome to Venexporta",
     "welcome": "Welcome to Venexporta",
+    "developed_by": "Developed by:",   
     "login": "Log In",
     "email": "Email",
-    "password": "Password",
     "forgot_password": "Forgot my password",
+    "password": "Password",
     "submit": "Sign In",
     "no_account": "Don't have an account?",
     "signup": "Sign Up",
-    "developed_by": "Developed by:",   
     "help_title": "Need help?",
     "help_description": "We're here to help you",
     "register_title": "Register User",
@@ -25,7 +25,8 @@
     "form_id_label": "Identification Number",
     "form_id_placeholder": "ID Number",
     "form_password_label": "Password",
-    "form_password_placeholder": "Password", "company_name_label": "Company Name",
+    "form_password_placeholder": "Password",
+    "company_name_label": "Company Name",
     "company_name_placeholder": "Company Name",
     "company_description_label": "Company Description",
     "company_description_placeholder": "Company Description",
@@ -36,7 +37,24 @@
     "company_area_code_label": "Area Code",
     "company_area_code_placeholder": "Select an option",
     "company_phone_label": "Contact Phone",
-    "company_phone_placeholder": "04123456789"
+    "company_phone_placeholder": "04123456789",
+    "recover_title": "Recover Password",
+    "recover_description": "Enter your email to receive the verification code",
+    "recover_email_label": "Email",
+    "recover_email_placeholder": "email@example.com",
+    "recover_button": "Send Code",
+    "verification_sent": "Verification code sent to your email.",
+    "verification_error": "Error sending email. Please try again.",
+    "register": {
+    "success": {
+      "title": "Successful registration",
+      "subtitle": "Your company has been successfully registered",
+      "linkText": "Return to home"
+        }
+    }
+
+
+
 
 
 }

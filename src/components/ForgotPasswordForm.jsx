@@ -16,7 +16,11 @@ import { Input } from "@src/components/ui/input";
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@src/components/ui/form";
 import axios from "axios";
 
+//✅Components traduction
+import { useTranslation } from "react-i18next";
+
 function ForgotPasswordForm({ className, ...props }) {
+  const { t } = useTranslation();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [email, setEmail] = useState("");
   const form = useForm({
@@ -31,9 +35,9 @@ function ForgotPasswordForm({ className, ...props }) {
       await axios.post("https://venexporta-rn.com/api/no_reply/verification_user", data);
       setEmail(data.correo);
       setIsModalOpen(true);
-      alert("Código de verificación enviado a su correo.");
+      alert(t("verification_sent"));
     } catch (error) {
-      const errorMessage = error.response?.data?.error?.message || "Error al enviar el correo. Inténtelo de nuevo.";
+      const errorMessage = error.response?.data?.error?.message || t("verification_error");
       alert(errorMessage);
     }
   };
@@ -42,10 +46,8 @@ function ForgotPasswordForm({ className, ...props }) {
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card className="">
         <CardHeader className="text-center">
-          <CardTitle className="text-2xl font-bold">Recuperar Contraseña</CardTitle>
-          <CardDescription>
-            Ingrese su correo para recibir el código de verificación
-          </CardDescription>
+          <CardTitle className="text-2xl font-bold">{t("recover_title")}</CardTitle>
+          <CardDescription>{t("recover_description")}</CardDescription>
         </CardHeader>
         <CardContent>
           <Form {...form}>
@@ -56,16 +58,16 @@ function ForgotPasswordForm({ className, ...props }) {
                   control={form.control}
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Correo</FormLabel>
+                      <FormLabel>{t("recover_email_label")}</FormLabel>
                       <FormControl>
-                        <Input {...field} placeholder="correo@ejemplo.com" name="correo" />
+                        <Input {...field} placeholder={t("recover_email_placeholder")} name="correo" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
                 <Button type="submit" className="w-full bg-primary text-white py-2 rounded-md">
-                  Enviar Código
+                  {t("recover_button")}
                 </Button>
               </div>
             </form>
