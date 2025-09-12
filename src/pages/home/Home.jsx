@@ -11,6 +11,8 @@ import { useHomeEvents } from './hooks/useHomeEvents';
 
 const AtomsPanel = lazy(() => import('@components/atoms/AtomsPanel'));
 
+//✅Components traduction
+import { useTranslation } from "react-i18next";
 
 
 
@@ -25,13 +27,15 @@ const AtomsPanel = lazy(() => import('@components/atoms/AtomsPanel'));
  * <Home />
  */
 function Home() {
+   // Traducción
+    const { t } = useTranslation();
   const navigate = useNavigate();
   const { carouselItems, scheduleBlocks, handleItemClick } = useHomeEvents();
 
   return (
-    <main aria-label="Pantalla de inicio" className="w-full">
+    <main aria-label={t("home.subtitle")} className="w-full">
       <div className="w-full">
-        <AtomsPanel title={'Bienvenido a Venexporta'} subtitle={'Pantalla de inicio'} />
+        <AtomsPanel title={t("home.welcome")} subtitle={t("home.subtitle")} />
       </div>
       {carouselItems.length > 0 ? (
         <>
@@ -49,8 +53,8 @@ function Home() {
             <CompaniesCarousel
               items={carouselItems}
               onItemClick={handleItemClick}
-              title={'Mis eventos'}
-              subtitle={'Selecciona un evento para ver tus horarios y bloques disponibles'}
+              title={t("home.carousel.title")}
+              subtitle={t("home.carousel.subtitle")}
               aria-label="Carrusel de eventos de la empresa"
             />
           </section>
@@ -71,8 +75,8 @@ function Home() {
           <ResultComponent
             config={{
               status: 'warning',
-              title: 'No se ha registrado en ningun evento.',
-              subTitle: 'Aqui puede ver los eventos disponibles',
+              title: t("home.noEvents.title"),
+              subTitle: t("home.noEvents.subtitle"),
               links: [
                 <Button
                   key="eventos"
@@ -80,7 +84,8 @@ function Home() {
                   aria-label="Ir a Eventos"
                   tabIndex={0}
                 >
-                  Ir a Eventos
+                  {t("home.noEvents.button")}
+
                 </Button>,
               ],
               messages: [],

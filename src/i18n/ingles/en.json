@@ -51,10 +51,81 @@
       "subtitle": "Your company has been successfully registered",
       "linkText": "Return to home"
         }
+    },
+    "layout": {
+      "breadcrumb": {
+        "home": "Home",
+        "module": "Module"
+      }
+    },
+
+    "home": {
+    "welcome": "Welcome to Venexporta",
+    "subtitle": "Home screen",
+    "carousel": {
+      "title": "My Events",
+      "subtitle": "Select an event to view your schedules and available blocks"
+    },
+    "noEvents": {
+      "title": "You haven't registered for any event.",
+      "subtitle": "Here you can view available events",
+      "button": "Go to Events"
     }
+  },
+
+  "feedEvent": {
+    "title": "Events",
+    "subtitle": "List of events",
+    "description": "Description",
+    "eventDuration": "Event duration",
+    "registrationDuration": "Registration period",
+    "registerButton": "Register",
+    "registerIconLabel": "Register icon",
+    "registerAriaLabel": "Register for event",
+
+    "modal": {
+      "successTitle": "Successful Registration!",
+      "successContent": "Thank you for confirming your interest in participating. In the coming days, you will be notified through the app with information about the next stage of the fair route!",
+      "close": "Close",
+      "confirmTitle": "Confirmation",
+      "confirmContent": "Do you want to register for this event?",
+      "ok": "Confirm",
+      "cancel": "No"
+    },
+    "message": {
+      "success": "Successfully registered for the event",
+      "error": "Error during registration"
+    }
+
+  },
+
+  "myEvents": {
+    "title": "My Events",
+    "subtitle": "Information about registered events",
+    "modal": {
+      "title": "Confirmation",
+      "content": "Are you sure you want to cancel your participation in the event?",
+      "ok": "Confirm",
+      "cancel": "No",
+      "okAria": "Confirm event cancellation",
+      "cancelAria": "Do not cancel event"
+    },
+    "success": "You have canceled your participation in the event",
+    "error": "Error canceling the event",
+    "description": "Description",
+    "eventDuration": "Event duration",
+    "registrationDuration": "Registration period",
+    "cancelButton": "Cancel",
+    "cancelIconAria": "Cancel participation",
+    "cancelAria": "Cancel participation in event"
+  }
+
+
+
 
 
 
 
 
 }
+

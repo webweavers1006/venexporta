@@ -13,6 +13,9 @@ import useFeedEvent from './hooks/useFeedEvent';
 
 const AtomsPanel = lazy(() => import('@components/atoms/AtomsPanel'));
 
+//✅Components traduction
+import { useTranslation } from "react-i18next";
+
 /**
  * Componente FeedEvent
  * @component
@@ -22,6 +25,8 @@ const AtomsPanel = lazy(() => import('@components/atoms/AtomsPanel'));
  */
 
 const FeedEvent = () => {
+  // Traducción
+  const { t } = useTranslation();
   const idCompany = useStore(appStore, state => state.idCompany);
   const idPais = useStore(appStore, state => state.idPais);
   const navigate = useNavigate();
@@ -34,7 +39,7 @@ const FeedEvent = () => {
 
   return (
     <>
-      <AtomsPanel title={'Eventos'} subtitle={'Listado de eventos'} />
+      <AtomsPanel title={t("feedEvent.title")} subtitle={t("feedEvent.subtitle")} />
       <div className='mt-4'>
         <MoleculesList
           data={eventData}
@@ -62,18 +67,18 @@ const FeedEvent = () => {
             title: <p>{item.nombre_evento}</p>,
             description: (
               <>
-                <p>Descripción: {item.descripcion_evento}</p>
-                <p>Duración del evento: {item.fecha_inicio} - {item.fecha_final}</p>
-                <p>Duración de inscripción: {item.fecha_inicial_inscripcion} - {item.fecha_final_inscripcion}</p>
+                <p>{t("feedEvent.description")}: {item.descripcion_evento}</p>
+                <p>{t("feedEvent.eventDuration")}: {item.fecha_inicio} - {item.fecha_final}</p>
+                <p>{t("feedEvent.registrationDuration")}: {item.fecha_inicial_inscripcion} - {item.fecha_final_inscripcion}</p>
               </>
             ),
           })}
           actions={[{
             type: 'register',
-            label: 'Registrarse',
-            icon: <SquareCheckBig aria-label='Icono registrar' />,
+            label: t("feedEvent.registerButton"),
+            icon: <SquareCheckBig aria-label={t("feedEvent.registerIconLabel")} />,
             className: 'bg-green/50 text-primary hover:bg-green/80',
-            'aria-label': 'Registrarse en evento',
+            'aria-label': t("feedEvent.registerAriaLabel"),
             tabIndex: 0,
           }]}
         />

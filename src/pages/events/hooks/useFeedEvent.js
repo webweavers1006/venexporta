@@ -8,6 +8,10 @@ import { useState, useCallback } from 'react';
 import { Modal, message } from 'antd';
 import { fetchEventos, registerForEvent } from '@lib/api/apiIndex';
 
+//✅Components traduction
+import { useTranslation } from "react-i18next";
+
+
 /**
  * Hook para manejar la lógica de eventos y registro en FeedEvent.
  * @param {Object} params
@@ -17,6 +21,8 @@ import { fetchEventos, registerForEvent } from '@lib/api/apiIndex';
  * @returns {{ eventData: Array, fetchAndSetEventos: Function, handleRegister: Function }}
  */
 function useFeedEvent({ idCompany, idPais, navigate }) {
+  // Traducción
+    const { t } = useTranslation();
   const [eventData, setEventData] = useState([]);
 
   /**
@@ -39,15 +45,15 @@ function useFeedEvent({ idCompany, idPais, navigate }) {
   const showFullScreenModal = useCallback(() => {
     const config = {
       status: 'success',
-      title: '¡Registro Exitoso!',
+      title: t("feedEvent.modal.successTitle"),
       subtitle:
-        'Gracias por confirmar tu interés en participar, en los próximos días se les notificará a través de la aplicación información de la siguiente etapa de la ruta para la feria!',
+        t("feedEvent.modal.successSubtitle"),
       links: [],
     };
     Modal.success({
       title: config.title,
       content: config.subtitle,
-      okText: 'Cerrar',
+      okText: t("close"),
       onOk: () => {
         if (idPais !== 95) {
           navigate('/roundtable/companies');
@@ -64,20 +70,20 @@ function useFeedEvent({ idCompany, idPais, navigate }) {
    */
   const handleRegister = useCallback((id) => {
     Modal.confirm({
-      title: 'Confirmación',
-      content: '¿Desea registrarse en este evento?',
-      okText: 'Aceptar',
-      cancelText: 'No',
+      title: t("feedEvent.modal.confirmTitle"),
+      content: t("feedEvent.modal.confirmContent"),
+      okText: t("feedEvent.modal.ok"),
+      cancelText: t("feedEvent.modal.cancel"),
       okButtonProps: {
         style: { backgroundColor: '#2D044A', borderColor: '#2D044A' },
       },
       onOk: async () => {
         try {
           await registerForEvent(id, idCompany);
-          message.success('Registrado exitosamente en el evento');
+          message.success(t("feedEvent.message.success"));
           showFullScreenModal();
         } catch (error) {
-          message.error(error?.response?.data?.error?.message || 'Error al registrar');
+          message.error(error?.response?.data?.error?.message || t("feedEvent.message.error"));
         }
       },
     });

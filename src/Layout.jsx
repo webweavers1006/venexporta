@@ -19,7 +19,12 @@ import {
 } from "@/components/ui/sidebar";
 import './css/index.css'; // Asegúrate de importar tu archivo CSS
 
+//✅Components traduction
+import { useTranslation } from "react-i18next";
+
 const LayoutContent = () => {
+  // Traducción
+  const { t } = useTranslation();
   return (
 <SidebarProvider>
       <AppSidebar  collapsible="icon" data={data} />
@@ -33,13 +38,13 @@ const LayoutContent = () => {
                 <BreadcrumbItem className="hidden md:block">
                   <BreadcrumbLink className="text-white font-black">
                     <Link to={'/'}>
-                      Inicio
+                      {t("layout.breadcrumb.home")}
                     </Link>
                   </BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator className="hidden md:block" />
                 <BreadcrumbItem>
-                  <BreadcrumbPage className="text-white font-black">Modulo</BreadcrumbPage>
+                  <BreadcrumbPage className="text-white font-black">{t("layout.breadcrumb.module")}</BreadcrumbPage>
                 </BreadcrumbItem>
               </BreadcrumbList>
             </Breadcrumb>

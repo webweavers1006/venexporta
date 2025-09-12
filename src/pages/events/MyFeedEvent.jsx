@@ -9,7 +9,8 @@ import { Calendar1, SquareX } from 'lucide-react';
 import MoleculesList from '@components/molecules/MoleculesList';
 import useMyEventsData from './hooks/useMyEventsData';
 
-
+//✅Components traduction
+import { useTranslation } from "react-i18next";
 /**
  * Componente para mostrar y gestionar los eventos registrados de una empresa.
  * @component
@@ -17,6 +18,8 @@ import useMyEventsData from './hooks/useMyEventsData';
  * <MyFeedEvent />
  */
 function MyFeedEvent() {
+  // Traducción
+  const { t } = useTranslation();
   const idCompany = useStore(appStore, state => state.idCompany);
   const { eventsData, reloadEvents, loading, error } = useMyEventsData(idCompany);
 
@@ -26,19 +29,19 @@ function MyFeedEvent() {
    */
   const handleDelete = async (id) => {
     Modal.confirm({
-      title: 'Confirmación',
-      content: '¿Seguro que quiere cancelar su participación del evento?',
-      okText: 'Aceptar',
-      cancelText: 'No',
-      okButtonProps: { 'aria-label': 'Confirmar cancelación de evento' },
-      cancelButtonProps: { 'aria-label': 'No cancelar evento' },
+      title: t("myEvents.modal.title"),
+      content: t("myEvents.modal.content"),
+      okText: t("myEvents.modal.ok"),
+      cancelText: t("myEvents.modal.cancel"),
+      okButtonProps: { 'aria-label':  t("myEvents.modal.okAria") },
+      cancelButtonProps: { 'aria-label': t("myEvents.modal.cancelAria") },
       onOk: async () => {
         try {
           await deleteEventByCompany(id);
-          message.success('Ha cancelado su participación del evento');
+          message.success(t("myEvents.success"));
           reloadEvents();
         } catch (error) {
-          message.error(error?.response?.data?.error?.message || 'Error al cancelar el evento');
+          message.error(error?.response?.data?.error?.message || t("myEvents.error"));
         }
       },
     });
@@ -48,8 +51,10 @@ function MyFeedEvent() {
   return (
     <section aria-labelledby="my-events-title">
       <AtomsPanel
-        title={'Mis Eventos'}
-        subtitle={'Información de los eventos registrados'}
+        title={t("myEvents.title")}
+
+        subtitle={t("myEvents.subtitle")}
+
       />
       <div className='mt-4'>
         <MoleculesList
@@ -77,19 +82,19 @@ function MyFeedEvent() {
             title: <p>{item.nombre_evento}</p>,
             description: (
               <>
-                <p>Descripción: {item.descripcion_evento}</p>
-                <p>Duración del evento: {item.fecha_inicio} - {item.fecha_final}</p>
-                <p>Duración de inscripción: {item.fecha_inicial_inscripcion} - {item.fecha_final_inscripcion}</p>
+                <p>{t("myEvents.description")}: {item.descripcion_evento}</p>
+                <p>{t("myEvents.eventDuration")}: {item.fecha_inicio} - {item.fecha_final}</p>
+                <p>{t("myEvents.registrationDuration")}: {item.fecha_inicial_inscripcion} - {item.fecha_final_inscripcion}</p>
               </>
             ),
           })}
           actions={[{
             type: 'delete',
-            label: 'Cancelar',
-            icon: <SquareX aria-label="Cancelar participación" />,
+            label: t("myEvents.cancelButton"),
+            icon: <SquareX aria-label={t("myEvents.cancelIconAria")} />,
             className: "bg-zinc-300 text-black hover:text-black hover:bg-zinc-400/75",
             role: 'button',
-            'aria-label': 'Cancelar participación en evento',
+            'aria-label': t("myEvents.cancelAria"),
             tabIndex: 0,
           }]}
           loading={loading}
