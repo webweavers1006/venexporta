@@ -33,6 +33,7 @@ const Reports = lazy(() => import('@pages/admin/reportes/Reportes'));
 const ReportesCitas = lazy(() => import('@pages/admin/reportes/ReportesCitas'));
 const ReportsDinamics = lazy(() => import('@pages/admin/reportes/ReportesDinamicos'));
 const ReportesDinamicosEventosActividad = lazy(() => import('@pages/admin/reportes/ReportesDinamicosEventosActividad'));
+const HomePage = lazy(() => import('@pages/homepage/HomePage'));
 
 const RoutesApp = () => {
     const idPais = useStore(appStore, state => state.idPais);
@@ -71,6 +72,7 @@ const RoutesApp = () => {
                     <Route path="list/companies/:id" element={<PrivateRoute component={ListCompaniesOnly} />} />
                     <Route path="roundtable/companies/:id/:event/:renderSchedule" element={<PrivateRoute component={CompaniesOnly} />} />
                 </Route>
+                <Route path="/home" element={<HomePage />} />
                 <Route path="login" element={<CenterLoginRegister />} />
                 <Route path="forgot-password" element={<ForgotPassword />} />
                 <Route path="signup" element={<RegisterForm />} />

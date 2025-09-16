@@ -7,7 +7,7 @@ import {
   const PopoverComponent = ({ children, trigger }) => {
     return (
       <Popover >
-        <PopoverTrigger className="fixed bottom-2 right-2 bg-white py-2 px-2 rounded-full">{trigger}</PopoverTrigger>
+        <PopoverTrigger className="fixed bottom-2 right-2 bg-white py-2 px-2 rounded-full z-100 cursor-pointer">{trigger}</PopoverTrigger>
         <PopoverContent>{children}</PopoverContent>
       </Popover>
     )
