@@ -182,6 +182,7 @@ const SchedulesEvents = () => {
                           fechaSolicitada={item.fecha_solicitada}
                           pais={item.pais_empresa_receptora}
                           estatusColor={estatusColors[item.estatus]}
+                          textEstatus={'EN REVISION'}
                         />
                       ))}
                   </div>

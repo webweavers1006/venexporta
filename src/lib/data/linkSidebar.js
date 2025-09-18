@@ -15,7 +15,8 @@ import {
   ArrowLeftRight,
   CalendarCheck,
   ClipboardPlus,
-  TrendingUpDown
+  TrendingUpDown,
+  QrCode
 } from "lucide-react";
 import logo from '@assets/logo/isologoC.png';
 import avatar from "@assets/logo/avatar.png";
@@ -99,7 +100,13 @@ export const data = () => {
           url: "schedules/event",
           icon: Calendar,
           color: "#2D044A",
-        }
+        },
+        {
+          title: "QR Dinámico",
+          url: "qr/dinamic",
+          icon: QrCode,
+          color: "#3f0d30",
+        },
         /*
         {
           title: "Productos",
