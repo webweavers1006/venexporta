@@ -45,7 +45,7 @@ const Companies = () => {
 
   return (
     <>
-      <AtomsPanel title={'Rueda de Negocios'} subtitle={'Informacion sobre la rueda de negocios'} />
+      <AtomsPanel title={'Rueda de NegocioS'} subtitle={'Informacion sobre la rueda de negocioS'} />
       {carouselItems.length > 0 ? (
         <>
           <div className="p-5 rounded-2xl md:col-span-2 bg-white mt-4 mb-4 relative">

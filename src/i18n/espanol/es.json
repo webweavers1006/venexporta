@@ -4,8 +4,8 @@
     "developed_by": "Desarrollado por:",
     "login": "Inicia Sesión",
     "email": "Correo",
-    "forgot_password": "Olvidé mi contraseña",
     "password": "Contraseña",
+    "forgot_password": "Olvidé mi contraseña",
     "submit": "Ingresar",
     "no_account": "¿No posees una cuenta?",
     "signup": "Registrarme",
@@ -13,11 +13,6 @@
     "help_description": "Estamos aquí para ayudarte",
     "register_title": "Registrar Usuario",
     "register_description": "Complete el formulario para registrar un nuevo usuario",
-    "register_button": "Registrar",
-    "registering": "Registrando...",
-    "already_have_account": "¿Ya posees una cuenta?",
-    "login_link": "Iniciar Sesión",
-    "terms_notice": "Al hacer clic en Continuar, acepta nuestros Términos de servicio y Política de privacidad.",
     "form_name_label": "Nombre",
     "form_name_placeholder": "Nombre completo",
     "form_email_label": "Correo",
@@ -38,6 +33,11 @@
     "company_area_code_placeholder": "Seleccione una opción",
     "company_phone_label": "Teléfono de Contacto",
     "company_phone_placeholder": "04123456789",
+    "register_button": "Registrar",
+    "registering": "Registrando...",
+    "already_have_account": "¿Ya posees una cuenta?",
+    "login_link": "Iniciar Sesión",
+    "terms_notice": "Al hacer clic en Continuar, acepta nuestros Términos de servicio y Política de privacidad.",
     "recover_title": "Recuperar Contraseña",
     "recover_description": "Ingrese su correo para recibir el código de verificación",
     "recover_email_label": "Correo",
@@ -118,7 +118,25 @@
     "cancelButton": "Cancelar",
     "cancelIconAria": "Cancelar participación",
     "cancelAria": "Cancelar participación en evento"
-  }
+  },
+  
+  "schedule": {
+    "title": "Rueda de Negocios",
+    "subtitle": "Disponibilidad de citas",
+    "table": {
+      "time": "Hora",
+      "availability": "Disponibilidad",
+      "actions": "Acciones"
+    },
+    "select": "Seleccionar",
+    "caption": "Horarios disponibles para el día {{date}}.",
+    "modal": {
+      "title": "Confirmación de Cita",
+      "confirmation": "¿Está seguro de que desea solicitar una cita para el bloque seleccionado?"
+    }
+  },
+  "ok": "Confirmar",
+  "cancel": "Cancelar"
 
 
 

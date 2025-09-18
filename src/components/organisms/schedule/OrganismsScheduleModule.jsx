@@ -16,7 +16,12 @@ import { Calendar1 } from "lucide-react";
 import {companiesOnlyHelps} from "@/pages/roundtable/helps/companiesOnlyHelps";
 import AtomsPopoverHelpButton from '@components/atoms/AtomsPopoverHelpButton';
 
+//✅Components traduction
+import { useTranslation } from "react-i18next";
+
 const ScheduleModule = ({ scheduleBlocks, reloadScheduleBlocks, id_evento, id_empresa_receptora, disableSelect = false }) => {
+  // Traducción
+  const { t } = useTranslation();
   const { idCompany} = appStore();
   const [defaultTab, setDefaultTab] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false); // State for modal visibility
@@ -70,8 +75,8 @@ const ScheduleModule = ({ scheduleBlocks, reloadScheduleBlocks, id_evento, id_em
           />
 
       
-      <h3 className="text-lg font-semibold text-zinc-700 text-center">Rueda de Negocios</h3>
-      <p className="text-sm mb-4 text-zinc-700 text-center">Disponibilidad de citas</p>
+      <h3 className="text-lg font-semibold text-zinc-700 text-center">{t("schedule.title")}</h3>
+      <p className="text-sm mb-4 text-zinc-700 text-center">{t("schedule.subtitle")}</p>
       <div className="flex flex-col  h-full w-full">
         <Tabs value={defaultTab} onValueChange={setDefaultTab} className="w-full">
           <TabsList className="flex justify-center mx-auto bg-green/50 text-primary">
@@ -86,9 +91,9 @@ const ScheduleModule = ({ scheduleBlocks, reloadScheduleBlocks, id_evento, id_em
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Hora</TableHead>
-                    <TableHead>Disponibilidad</TableHead>
-                    <TableHead>Acciones</TableHead>
+                    <TableHead>{t("schedule.table.time")}</TableHead>
+                    <TableHead>{t("schedule.table.availability")}</TableHead>
+                    <TableHead>{t("schedule.table.actions")}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -117,10 +122,11 @@ const ScheduleModule = ({ scheduleBlocks, reloadScheduleBlocks, id_evento, id_em
                       let mensaje = "";
                       if (block.estatus === "ACEPTADO") {
                         mensaje = block.miEmpresa
-                          ? "Cita Aceptada " + block.fecha_hora
-                          : "Ocupado " + block.fecha_hora;
+                          ? `${t("schedule.status.acceptedSelf")} ${block.fecha_hora}`
+                          : `${t("schedule.status.occupied")} ${block.fecha_hora}`;
+
                       } else {
-                        mensaje = `${block.estatus} ${block.fecha_hora}`;
+                        mensaje = `${statusLabel} ${block.fecha_hora}`;
                       }
                       return (
                         <TableRow key={block.id} style={{ background: bgColor }}>
@@ -154,7 +160,7 @@ const ScheduleModule = ({ scheduleBlocks, reloadScheduleBlocks, id_evento, id_em
                                 onClick={() => handleRequestAppointment(block)}
                                 style={{ color: "blue", cursor: "pointer" }}
                               >
-                                Seleccionar
+                                {t("schedule.select")}
                               </span>
                             )
                           ) : (
@@ -175,19 +181,19 @@ const ScheduleModule = ({ scheduleBlocks, reloadScheduleBlocks, id_evento, id_em
       {/* Mostrar el caption siempre al final del contenedor */}
       {defaultTab && (
         <div className="w-full mt-2 text-center text-sm text-gray-500">
-          Horarios disponibles para el día {defaultTab}.
+           {t("schedule.caption", { date: defaultTab })}.
         </div>
       )}
       {/* Modal for requesting an appointment */}
       <Modal
-        title="Confirmación de Cita"
+        title={t("schedule.modal.title")}
         visible={isModalOpen}
         onOk={handleModalOk}
         onCancel={handleModalCancel}
-        okText="Confirmar"
-        cancelText="Cancelar"
+        okText={t("ok")}
+        cancelText={t("cancel")}
       >
-        <p>¿Está seguro de que desea solicitar una cita para el bloque seleccionado?</p>
+        <p>{t("schedule.modal.confirmation")}</p>
       </Modal>
     </div>
   );

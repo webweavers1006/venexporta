@@ -4,8 +4,8 @@
     "developed_by": "Developed by:",   
     "login": "Log In",
     "email": "Email",
-    "forgot_password": "Forgot my password",
     "password": "Password",
+    "forgot_password": "Forgot my password",
     "submit": "Sign In",
     "no_account": "Don't have an account?",
     "signup": "Sign Up",
@@ -13,11 +13,6 @@
     "help_description": "We're here to help you",
     "register_title": "Register User",
     "register_description": "Fill out the form to register a new user",
-    "register_button": "Register",
-    "registering": "Registering...",
-    "already_have_account": "Already have an account?",
-    "login_link": "Log In",
-    "terms_notice": "By clicking Continue, you agree to our Terms of Service and Privacy Policy.",
     "form_name_label": "Name",
     "form_name_placeholder": "Full name",
     "form_email_label": "Email",
@@ -38,6 +33,11 @@
     "company_area_code_placeholder": "Select an option",
     "company_phone_label": "Contact Phone",
     "company_phone_placeholder": "04123456789",
+    "register_button": "Register",
+    "registering": "Registering...",
+    "already_have_account": "Already have an account?",
+    "login_link": "Log In",
+    "terms_notice": "By clicking Continue, you agree to our Terms of Service and Privacy Policy.",
     "recover_title": "Recover Password",
     "recover_description": "Enter your email to receive the verification code",
     "recover_email_label": "Email",
@@ -118,7 +118,25 @@
     "cancelButton": "Cancel",
     "cancelIconAria": "Cancel participation",
     "cancelAria": "Cancel participation in event"
-  }
+  },
+   "schedule": {
+    "title": "Business Roundtable",
+    "subtitle": "Appointment Availability",
+    "table": {
+      "time": "Time",
+      "availability": "Availability",
+      "actions": "Actions"
+    },
+    "select": "Select",
+    "caption": "Available schedules for {{date}}.",
+    "modal": {
+      "title": "Appointment Confirmation",
+      "confirmation": "Are you sure you want to request an appointment for the selected block?"
+    }
+  },
+  "ok": "Confirm",
+  "cancel": "Cancel"
+
 
 
 

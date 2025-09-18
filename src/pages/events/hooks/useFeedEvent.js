@@ -83,7 +83,7 @@ function useFeedEvent({ idCompany, idPais, navigate }) {
           message.success(t("feedEvent.message.success"));
           showFullScreenModal();
         } catch (error) {
-          message.error(error?.response?.data?.error?.message || t("feedEvent.message.error"));
+          message.error(error?.response?.data?.error?.message || 'Error al registrar');
         }
       },
     });
