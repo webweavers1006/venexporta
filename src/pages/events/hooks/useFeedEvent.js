@@ -47,7 +47,7 @@ function useFeedEvent({ idCompany, idPais, navigate }) {
       status: 'success',
       title: t("feedEvent.modal.successTitle"),
       subtitle:
-        t("feedEvent.modal.successSubtitle"),
+        t("feedEvent.modal.successContent"),
       links: [],
     };
     Modal.success({
@@ -83,7 +83,7 @@ function useFeedEvent({ idCompany, idPais, navigate }) {
           message.success(t("feedEvent.message.success"));
           showFullScreenModal();
         } catch (error) {
-          message.error(error?.response?.data?.error?.message || 'Error al registrar');
+          message.error(error?.response?.data?.error?.message || t("feedEvent.message.error"));
         }
       },
     });

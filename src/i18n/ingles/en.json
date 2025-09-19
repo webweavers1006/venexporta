@@ -120,6 +120,7 @@
     "cancelAria": "Cancel participation in event"
   },
    "schedule": {
+    "appointmentSuccess": "Appointment requested for block {{id}} on {{date}}",
     "title": "Business Roundtable",
     "subtitle": "Appointment Availability",
     "table": {

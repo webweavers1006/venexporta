@@ -119,8 +119,10 @@
     "cancelIconAria": "Cancelar participación",
     "cancelAria": "Cancelar participación en evento"
   },
-  
+
+    
   "schedule": {
+   "appointmentSuccess": "Cita solicitada para el bloque {{id}} y la fecha {{date}}",
     "title": "Rueda de Negocios",
     "subtitle": "Disponibilidad de citas",
     "table": {

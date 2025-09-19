@@ -46,8 +46,7 @@ const ScheduleModule = ({ scheduleBlocks, reloadScheduleBlocks, id_evento, id_em
         selectedBlock.fecha_hora
       );
 
-      message.success(`Cita solicitada para el bloque ${selectedBlock.id} y la fecha ${selectedBlock.fecha_hora}`);
-      setIsModalOpen(false);
+      message.success(t("schedule.appointmentSuccess", {id: selectedBlock.id,date: selectedBlock.fecha_hora}));setIsModalOpen(false);
 
       // Reload schedule blocks
       if (reloadScheduleBlocks) {
