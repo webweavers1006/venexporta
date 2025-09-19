@@ -121,12 +121,12 @@ const ScheduleModule = ({ scheduleBlocks, reloadScheduleBlocks, id_evento, id_em
                       let mensaje = "";
                       if (block.estatus === "ACEPTADO") {
                         mensaje = block.miEmpresa
-                          ? `${t("schedule.status.acceptedSelf")} ${block.fecha_hora}`
-                          : `${t("schedule.status.occupied")} ${block.fecha_hora}`;
-
+                          ? "Cita Aceptada " + block.fecha_hora
+                          : "Ocupado " + block.fecha_hora;
                       } else {
-                        mensaje = `${statusLabel} ${block.fecha_hora}`;
+                        mensaje = `${block.estatus} ${block.fecha_hora}`;
                       }
+
                       return (
                         <TableRow key={block.id} style={{ background: bgColor }}>
                           <TableCell colSpan={3} style={{ textAlign: "center", color: textColor, fontWeight: 600 }}>
