@@ -45,17 +45,17 @@ export default function MoleculesQRCode(props) {
     /** Margen en módulos alrededor del QR. */
     margin = 4,
   /** Forma de los módulos: 'square' | 'circle'. */
-  dotShape = 'square',
-  /** Escala del radio del punto (0..1) cuando dotShape==='circle'. */
-  dotScale = 0.9,
-  /** Estilo de los detectores (los 3 "ojos"): 'square' | 'rounded' | 'circle'. */
-  finderStyle = 'circle',
-  /** Colores personalizados para los detectores (outer/inner/dot). */
-  finderColors,
-  /** Renderer: 'canvas' | 'svg'. */
-  renderer = 'canvas',
-  /** Factor de pixel para alta resolución en canvas. */
-  pixelRatio = (typeof window !== 'undefined' && window.devicePixelRatio) ? window.devicePixelRatio : 1,
+    dotShape = 'square',
+    /** Escala del radio del punto (0..1) cuando dotShape==='circle'. */
+    dotScale = 0.9,
+    /** Estilo de los detectores (los 3 "ojos"): 'square' | 'rounded' | 'circle'. */
+    finderStyle = 'circle',
+    /** Colores personalizados para los detectores (outer/inner/dot). */
+    finderColors,
+    /** Renderer: 'canvas' | 'svg'. */
+    renderer = 'canvas',
+    /** Factor de pixel para alta resolución en canvas. */
+    pixelRatio = (typeof window !== 'undefined' && window.devicePixelRatio) ? window.devicePixelRatio : 1,
     /** URL del logo centrado (aplica a todos salvo que el item lo sobrescriba). */
     logoSrc,
     /** Proporción del logo respecto al tamaño total del QR (0..1). */
@@ -140,21 +140,21 @@ export default function MoleculesQRCode(props) {
         ecLevel={ecLevel}
         bgColor={bgColor}
         fgColor={fgColor}
-  fgGradient={fgGradient}
+        fgGradient={fgGradient}
         margin={margin}
-  dotShape={dotShape}
-  dotScale={dotScale}
-  finderStyle={finderStyle}
-  finderColors={finderColors}
-  renderer={renderer}
-  pixelRatio={pixelRatio}
+        dotShape={dotShape}
+        dotScale={dotScale}
+        finderStyle={finderStyle}
+        finderColors={finderColors}
+        renderer={renderer}
+        pixelRatio={pixelRatio}
         logoRatio={logoRatio}
         logoPadding={logoPadding}
         logoBgColor={logoBgColor}
         logoBorderRadius={logoBorderRadius}
-  logoShape={logoShape}
-  logoBorderColor={logoBorderColor}
-  logoBorderWidth={logoBorderWidth}
+        logoShape={logoShape}
+        logoBorderColor={logoBorderColor}
+        logoBorderWidth={logoBorderWidth}
         onGenerated={onGenerated}
       />
     )
