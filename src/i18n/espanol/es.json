@@ -119,7 +119,6 @@
     "cancelIconAria": "Cancelar participación",
     "cancelAria": "Cancelar participación en evento"
   },
-
     
   "schedule": {
    "appointmentSuccess": "Cita solicitada para el bloque {{id}} y la fecha {{date}}",
@@ -138,7 +137,33 @@
     }
   },
   "ok": "Confirmar",
-  "cancel": "Cancelar"
+  "cancel": "Cancelar",
+   "roundtable": {
+    "title": "Rueda de Negocios",
+    "subtitle": "Información sobre la rueda de negocios",
+    
+    "carouselSubtitle": "Selecciona un evento para ver las empresas de la rueda de negocios",
+    "filters": {
+      "activityTitle": "Filtros de Empresa por Actividad / Sub sector",
+      "activityPlaceholder": "Filtrar por Actividad",
+      "subsectorPlaceholder": "Filtrar por Subsector",
+      "productTitle": "Filtros de Productos por Capítulo / Código",
+      "chapterPlaceholder": "Filtrar por Capítulo",
+      "codePlaceholder": "Filtrar por Código"
+    },
+    "company": {
+      "rif": "Rif",
+      "country": "País",
+      "noDescription": "Sin descripción",
+      "noCountry": "No especificada"
+    },
+    "noEvents": {
+      "title": "No se ha registrado en ningún evento.",
+      "subtitle": "Aquí puede ver los eventos disponibles",
+      "button": "Ir a Eventos"
+    }
+  }
+
 
 
 

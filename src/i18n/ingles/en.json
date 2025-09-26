@@ -136,7 +136,34 @@
     }
   },
   "ok": "Confirm",
-  "cancel": "Cancel"
+  "cancel": "Cancel",
+
+  "roundtable": {
+    "title": "Business Roundtable",
+    "subtitle": "Information about the business roundtable",
+    
+    "carouselSubtitle": "Select an event to view the companies in the roundtable",
+    "filters": {
+      "activityTitle": "Company Filters by Activity / Subsector",
+      "activityPlaceholder": "Filter by Activity",
+      "subsectorPlaceholder": "Filter by Subsector",
+      "productTitle": "Product Filters by Chapter / Code",
+      "chapterPlaceholder": "Filter by Chapter",
+      "codePlaceholder": "Filter by Code"
+    },
+    "company": {
+      "rif": "Tax ID",
+      "country": "Country",
+      "noDescription": "No description",
+      "noCountry": "Not specified"
+    },
+    "noEvents": {
+      "title": "You haven't registered for any event.",
+      "subtitle": "Here you can view available events",
+      "button": "Go to Events"
+    }
+  }
+
 
 
 

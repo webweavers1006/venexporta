@@ -13,6 +13,10 @@ import ResultComponent from '@src/components/molecules/result/MoleculesResult';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router';
 import { useAssociatedCompanies } from './hooks/useAssociatedCompanies';
+
+//✅Components traduction
+import { useTranslation } from "react-i18next";
+
 /**
  * Componente Companies
  * Muestra los eventos de la rueda de negocios y permite filtrar y visualizar empresas asociadas a cada evento.
@@ -42,10 +46,12 @@ const Companies = () => {
     handleItemClick,
     filteredCompanies,
   } = useAssociatedCompanies(idCompany);
+  // Traducción
+    const { t } = useTranslation();
 
   return (
     <>
-      <AtomsPanel title={'Rueda de NegocioS'} subtitle={'Informacion sobre la rueda de negocioS'} />
+      <AtomsPanel title={t("roundtable.title")} subtitle={t("roundtable.subtitle")} />
       {carouselItems.length > 0 ? (
         <>
           <div className="p-5 rounded-2xl md:col-span-2 bg-white mt-4 mb-4 relative">
@@ -59,8 +65,9 @@ const Companies = () => {
             <CompaniesCarousel
               items={carouselItems}
               onItemClick={handleItemClick}
-              title={'Mis eventos'}
-              subtitle={'Selecciona un evento para ver las empresas de la rueda de negocios'}
+              title={t("home.carousel.title")}
+              subtitle={t("roundtable.carouselSubtitle")}
+
               aria-label="Carrusel de eventos"
             />
           </div>
@@ -89,24 +96,24 @@ const Companies = () => {
                         className={companiesHelps.filtersCompany.className}
                         content={companiesHelps.filtersCompany.content}
                       />
-                      <p className="text-md font-semibold text-zinc-900">Filtros de Empresa por Actividad / Sub sector</p>
+                      <p className="text-md font-semibold text-zinc-900">{t("roundtable.filters.activityTitle")}</p>
                     </div>
                     <div className="mb-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
                       <Select
-                        placeholder="Filtrar por Actividad"
+                        placeholder={t("roundtable.filters.activityPlaceholder")}
                         onChange={setSelectedActivity}
                         allowClear
-                        aria-label="Filtrar por Actividad"
+                        aria-label={t("roundtable.filters.activityPlaceholder")}
                         options={[
                           ...new Set(associatedCompanies.flatMap(item => item.actividades)),
                         ].map(activity => ({ value: activity, label: activity }))}
                         className="w-full"
                       />
                       <Select
-                        placeholder="Filtrar por Subsector"
+                        placeholder={t("roundtable.filters.subsectorPlaceholder")}
                         onChange={setSelectedSubSector}
                         allowClear
-                        aria-label="Filtrar por Subsector"
+                        aria-label={t("roundtable.filters.subsectorPlaceholder")}
                         options={[
                           ...new Set(associatedCompanies.flatMap(item => item.sub_sectores)),
                         ].map(subSector => ({ value: subSector, label: subSector }))}
@@ -120,25 +127,25 @@ const Companies = () => {
                         className={companiesHelps.filtersProducts.className}
                         content={companiesHelps.filtersProducts.content}
                       />
-                      <p className="text-md font-semibold text-zinc-900">Filtros de Productos por Capitulo / Codigo</p>
+                      <p className="text-md font-semibold text-zinc-900">{t("roundtable.filters.productTitle")}</p>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
                       <Select
-                        placeholder="Filtrar por Capítulo"
+                        placeholder={t("roundtable.filters.chapterPlaceholder")}
                         onChange={setSelectedChapter}
                         allowClear
-                        aria-label="Filtrar por Capítulo"
+                        aria-label={t("roundtable.filters.chapterPlaceholder")}
                         options={[
                           ...new Set(associatedCompanies.flatMap(item => item.capitulos || [])),
                         ].map(chapter => ({ value: chapter, label: chapter }))}
                         className="w-full"
                       />
                       <Input
-                        placeholder="Filtrar por Código"
+                        placeholder={t("roundtable.filters.codePlaceholder")}
                         value={selectedCode}
                         onChange={e => setSelectedCode(e.target.value)}
                         allowClear
-                        aria-label="Filtrar por Código"
+                        aria-label={t("roundtable.filters.codePlaceholder")}
                         className="w-full"
                       />
                     </div>
@@ -170,8 +177,9 @@ const Companies = () => {
                   ),
                   description: (
                     <>
-                      <p>Rif: {item.rif || 'Sin descripción'}</p>
-                      <p>Pais: {item.pais || 'No especificada'}</p>
+                      <p>{t("roundtable.company.rif")}: {item.rif || t("roundtable.company.noDescription")}</p>
+                      <p>{t("roundtable.company.country")}: {item.pais || t("roundtable.company.noCountry")}</p>
+
                     </>
                   ),
                 })}
@@ -185,11 +193,11 @@ const Companies = () => {
           <ResultComponent
             config={{
               status: 'warning',
-              title: 'No se ha registrado en ningun evento.',
-              subTitle: 'Aqui puede ver los eventos disponibles',
+              title:  t("roundtable.noEvents.title"),
+              subTitle: t("roundtable.noEvents.subtitle"),
               links: [
                 <Button key="eventos" onClick={() => navigate('/event/feed')} aria-label="Ir a Eventos">
-                  Ir a Eventos
+                  {t("roundtable.noEvents.button")}
                 </Button>,
               ],
               messages: [],

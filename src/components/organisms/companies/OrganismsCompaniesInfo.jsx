@@ -52,7 +52,7 @@ export default function CompaniesInfo({ companyInfo, className = "", docs }) {
   return (
     <>
       <Card className={`w-full ${className}`}>
-        <h3 className="text-lg mb-4 font-semibold text-zinc-700 text-center">Informacion de Empresa</h3>
+        <h3 className="text-lg mb-4 font-semibold text-zinc-700 text-center">Información de Empresa</h3>
         <CardContent className="pt-4">
           <div className="space-y-6">
             <div className="space-y-4">
