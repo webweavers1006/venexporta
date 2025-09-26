@@ -33,6 +33,8 @@ const Reports = lazy(() => import('@pages/admin/reportes/Reportes'));
 const ReportesCitas = lazy(() => import('@pages/admin/reportes/ReportesCitas'));
 const ReportsDinamics = lazy(() => import('@pages/admin/reportes/ReportesDinamicos'));
 const ReportesDinamicosEventosActividad = lazy(() => import('@pages/admin/reportes/ReportesDinamicosEventosActividad'));
+const HomePage = lazy(() => import('@pages/homepage/HomePage'));
+const QrDinamic = lazy(() => import('@pages/admin/QR/Qr'));
 
 const RoutesApp = () => {
     const idPais = useStore(appStore, state => state.idPais);
@@ -56,6 +58,7 @@ const RoutesApp = () => {
                     <Route path="activities" element={<PrivateRoute component={registerActivities} />} />
                     <Route path="myevent/feed" element={<PrivateRoute component={MyFeedEvent} />} />
                     <Route path="event/feed/:id" element={<PrivateRoute component={EventInfo} />} />
+                    <Route path="qr/dinamic" element={<PrivateRoute component={QrDinamic} />} />
                     {/* idPais === 95 && */ (
                         <>
                             <Route path="product/register" element={<PrivateRoute component={RegisterProducts} />} />
@@ -71,6 +74,7 @@ const RoutesApp = () => {
                     <Route path="list/companies/:id" element={<PrivateRoute component={ListCompaniesOnly} />} />
                     <Route path="roundtable/companies/:id/:event/:renderSchedule" element={<PrivateRoute component={CompaniesOnly} />} />
                 </Route>
+                <Route path="/home" element={<HomePage />} />
                 <Route path="login" element={<CenterLoginRegister />} />
                 <Route path="forgot-password" element={<ForgotPassword />} />
                 <Route path="signup" element={<RegisterForm />} />

@@ -2,7 +2,7 @@
 
 ## Descripción
 
-El componente `Home` es la pantalla principal de inicio para usuarios autenticados en Venexporta. Muestra un panel de bienvenida, un carrusel de eventos asociados a la empresa y un módulo de horarios. Si el usuario no está registrado en ningún evento, se muestra un mensaje de advertencia y un botón para navegar a la sección de eventos.
+El componente `Home` es la pantalla principal de inicio para usuarios autenticados en Marca Pais. Muestra un panel de bienvenida, un carrusel de eventos asociados a la empresa y un módulo de horarios. Si el usuario no está registrado en ningún evento, se muestra un mensaje de advertencia y un botón para navegar a la sección de eventos.
 
 ## Props
 

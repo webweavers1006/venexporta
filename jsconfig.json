@@ -13,8 +13,10 @@
       "@src/*": ["./*"], // Alias para la carpeta 'pages'
       "@context/*": ["context/*"], // Alias para la carpeta 'pages'
       "@lib/*": ["lib/*"], // Alias para la carpeta 'pages'
+      "@config/*": ["config/*"], // Alias para la carpeta 'pages'
       "@/*": ["./src/*"],// Alias para la carpeta 'pages'
       "@store/*": ["store/*"], // Alias para la carpeta 'pages'
+      "@hooks/*": ["hooks/*"], // Alias para la carpeta 'pages'
 
       // ... otros alias para tus carpetas
     }
