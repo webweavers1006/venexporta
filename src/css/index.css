@@ -319,3 +319,19 @@ div.ant-table.css-dev-only-do-not-override-1yacf91{
 .animate-combo-drift-2 { animation: drift-2 9.5s ease-in-out infinite, fade-pulse 10s ease-in-out infinite; }
 .animate-combo-float-arc { animation: float-arc 7.5s ease-in-out infinite, fade-pulse 10s ease-in-out infinite; }
 .animate-combo-spin { animation: spin-slow 24s linear infinite, fade-pulse 10s ease-in-out infinite; }
+
+/* Pulso para puntos circulares (crece y se reduce) */
+@keyframes pulse-dot {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.6); opacity: 0.95; }
+}
+
+.animate-pulse-dot {
+  animation: pulse-dot 1.6s ease-in-out infinite;
+  transform-origin: center;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-pulse-dot { animation: none !important; }
+}

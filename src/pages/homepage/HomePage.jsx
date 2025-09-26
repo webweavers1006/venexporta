@@ -1,84 +1,185 @@
 import logo from '@assets/logo/isologoA.png';
-import { Box, Building2, Cog } from 'lucide-react';
+import mask3 from '@assets/logo/mask3.png';
+import heroRight from '@assets/banner/banner.webp';
+import { ArrowRight, LogIn, UserPlus } from 'lucide-react';
+import useSEO from '@hooks/use-seo.js';
+import { SEO_CONFIG } from '@config/seo.js';
 
 const HomePage = () => {
-    return (
-            <main className="relative overflow-hidden min-h-dvh flex flex-col bg-background text-foreground">
-                {/* Fondo decorativo */}
-                <div aria-hidden="true" className="pointer-events-none absolute inset-0">
-                    {/* Blobs de color */}
-                    <div className="absolute -top-32 -left-32 w-80 h-80 rounded-full bg-primary/25 blur-3xl animate-pulse" />
-                    <div className="absolute top-1/3 -right-24 w-96 h-96 rounded-full bg-green/30 blur-3xl animate-[pulse_6s_ease-in-out_infinite]" style={{animationDelay:'1.5s'}} />
-                    <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-radial from-primary/10 via-background to-background opacity-70" />
+    useSEO({
+        title: SEO_CONFIG.defaults.title,
+        description: SEO_CONFIG.defaults.description,
+        canonical: SEO_CONFIG.domain,
+        og: {
+            type: 'website',
+            title: SEO_CONFIG.defaults.title,
+            description: 'Registro simplificado, acceso a eventos y ruedas de negocios globales, y soporte integral para exportadores.',
+            url: SEO_CONFIG.domain,
+            image: SEO_CONFIG.media.ogImage,
+            width: '1200',
+            height: '630',
+            site_name: SEO_CONFIG.siteName,
+            locale: SEO_CONFIG.locale,
+            imageAlt: SEO_CONFIG.media.ogImageAlt,
+        },
+        twitter: {
+            card: 'summary_large_image',
+            title: SEO_CONFIG.defaults.title,
+            description: 'Impulsa tus exportaciones con registro simplificado, eventos y soporte integral.',
+            image: SEO_CONFIG.media.ogImage,
+            site: SEO_CONFIG.twitterSite || undefined,
+        },
+        jsonLd: {
+            '@context': 'https://schema.org',
+            '@type': 'Organization',
+            name: SEO_CONFIG.organization.name,
+            url: SEO_CONFIG.domain,
+            logo: SEO_CONFIG.organization.logo,
+            sameAs: SEO_CONFIG.organization.sameAs,
+        },
+        jsonLdId: 'org-jsonld'
+    });
 
-                    {/* Íconos decorativos animados */}
-                    <div className="absolute inset-0">
-                        {/* Grid dispersa de íconos pequeños */}
-                            {[
-                                { Icon: Box, className: 'top-20 left-6 md:left-24 animate-combo-drift-1', size: 28, color: 'text-primary/70' },
-                                { Icon: Building2, className: 'top-48 left-1/5 animate-combo-drift-2', size: 26, color: 'text-secondary/70' },
-                                { Icon: Cog, className: 'top-16 right-1/4 animate-combo-float-arc', size: 30, color: 'text-primary/60' },
-                                { Icon: Box, className: 'bottom-40 left-10 animate-combo-drift-2', size: 24, color: 'text-secondary/60' },
-                                { Icon: Building2, className: 'bottom-28 right-10 animate-combo-drift-1', size: 28, color: 'text-primary/65' },
-                                { Icon: Cog, className: 'top-1/2 left-1/3 animate-combo-float-arc', size: 34, color: 'text-secondary/55' },
-                                { Icon: Box, className: 'top-1/3 right-8 animate-combo-drift-2', size: 22, color: 'text-primary/55 hidden md:block' },
-                                { Icon: Building2, className: 'bottom-1/3 left-1/2 animate-combo-drift-1', size: 24, color: 'text-secondary/65 hidden md:block' },
-                                { Icon: Cog, className: 'bottom-16 left-1/3 animate-combo-spin', size: 26, color: 'text-primary/50 hidden md:block' },
-                                { Icon: Box, className: 'top-56 right-1/3 animate-combo-drift-1', size: 20, color: 'text-secondary/60 hidden md:block' },
-                                { Icon: Building2, className: 'top-10 right-12 animate-combo-drift-2', size: 23, color: 'text-primary/55 hidden md:block' },
-                                { Icon: Cog, className: 'bottom-8 right-1/4 animate-combo-float-arc', size: 32, color: 'text-secondary/60 hidden md:block' },
-                                { Icon: Box, className: 'top-2/3 left-8 animate-combo-drift-2', size: 18, color: 'text-primary/50 hidden md:block' },
-                                { Icon: Building2, className: 'top-1/4 right-1/5 animate-combo-drift-1', size: 21, color: 'text-secondary/55 hidden md:block' },
-                            ].map(({ Icon, className, size, color }, idx) => (
-                                <div
-                                    key={idx}
-                                    className={`absolute ${className} opacity-35 md:opacity-45 pointer-events-none`}
-                                    style={{ animationDelay: `${(idx % 7) * 0.9}s` }}
-                                >
-                                    <Icon size={size} className={`${color} [stroke-width:1.25] drop-shadow-sm`} />
-                                </div>
-                            ))}
-                    </div>
-                </div>
-                {/* Header (más compacto) */}
-                <header className="w-full py-2 md:py-3 flex items-center justify-center border-b border-border/70 bg-card/70 backdrop-blur-sm supports-[backdrop-filter]:bg-card/50">
-                    <img src={logo} alt="Logo" className="h-8 md:h-10 w-auto drop-shadow-sm" loading="lazy" />
-            </header>
+    return (
+        <main
+            className="relative overflow-hidden min-h-dvh flex flex-col bg-background text-foreground bg-no-repeat bg-cover bg-center"
+            style={{ backgroundImage: `url(${SEO_CONFIG.media.bgHero})` }}
+        >
+                        {/* SEO handled via useSEO hook */}
+            {/* Fondo con superposición para legibilidad */}
+            <div aria-hidden="true" className="pointer-events-none absolute inset-0">
+                {/* Scrim oscuro para mejorar contraste en modo claro (y sutil en dark) */}
+                <div className="absolute inset-0 bg-black/40 dark:bg-black/20" />
+                {/* Película superior con degradado de primary a green */}
+                <div className="absolute inset-0 bg-gradient-to-tr from-primary/25 via-primary/10 to-green/25" />
+                {/* Degradado vertical suave para reforzar contraste en la parte inferior */}
+                <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/20 to-black/65 dark:from-background/10 dark:via-transparent dark:to-background/55" />
+            </div>
 
             {/* Hero */}
-            <section className="relative flex flex-1 items-center justify-center px-6">
-                <div className="max-w-2xl mx-auto text-center space-y-8 relative z-10">
-                    <h1 className="text-4xl md:text-5xl font-semibold tracking-tight">
-                        Sistema de <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Venexporta</span>
-                    </h1>
-                    <p className="text-muted-foreground text-lg leading-relaxed">
-                        La Agencia de Promoción de Exportaciones es la iniciativa estratégica del Gobierno de Venezuela para diversificar la economía nacional a través del fortalecimiento y promoción de exportaciones no petroleras.
-                    </p>
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                        <a
-                            href="/login"
-                            className="inline-flex items-center justify-center rounded-md bg-primary text-primary-foreground px-8 py-3 text-sm font-medium shadow hover:opacity-90 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring order-1"
-                        >
-                            Iniciar sesión
-                        </a>
-                        <a
-                            href="/register"
-                            className="inline-flex items-center justify-center rounded-md bg-green text-primary px-8 py-3 text-sm font-medium shadow hover:opacity-90 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring order-2"
-                        >
-                            Crear cuenta
-                        </a>
+                <section className="relative flex flex-1 flex-col items-stretch px-6 pt-4 md:pt-6">
+                <div className="max-w-6xl mx-auto w-full relative z-10">
+                    {/* Logo centrado sobre ambas columnas */}
+                        <div className="w-full flex justify-center mb-6 md:mb-8 lg:mb-10">
+                        <img
+                            src={mask3}
+                            alt="Logo Venexporta"
+                            className=" mask mask-squircle size-25 md:h-20 w-auto mx-auto drop-shadow-[0_2px_8px_rgba(0,0,0,0.35)]"
+                            loading="lazy"
+                        />
+                    </div>
+                </div>
+
+                {/* Contenedor que centra verticalmente la sección principal bajo el logo */}
+                <div className="flex-1 flex items-center justify-center">
+                    <div className="max-w-6xl mx-auto w-full relative z-10">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                    {/* Columna izquierda: contenido */}
+                    <div className="text-center md:text-left space-y-8">
+                        {/* Brand pill con logo y acento bg-green */}
+                        <div className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-medium border border-border/70 bg-card/70 backdrop-blur supports-[backdrop-filter]:bg-card/50 shadow-sm">
+                            <span className="relative inline-flex items-center justify-center h-6 w-6 rounded-full ring-1 ring-border/60 bg-green/15">
+                                <img src={logo} alt="Logo" className="h-4 w-4 object-contain" loading="lazy" />
+                            </span>
+                            <span className="h-2 w-2 rounded-full bg-green" />
+                            <span>Plataforma de gestión y promoción exportadora</span>
+                        </div>
+
+                        <h1 className="text-white text-4xl md:text-5xl font-semibold tracking-tight drop-shadow-[0_3px_12px_rgba(0,0,0,0.55)]">
+                            Sistema de Venexporta
+                        </h1>
+                        <p className="text-white text-lg leading-relaxed md:max-w-[46ch] md:mx-0 mx-auto drop-shadow-[0_2px_8px_rgba(0,0,0,0.55)]">
+                            La Agencia de Promoción de Exportaciones es la iniciativa estratégica del Gobierno de Venezuela para diversificar la economía nacional a través del fortalecimiento y promoción de exportaciones no petroleras.
+                        </p>
+                        <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+                            {/* Botón 1: Iniciar sesión (ahora con estilo verde del segundo botón) */}
+                            <a
+                                href="/login"
+                                className="group inline-flex items-center justify-center rounded-lg bg-green bg-gradient-to-r from-green to-[color-mix(in_oklab,hsl(var(--green))_85%,black)] text-foreground dark:text-primary-foreground px-8 py-3 text-sm font-semibold shadow-lg shadow-green/20 hover:shadow-green/30 transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green/40 order-1"
+                            >
+                                <LogIn size={18} className="mr-2 opacity-90" />
+                                Iniciar sesión
+                                <ArrowRight size={18} className="ml-2 translate-x-0 group-hover:translate-x-0.5 transition-transform" />
+                            </a>
+
+                            {/* Botón 2: Crear cuenta (ahora con estilo primary del primer botón) */}
+                            <a
+                                href="/register"
+                                className="group inline-flex items-center justify-center rounded-lg bg-primary text-primary-foreground px-8 py-3 text-sm font-medium shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 order-2"
+                            >
+                                <UserPlus size={18} className="mr-2 opacity-90" />
+                                Crear cuenta
+                                <ArrowRight size={18} className="ml-2 translate-x-0 group-hover:translate-x-0.5 transition-transform" />
+                            </a>
+                        </div>
+                    </div>
+
+                    {/* Columna derecha: Imagen solicitada */}
+                    <div className="hidden md:flex items-center justify-center">
+                        <img
+                            src={heroRight}
+                            alt="Imagen destacada de Venexporta"
+                            className="w-full max-w-[560px] aspect-[16/10] object-cover rounded-2xl border border-border/60 shadow-lg"
+                            width="1600"
+                            height="1000"
+                            loading="eager"
+                            fetchpriority="high"
+                            decoding="async"
+                        />
+                    </div>
+                    </div>
+                    </div>
+                </div>
+
+                {/* Features debajo de las secciones */}
+                <div className="max-w-6xl mx-auto w-full relative z-10 mb-6">
+                    <div className="mt-8 md:mt-10 lg:mt-12">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+                            {/* Card 1 */}
+                            <div className="group rounded-2xl bg-white/10 supports-[backdrop-filter]:bg-white/10 dark:bg-white/5 backdrop-blur-md shadow-lg shadow-black/10 p-6 transition-colors hover:bg-white/15 supports-[backdrop-filter]:hover:bg-white/15">
+                                <div className="w-full flex justify-center mb-4">
+                                    <span className="relative inline-flex items-center justify-center h-10 w-10 rounded-full bg-secondary/15">
+                                        <span className="h-3 w-3 rounded-full bg-secondary animate-pulse-dot" />
+                                    </span>
+                                </div>
+                                <h3 className="text-center text-base font-semibold text-white">Registro Simplificado</h3>
+                                <p className="text-center text-sm text-white mt-1">Proceso ágil y digital</p>
+                            </div>
+
+                            {/* Card 2 */}
+                            <div className="group rounded-2xl bg-white/10 supports-[backdrop-filter]:bg-white/10 dark:bg-white/5 backdrop-blur-md shadow-lg shadow-black/10 p-6 transition-colors hover:bg-white/15 supports-[backdrop-filter]:hover:bg-white/15">
+                                <div className="w-full flex justify-center mb-4">
+                                    <span className="relative inline-flex items-center justify-center h-10 w-10 rounded-full bg-green/15">
+                                        <span className="h-3 w-3 rounded-full bg-green animate-pulse-dot" />
+                                    </span>
+                                </div>
+                                <h3 className="text-center text-base font-semibold text-white">Acceso a eventos</h3>
+                                <p className="text-center text-sm text-white mt-1">y ruedas de negocios globales</p>
+                            </div>
+
+                            {/* Card 3 */}
+                            <div className="group rounded-2xl bg-white/10 supports-[backdrop-filter]:bg-white/10 dark:bg-white/5 backdrop-blur-md shadow-lg shadow-black/10 p-6 transition-colors hover:bg-white/15 supports-[backdrop-filter]:hover:bg-white/15">
+                                <div className="w-full flex justify-center mb-4">
+                                    <span className="relative inline-flex items-center justify-center h-10 w-10 rounded-full bg-secondary/15">
+                                        <span className="h-3 w-3 rounded-full bg-secondary animate-pulse-dot" />
+                                    </span>
+                                </div>
+                                <h3 className="text-center text-base font-semibold text-white">Soporte Integral</h3>
+                                <p className="text-center text-sm text-white mt-1">Acompañamiento completo</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
 
-            {/* Sección de features eliminada a solicitud del usuario */}
-
             {/* Footer */}
-            <footer className="w-full py-3 text-center border-t border-border bg-card/50 backdrop-blur-sm">
-                <p className="text-muted-foreground/80 text-[11px] md:text-xs font-normal tracking-tight">
-                    &copy; {new Date().getFullYear()} Hecho en Venezuela. Todos los derechos reservados.
-                </p>
-            </footer>
+           {/*  <footer className="relative z-20 w-full border-t border-border/70 bg-gradient-to-b from-background/60 via-background/70 to-background/90 backdrop-blur px-6 py-4">
+                <div className="max-w-6xl mx-auto text-center">
+                    <p className="text-muted-foreground/90 text-[12px] md:text-sm font-normal">
+                        &copy; {new Date().getFullYear()} Hecho en Venezuela. Todos los derechos reservados.
+                    </p>
+                </div>
+            </footer> */}
         </main>
     );
 };
