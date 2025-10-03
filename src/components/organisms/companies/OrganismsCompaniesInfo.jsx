@@ -6,7 +6,13 @@ import { Modal } from "antd";
 import { File } from "lucide-react";
 import { getDropboxSharedLink } from "@lib/api/dropboxApi";
 
+
+//✅Components traduction
+import { useTranslation } from "react-i18next";
+
 export default function CompaniesInfo({ companyInfo, className = "", docs }) {
+  // Traducción
+  const { t } = useTranslation();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState("");
   const [modalTitle, setModalTitle] = useState("");
@@ -52,7 +58,7 @@ export default function CompaniesInfo({ companyInfo, className = "", docs }) {
   return (
     <>
       <Card className={`w-full ${className}`}>
-        <h3 className="text-lg mb-4 font-semibold text-zinc-700 text-center">Información de Empresa</h3>
+        <h3 className="text-lg mb-4 font-semibold text-zinc-700 text-center">{t("companyDetails.heading")}</h3>
         <CardContent className="pt-4">
           <div className="space-y-6">
             <div className="space-y-4">
@@ -73,21 +79,21 @@ export default function CompaniesInfo({ companyInfo, className = "", docs }) {
               <Separator />
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-start">
-                <div className="font-medium">Nombre de la Empresa</div>
+                <div className="font-medium">{t("companyDetails.nameLabel")}</div>
                 <div className="md:col-span-2">{(companyInfo.empresa || "No especificado").toUpperCase()}</div>
               </div>
 
               <Separator />
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-start">
-                <div className="font-medium">RIF</div>
+                <div className="font-medium">{t("companyDetails.rifLabel")}</div>
                 <div className="md:col-span-2">{(companyInfo.rif || "No especificado").toUpperCase()}</div>
               </div>
 
               <Separator />
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-start">
-                <div className="font-medium">Actividades Económicas</div>
+                <div className="font-medium">{t("companyDetails.activitiesLabel")}</div>
                 <div
                   className="md:col-span-2 text-sm cursor-pointer"
                   onClick={() =>
@@ -99,7 +105,7 @@ export default function CompaniesInfo({ companyInfo, className = "", docs }) {
                     : (companyInfo.economicActivities || "No especificado")
                   ).toUpperCase()}
                   {((companyInfo.economicActivities || "No especificado").length > 100) && (
-                    <span className="text-blue-500">Ver más</span>
+                    <span className="text-blue-500">{t("companyDetails.seeMore")}</span>
                   )}
                 </div>
               </div>
@@ -107,7 +113,7 @@ export default function CompaniesInfo({ companyInfo, className = "", docs }) {
               <Separator />
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-start">
-                <div className="font-medium">Sub Sectores Económicos</div>
+                <div className="font-medium">{t("companyDetails.subsectorsLabel")}</div>
                 <div
                   className="md:col-span-2 text-sm cursor-pointer"
                   onClick={() =>
@@ -119,7 +125,7 @@ export default function CompaniesInfo({ companyInfo, className = "", docs }) {
                     : (companyInfo.subEconomicSectors || "No especificado")
                   ).toUpperCase()}
                   {((companyInfo.subEconomicSectors || "No especificado").length > 100) && (
-                    <span className="text-blue-500">Ver más</span>
+                    <span className="text-blue-500">{t("companyDetails.seeMore")}</span>
                   )}
                 </div>
               </div>
@@ -127,7 +133,7 @@ export default function CompaniesInfo({ companyInfo, className = "", docs }) {
               <Separator />
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-start">
-                <div className="font-medium">País</div>
+                <div className="font-medium">{t("companyDetails.countryLabel")}</div>
                 <div className="md:col-span-2">{(companyInfo.pais || "No especificado").toUpperCase()}</div>
               </div>
 
@@ -136,7 +142,7 @@ export default function CompaniesInfo({ companyInfo, className = "", docs }) {
               {documents.length > 0 && (
                 <>
                   <Separator />
-                  <div className=" text-center font-medium mb-2 mt-4">Documentos</div>
+                  <div className=" text-center font-medium mb-2 mt-4">{t("companyDetails.documentsLabel")}</div>
                   <div className="flex flex-row justify-center gap-3 mt-2 bg-[#b2e713] p-4 rounded-2xl">
                     {documents.map((doc, idx) => (
                       <div key={doc.id_documento || idx} className="flex flex-col items-center">
@@ -144,7 +150,7 @@ export default function CompaniesInfo({ companyInfo, className = "", docs }) {
                           href={dropboxLinks[doc.id_documento] || "#"}
                           target="_blank"
                           rel="noopener noreferrer"
-                          title={doc.nombre || "Documento"} 
+                          title={doc.nombre || t("companyDetails.documentFallback")} 
                           className="bg-primary p-2 rounded-full hover:bg-gray-300 transition-colors"
                           style={{ pointerEvents: dropboxLinks[doc.id_documento] ? "auto" : "none", opacity: dropboxLinks[doc.id_documento] ? 1 : 0.5 }}
                         >

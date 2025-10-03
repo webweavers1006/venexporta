@@ -20,15 +20,20 @@ import CompaniesInfo from '@components/organisms/companies/OrganismsCompaniesInf
 import ScheduleModule from '@components/organisms/schedule/OrganismsScheduleModule';
 import MoleculesList from '@components/molecules/MoleculesList';
 
+//✅Components traduction
+import { useTranslation } from "react-i18next";
+
 /**
  * Renderiza la lista de productos de la empresa.
  * @param {Array} productsCompany - Lista de productos de la empresa.
  * @returns {JSX.Element}
  */
 export function ProductsList({ productsCompany }) {
+  // Traducción
+    const { t } = useTranslation();
   return (
     <div className="bg-white pt-5 pb-5 px-5 rounded-2xl md:col-span-2 mt-4">
-      <h2 className="text-lg font-semibold text-zinc-700 text-center mb-4">Productos</h2>
+      <h2 className="text-lg font-semibold text-zinc-700 text-center mb-4">{t("company.products.title")}</h2>
       <MoleculesList
         data={productsCompany}
         onFilterChange={() => {}}
@@ -41,8 +46,8 @@ export function ProductsList({ productsCompany }) {
                 ? 'https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png'
                 : item.img
             }
-            alt={item.nombre_producto || 'Imagen de producto'}
-            aria-label="Imagen del producto"
+            alt={item.nombre_producto || t("company.products.imageAlt")}
+            aria-label={t("company.products.imageAria")}
           />
         )}
         renderItemMeta={(item) => ({
@@ -54,9 +59,9 @@ export function ProductsList({ productsCompany }) {
           title: <p>{item.nombre_producto}</p>,
           description: (
             <>
-              <p>Código Arancelario: {item.codigo_arancelario || 'Sin código'}</p>
-              <p>Capitulo: {item.capitulo || 'sin capítulo'}</p>
-              <p>Descripción de la mercancia: {item.descripcion || 'Sin descripción'}</p>
+              <p>{t("company.products.code")}: {item.codigo_arancelario || t("company.products.noCode")}</p>
+              <p>{t("company.products.chapter")}: {item.capitulo || t("company.products.noChapter")}</p>
+              <p>{t("company.products.description")}: {item.descripcion || t("company.products.noDescription")}</p>
             </>
           ),
         })}
@@ -88,9 +93,11 @@ function CompaniesOnlyView({
   companyDocuments,
   productsCompany,
 }) {
+  // Traducción
+    const { t } = useTranslation();
   return (
     <>
-      <AtomsPanel title={"Información de la Empresa"} subtitle={"Detalles de la empresa seleccionada."} />
+      <AtomsPanel title={t("company.info.title")} subtitle={t("company.info.subtitle")} />
       <div className="mt-4 grid grid-cols-1 xl:grid-cols-3 xl:gap-4 gap-y-4">
         {renderSchedule === 'true' && (
           <ScheduleModule

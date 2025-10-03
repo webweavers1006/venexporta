@@ -10,6 +10,8 @@ import MoleculesList from "@components/molecules/MoleculesList";
 import { useAppointments } from "./hooks/useAppointments";
 import { getCompanyImage } from "./helpers/image";
 
+//✅Components traduction
+import { useTranslation } from "react-i18next";
 
 /**
  * @file AppointmentsSend.jsx
@@ -19,6 +21,8 @@ import { getCompanyImage } from "./helpers/image";
  * <AppointmentsSend />
  */
 const AppointmentsSend = () => {
+  // Traducción
+  const { t } = useTranslation();
   const idCompany = useStore(appStore, (state) => state.idCompany);
   const {
     appointmentsData,
@@ -28,7 +32,7 @@ const AppointmentsSend = () => {
 
   return (
     <>
-      <AtomsPanel title="Mis Citas" subtitle="Información de las citas enviadas" />
+      <AtomsPanel title={t("appointmentsPanel.heading")} subtitle={t("appointmentsSent.subheading")} />
       <div className="mt-4">
         <MoleculesList
           data={appointmentsData}
@@ -65,9 +69,9 @@ const AppointmentsSend = () => {
             ),
             description: (
               <>
-                <p>Evento: {item.evento}</p>
-                <p>Fecha Solicitada: {item.fecha_solicitada}</p>
-                <p>Estatus: {item.estatus}</p>
+                <p>{t("appointmentsPanel.event")}: {item.evento}</p>
+                <p>{t("appointmentsPanel.requestedDate")}: {item.fecha_solicitada}</p>
+                <p>{t("appointmentsSent.status")}: {t(`appointmentStatus.${item.estatus.toLowerCase().replace(/\s/g, "_")}`)}</p>
               </>
             ),
           })}
@@ -77,10 +81,10 @@ const AppointmentsSend = () => {
               : [
                   {
                     type: "cancel",
-                    label: "Cancelar",
+                    label: t("cancel"),
                     icon: <SquareCheckBig />,
                     className: "bg-green/50 text-primary hover:bg-green/80",
-                    "aria-label": "Cancelar cita",
+                    "aria-label": t("appointmentsSent.cancelAria"),
                     tabIndex: 0,
                   },
                 ]

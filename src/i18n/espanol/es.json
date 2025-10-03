@@ -162,7 +162,67 @@
       "subtitle": "Aquí puede ver los eventos disponibles",
       "button": "Ir a Eventos"
     }
+  },
+
+  "company": {
+    "info": {
+      "title": "Información de la Empresa",
+      "subtitle": "Detalles de la empresa seleccionada."
+    },
+    "products": {
+      "title": "Productos",
+      "imageAlt": "Imagen de producto",
+      "imageAria": "Imagen del producto",
+      "code": "Código Arancelario",
+      "noCode": "Sin código",
+      "chapter": "Capítulo",
+      "noChapter": "Sin capítulo",
+      "description": "Descripción de la mercancía",
+      "noDescription": "Sin descripción"
+    }
+  },
+
+  "companyDetails": {
+    "heading": "Información de Empresa",
+    "nameLabel": "Nombre de la Empresa",
+    "rifLabel": "RIF",
+    "activitiesLabel": "Actividades Económicas",
+    "subsectorsLabel": "Sub Sectores Económicos",
+    "countryLabel": "País",
+    "documentsLabel": "Documentos",
+    "documentFallback": "Documento",
+    "seeMore": "Ver más"
+  },
+
+  "appointmentsPanel": {
+    "heading": "Mis Citas",
+    "subheading": "Información de las citas recibidas",
+    "event": "Evento",
+    "requestedDate": "Fecha Solicitada",
+    "status": "Estatus",
+    "accept": "Aceptar",
+    "reject": "Rechazar",
+    "acceptAria": "Aceptar cita",
+    "rejectAria": "Rechazar cita"
+  },
+
+  "appointmentsSent": {    
+    "subheading": "Información de las citas enviadas",
+    "event": "Evento",
+    "cancelAria": "Cancelar cita"
+  },
+  "appointmentStatus": {
+    "aceptado": "Aceptado",
+    "rechazado": "Rechazado",
+    "en_revision": "En revisión",
+    "pendiente": "Pendiente",
+    "cancelado": "Cancelado"
   }
+
+
+
+
+
 
 
 

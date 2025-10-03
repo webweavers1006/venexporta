@@ -162,7 +162,65 @@
       "subtitle": "Here you can view available events",
       "button": "Go to Events"
     }
+  },
+
+  "company": {
+    "info": {
+      "title": "Company Information",
+      "subtitle": "Details of the selected company."
+    },
+    "products": {
+      "title": "Products",
+      "imageAlt": "Product image",
+      "imageAria": "Product image",
+      "code": "Tariff Code",
+      "noCode": "No code",
+      "chapter": "Chapter",
+      "noChapter": "No chapter",
+      "description": "Product description",
+      "noDescription": "No description"
+    }
+  },
+
+  "companyDetails": {
+    "heading": "Company Information",
+    "nameLabel": "Company Name",
+    "rifLabel": "Tax ID",
+    "activitiesLabel": "Economic Activities",
+    "subsectorsLabel": "Economic Subsectors",
+    "countryLabel": "Country",
+    "documentsLabel": "Documents",
+    "documentFallback": "Document",
+    "seeMore": "See more"
+  },
+
+  "appointmentsPanel": {
+    "heading": "My Appointments",
+    "subheading": "Information about received appointments",
+    "event": "Event",
+    "requestedDate": "Requested Date",
+    "status": "Status",
+    "accept": "Accept",
+    "reject": "Reject",
+    "acceptAria": "Accept appointment",
+    "rejectAria": "Reject appointment"
+  },
+
+  "appointmentsSent": {   
+    "subheading": "Information about sent appointments",
+    "status": "Status",    
+    "cancelAria": "Cancel appointment"
+  },
+  "appointmentStatus": {
+    "aceptado": "Accepted",
+    "rechazado": "Rejected",
+    "en_revision": "Under Review",
+    "pendiente": "Pending",
+    "cancelado": "Cancelled"
   }
+
+
+
 
 
 

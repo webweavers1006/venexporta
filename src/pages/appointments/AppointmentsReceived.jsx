@@ -10,6 +10,8 @@ import MoleculesList from "@components/molecules/MoleculesList";
 import { useAppointments } from "./hooks/useAppointments";
 import { getCompanyImage } from "./helpers/image";
 
+//✅Components traduction
+import { useTranslation } from "react-i18next";
 
 /**
  * @file AppointmentsReceived.jsx
@@ -19,6 +21,8 @@ import { getCompanyImage } from "./helpers/image";
  * <AppointmentsReceived />
  */
 const AppointmentsReceived = () => {
+  // Traducción
+    const { t } = useTranslation();
   const idCompany = useStore(appStore, (state) => state.idCompany);
   const {
     appointmentsData,
@@ -28,7 +32,7 @@ const AppointmentsReceived = () => {
 
   return (
     <>
-      <AtomsPanel title="Mis Citas" subtitle="Información de las citas recibidas" />
+      <AtomsPanel title={t("appointmentsPanel.heading")} subtitle={t("appointmentsPanel.subheading")} />
       <div className="mt-4">
         <MoleculesList
           data={appointmentsData}
@@ -79,9 +83,9 @@ const AppointmentsReceived = () => {
             ),
             description: (
               <>
-                <p>Evento: {item.evento}</p>
-                <p>Fecha Solicitada: {item.fecha_solicitada}</p>
-                <p>Estatus: {item.estatus}</p>
+                <p>{t("appointmentsPanel.event")}: {item.evento}</p>
+                <p>{t("appointmentsPanel.requestedDate")}: {item.fecha_solicitada}</p>
+                <p>{t("appointmentsPanel.status")}: {t(`appointmentStatus.${item.estatus.toLowerCase().replace(/\s/g, "_")}`)}</p>
               </>
             ),
           })}
@@ -91,10 +95,10 @@ const AppointmentsReceived = () => {
               : [
                   {
                     type: "reject",
-                    label: "Rechazar",
+                    label: t("appointmentsPanel.reject"),
                     icon: <SquareX />,
                     className: "bg-zinc-300 text-black hover:text-black hover:bg-zinc-400/75",
-                    "aria-label": "Rechazar cita",
+                    "aria-label": t("appointmentsPanel.rejectAria"),
                     tabIndex: 0,
                   },
                   {
@@ -102,7 +106,7 @@ const AppointmentsReceived = () => {
                     label: "Aceptar",
                     icon: <SquareCheckBig />,
                     className: "bg-green/50 text-primary hover:bg-green/80",
-                    "aria-label": "Aceptar cita",
+                    "aria-label": t("appointmentsPanel.acceptAria"),
                     tabIndex: 0,
                   },
                 ]
