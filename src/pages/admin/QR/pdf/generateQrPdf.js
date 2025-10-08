@@ -42,26 +42,26 @@ export async function generateQrPdf(listElement, items = [], options = {}) {
       headerMaxHeight = 25, // mm
       headerSpacing = 6, // mm debajo del encabezado
       title, // no se usa si hay imagen, queda por si se necesita
-  // Control del tamaño del QR
-  qrScale = 0.6, // factor para reducir el tamaño respecto al área disponible
-  qrSide, // tamaño fijo del lado del QR en mm (opcional)
-  qrMaxSide, // tope máximo del lado del QR en mm (opcional)
-  minQrSide = 40, // tamaño mínimo del lado del QR en mm
-  // Sección de evento (imagen + título)
-  eventTitle, // string centrado bajo el banner
-  eventImageSrc, // ruta/URL de imagen del evento
-  eventImageDataUrl, // alternativa directa como dataURL
-  eventImageMaxWidth = 40, // mm
-  eventImageMaxHeight = 40, // mm
-  eventImageCornerRadius = 6, // mm
-  eventImageSpacing = 4, // mm entre imagen y título
-  eventSectionSpacing = 6, // mm entre banner y la sección del evento
-  eventTitleFontSize = 16, // pt
-  eventImageMasked = false, // si true aplica máscara (squircle); por defecto sin redondeo
-  eventTitleColor = '#6f0650', // color del título del evento
-  pageFormat = 'a4',
-  pageOrientation = 'portrait',
-    } = options;
+      // Control del tamaño del QR
+      qrScale = 0.6, // factor para reducir el tamaño respecto al área disponible
+      qrSide, // tamaño fijo del lado del QR en mm (opcional)
+      qrMaxSide, // tope máximo del lado del QR en mm (opcional)
+      minQrSide = 40, // tamaño mínimo del lado del QR en mm
+      // Sección de evento (imagen + título)
+      eventTitle, // string centrado bajo el banner
+      eventImageSrc, // ruta/URL de imagen del evento
+      eventImageDataUrl, // alternativa directa como dataURL
+      eventImageMaxWidth = 40, // mm
+      eventImageMaxHeight = 40, // mm
+      eventImageCornerRadius = 6, // mm
+      eventImageSpacing = 4, // mm entre imagen y título
+      eventSectionSpacing = 6, // mm entre banner y la sección del evento
+      eventTitleFontSize = 16, // pt
+      eventImageMasked = false, // si true aplica máscara (squircle); por defecto sin redondeo
+      eventTitleColor = '#6f0650', // color del título del evento
+      pageFormat = 'a4',
+      pageOrientation = 'portrait',
+        } = options;
 
     // Nota: todas las medidas del layout están en mm, por eso mantenemos unit: 'mm'
     const doc = new jsPDF({ orientation: pageOrientation, unit: 'mm', format: pageFormat });

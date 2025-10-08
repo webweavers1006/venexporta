@@ -44,9 +44,13 @@ function EventRequests() {
       />
       <div className='p-5 rounded-2xl md:col-span-2 bg-white mt-4 mb-4'>
         <CompaniesCarousel
+          title="Eventos Disponibles"
           items={carouselItems}
           onItemClick={handleItemClick}
           aria-label="Carrusel de eventos"
+          pageSize={3}
+          sliderMode
+          swipeThreshold={50}
         />
       </div>
       <div ref={listRef}>

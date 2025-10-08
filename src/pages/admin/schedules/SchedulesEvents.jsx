@@ -128,6 +128,10 @@ const SchedulesEvents = () => {
           items={carouselItems}
           onItemClick={handleItemClick}
           aria-label="Carrusel de eventos"
+          pageSize={3}
+          sliderMode
+          swipeThreshold={50}
+          title="Eventos Disponibles"
         />
       </div>
       <Filtros />

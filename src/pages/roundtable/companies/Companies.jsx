@@ -59,9 +59,12 @@ const Companies = () => {
             <CompaniesCarousel
               items={carouselItems}
               onItemClick={handleItemClick}
-              title={'Mis eventos'}
+              title={'Carrusel de eventos'}
               subtitle={'Selecciona un evento para ver las empresas de la rueda de negocios'}
               aria-label="Carrusel de eventos"
+              pageSize={3}
+              sliderMode
+              swipeThreshold={50}
             />
           </div>
           <div ref={listRef}>

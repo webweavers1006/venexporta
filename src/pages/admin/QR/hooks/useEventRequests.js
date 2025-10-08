@@ -161,7 +161,7 @@ export function useEventRequests() {
     handleFilterChange,
     handleActionClick,
     setAssociatedCompanies,
-  selectedEventName,
-  selectedEventImage,
+    selectedEventName,
+    selectedEventImage,
   };
 }

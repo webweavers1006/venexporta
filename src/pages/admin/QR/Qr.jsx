@@ -94,7 +94,7 @@ const QrDinamic = () => {
     setPdfLoading(true);
     try {
       // Subir calidad temporalmente para el PDF
-      setQrPixelRatio(2);
+      setQrPixelRatio(3);
       // Dar tiempo a que los canvas se redibujen con mayor resolución
       await new Promise(resolve => setTimeout(resolve, 250));
       const ok = await generateQrPdf(listRef?.current, filteredCompanies, {
@@ -108,10 +108,10 @@ const QrDinamic = () => {
       eventImageSpacing: 4,
       eventSectionSpacing: 10,
       eventTitleFontSize: 12,
-      pageFormat: 'a5',
+      pageFormat: [215.9, 279.4],
       
       // Hacer el QR un poco más pequeño
-      qrScale: 0.5,
+      qrScale: 2,
       // Exportar solo los seleccionados si hay selección
       selectedIndexes,
       });
@@ -147,6 +147,10 @@ const QrDinamic = () => {
           items={carouselItems}
           onItemClick={handleItemClick}
           aria-label="Carrusel de eventos"
+          pageSize={3}
+          sliderMode
+          swipeThreshold={50}
+          title="Eventos Disponibles"
         />
       </div>
       <div className='bg-white rounded-xl'>
