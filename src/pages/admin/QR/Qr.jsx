@@ -147,6 +147,10 @@ const QrDinamic = () => {
           items={carouselItems}
           onItemClick={handleItemClick}
           aria-label="Carrusel de eventos"
+          pageSize={3}
+          sliderMode
+          swipeThreshold={50}
+          title="Eventos Disponibles"
         />
       </div>
       <div className='bg-white rounded-xl'>

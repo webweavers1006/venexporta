@@ -1,6 +1,5 @@
 import logo from '@assets/logo/isologoA.png';
 import mask3 from '@assets/logo/mask3.png';
-import heroRight from '@assets/banner/banner.webp';
 import { ArrowRight, LogIn, UserPlus } from 'lucide-react';
 import useSEO from '@hooks/use-seo.js';
 import { SEO_CONFIG } from '@config/seo.js';
@@ -73,61 +72,60 @@ const HomePage = () => {
                 {/* Contenedor que centra verticalmente la sección principal bajo el logo */}
                 <div className="flex-1 flex items-center justify-center">
                     <div className="max-w-6xl mx-auto w-full relative z-10">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-                    {/* Columna izquierda: contenido */}
-                    <div className="text-center md:text-left space-y-8">
-                        {/* Brand pill con logo y acento bg-green */}
-                        <div className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-medium border border-border/70 bg-card/70 backdrop-blur supports-[backdrop-filter]:bg-card/50 shadow-sm">
-                            <span className="relative inline-flex items-center justify-center h-6 w-6 rounded-full ring-1 ring-border/60 bg-green/15">
-                                <img src={logo} alt="Logo" className="h-4 w-4 object-contain" loading="lazy" />
-                            </span>
-                            <span className="h-2 w-2 rounded-full bg-green" />
-                            <span>Plataforma de gestión y promoción exportadora</span>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                            {/* Columna izquierda: contenido */}
+                            <div className="text-center md:text-left space-y-8">
+                                {/* Brand pill con logo y acento bg-green */}
+                                <div className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-medium border border-border/70 bg-card/70 backdrop-blur supports-[backdrop-filter]:bg-card/50 shadow-sm">
+                                    <span className="relative inline-flex items-center justify-center h-6 w-6 rounded-full ring-1 ring-border/60 bg-green/15">
+                                        <img src={logo} alt="Logo" className="h-4 w-4 object-contain" loading="lazy" />
+                                    </span>
+                                    <span className="h-2 w-2 rounded-full bg-green" />
+                                    <span>Plataforma de gestión y promoción exportadora</span>
+                                </div>
+
+                                <h1 className="text-white text-4xl md:text-5xl font-semibold tracking-tight drop-shadow-[0_3px_12px_rgba(0,0,0,0.55)]">
+                                    Sistema de Venexporta
+                                </h1>
+                                <p className="text-white text-lg leading-relaxed md:max-w-[46ch] md:mx-0 mx-auto drop-shadow-[0_2px_8px_rgba(0,0,0,0.55)]">
+                                    La Agencia de Promoción de Exportaciones es la iniciativa estratégica del Gobierno de Venezuela para diversificar la economía nacional a través del fortalecimiento y promoción de exportaciones no petroleras.
+                                </p>
+                                <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+                                    {/* Botón 1: Iniciar sesión (ahora con estilo verde del segundo botón) */}
+                                    <a
+                                        href="/login"
+                                        className="group inline-flex items-center justify-center rounded-lg bg-green bg-gradient-to-r from-green to-[color-mix(in_oklab,hsl(var(--green))_85%,black)] text-foreground dark:text-primary-foreground px-8 py-3 text-sm font-semibold shadow-lg shadow-green/20 hover:shadow-green/30 transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green/40 order-1"
+                                    >
+                                        <LogIn size={18} className="mr-2 opacity-90" />
+                                        Iniciar sesión
+                                        <ArrowRight size={18} className="ml-2 translate-x-0 group-hover:translate-x-0.5 transition-transform" />
+                                    </a>
+
+                                    {/* Botón 2: Crear cuenta (ahora con estilo primary del primer botón) */}
+                                    <a
+                                        href="/register"
+                                        className="group inline-flex items-center justify-center rounded-lg bg-primary text-primary-foreground px-8 py-3 text-sm font-medium shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 order-2"
+                                    >
+                                        <UserPlus size={18} className="mr-2 opacity-90" />
+                                        Crear cuenta
+                                        <ArrowRight size={18} className="ml-2 translate-x-0 group-hover:translate-x-0.5 transition-transform" />
+                                    </a>
+                                </div>
+                            </div>
+
+                            {/* Columna derecha: Imagen solicitada */}
+                            <div className="hidden md:flex items-center justify-center w-full bg-black p-4 rounded-2xl">
+                                <iframe
+                                    src="https://player.vimeo.com/video/1122700078?autoplay=1&loop=1&muted=1&title=0&byline=0&portrait=0"
+                                    title="Vimeo video player"
+                                    frameBorder="0"
+                                    className="w-full aspect-[16/9] object-cover rounded-2xl shadow-lg"
+                                    style={{ width: '100%', height: 'auto', aspectRatio: '16/9' }}
+                                    allow="autoplay; fullscreen; picture-in-picture"
+                                    allowFullScreen
+                                ></iframe>
+                            </div>
                         </div>
-
-                        <h1 className="text-white text-4xl md:text-5xl font-semibold tracking-tight drop-shadow-[0_3px_12px_rgba(0,0,0,0.55)]">
-                            Sistema de Venexporta
-                        </h1>
-                        <p className="text-white text-lg leading-relaxed md:max-w-[46ch] md:mx-0 mx-auto drop-shadow-[0_2px_8px_rgba(0,0,0,0.55)]">
-                            La Agencia de Promoción de Exportaciones es la iniciativa estratégica del Gobierno de Venezuela para diversificar la economía nacional a través del fortalecimiento y promoción de exportaciones no petroleras.
-                        </p>
-                        <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-                            {/* Botón 1: Iniciar sesión (ahora con estilo verde del segundo botón) */}
-                            <a
-                                href="/login"
-                                className="group inline-flex items-center justify-center rounded-lg bg-green bg-gradient-to-r from-green to-[color-mix(in_oklab,hsl(var(--green))_85%,black)] text-foreground dark:text-primary-foreground px-8 py-3 text-sm font-semibold shadow-lg shadow-green/20 hover:shadow-green/30 transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green/40 order-1"
-                            >
-                                <LogIn size={18} className="mr-2 opacity-90" />
-                                Iniciar sesión
-                                <ArrowRight size={18} className="ml-2 translate-x-0 group-hover:translate-x-0.5 transition-transform" />
-                            </a>
-
-                            {/* Botón 2: Crear cuenta (ahora con estilo primary del primer botón) */}
-                            <a
-                                href="/register"
-                                className="group inline-flex items-center justify-center rounded-lg bg-primary text-primary-foreground px-8 py-3 text-sm font-medium shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 order-2"
-                            >
-                                <UserPlus size={18} className="mr-2 opacity-90" />
-                                Crear cuenta
-                                <ArrowRight size={18} className="ml-2 translate-x-0 group-hover:translate-x-0.5 transition-transform" />
-                            </a>
-                        </div>
-                    </div>
-
-                    {/* Columna derecha: Imagen solicitada */}
-                    <div className="hidden md:flex items-center justify-center">
-                        <img
-                            src={heroRight}
-                            alt="Imagen destacada de Venexporta"
-                            className="w-full max-w-[560px] aspect-[16/10] object-cover rounded-2xl border border-border/60 shadow-lg"
-                            width="1600"
-                            height="1000"
-                            loading="eager"
-                            fetchpriority="high"
-                            decoding="async"
-                        />
-                    </div>
-                    </div>
                     </div>
                 </div>
 

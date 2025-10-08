@@ -5,6 +5,9 @@ import { cn } from "@/lib/utils";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { truncate } from "@/lib/companiesGrid";
 import { usePaginatedFilter } from "@/hooks/usePaginatedFilter";
+import DefaultItemCard from "@/components/atoms/DefaultItemCard";
+import SkeletonCard from "@/components/atoms/SkeletonCard";
+import Pagination from "@/components/molecules/Pagination";
 
 // Imagen por defecto
 const DEFAULT_IMAGE_URL = "https://via.placeholder.com/160x160?text=Sin+Logo";
@@ -52,84 +55,6 @@ const DEFAULT_IMAGE_URL = "https://via.placeholder.com/160x160?text=Sin+Logo";
  */
 
 // ---------- Sub–componentes (memo) ----------
-const DefaultItemCard = React.memo(function DefaultItemCard({ item, onClick, itemClassName, maxNameLength }) {
-  return (
-    <Card
-      onClick={() => onClick(item.id, item)}
-      className={cn("group cursor-pointer border-none shadow-none bg-zinc-100/50 hover:bg-zinc-100 transition-colors", itemClassName)}
-    >
-      <CardContent className="flex flex-col items-center p-5">
-        <div className="relative mb-2 flex items-center justify-center overflow-hidden">
-          <img
-            src={item.url || DEFAULT_IMAGE_URL}
-            alt={item.nombre}
-            loading="lazy"
-            decoding="async"
-            className="mask mask-squircle w-32 h-32 object-cover"
-            onError={(e)=>{ e.currentTarget.src = DEFAULT_IMAGE_URL; }}
-          />
-        </div>
-        <p className="mt-1 text-center text-xs font-medium text-zinc-800 leading-snug line-clamp-2">
-          {truncate(item?.nombre || "Sin nombre", maxNameLength)}
-        </p>
-      </CardContent>
-    </Card>
-  );
-});
-DefaultItemCard.displayName = 'DefaultItemCard';
-
-const SkeletonCard = React.memo(function SkeletonCard() {
-  return (
-    <div className="animate-pulse rounded-md bg-zinc-100/60 p-5 flex flex-col items-center">
-      <div className="w-32 h-32 rounded-xl bg-zinc-200" />
-      <div className="mt-4 h-3 w-24 rounded bg-zinc-200" />
-      <div className="mt-2 h-3 w-16 rounded bg-zinc-200" />
-    </div>
-  );
-});
-SkeletonCard.displayName = 'SkeletonCard';
-
-const Pagination = React.memo(function Pagination({ page, totalPages, pages, changePage }) {
-  if (totalPages <= 1) return null;
-  return (
-    <div className="mt-6 flex items-center justify-between flex-wrap gap-4">
-      <div className="flex items-center gap-2">
-        <button
-          type="button"
-          onClick={()=>changePage(page-1)}
-          disabled={page===1}
-          className="inline-flex items-center gap-1 rounded-md border bg-white px-2.5 py-1.5 text-xs font-medium text-zinc-700 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-zinc-50"
-        >
-          <ArrowLeft className="h-3.5 w-3.5" /> Prev
-        </button>
-        <div className="flex items-center gap-1">
-          {pages.map((p,i)=> p === '…' ? (
-            <span key={i} className="px-2 text-xs text-zinc-400 select-none">…</span>
-          ) : (
-            <button
-              key={p}
-              onClick={()=>changePage(p)}
-              className={cn(
-                "h-7 min-w-7 px-2 rounded-md text-xs font-medium transition-colors",
-                p===page ? "bg-primary text-white" : "bg-white border hover:bg-zinc-50"
-              )}
-            >{p}</button>
-          ))}
-        </div>
-        <button
-          type="button"
-          onClick={()=>changePage(page+1)}
-          disabled={page===totalPages}
-          className="inline-flex items-center gap-1 rounded-md border bg-white px-2.5 py-1.5 text-xs font-medium text-zinc-700 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-zinc-50"
-        >
-          Next <ArrowRight className="h-3.5 w-3.5" />
-        </button>
-      </div>
-      <p className="text-xs text-zinc-500">Página {page} de {totalPages}</p>
-    </div>
-  );
-});
-Pagination.displayName = 'Pagination';
 const CompaniesGrid = ({
   items = [],
   onItemClick = () => {},
@@ -225,7 +150,7 @@ const CompaniesGrid = ({
           {searchable && (
             <div className="w-56">
               <Input
-                placeholder="Buscar empresa…"
+                placeholder="Buscar "
                 value={query}
                 onChange={(e)=>setQuery(e.target.value)}
                 className="h-9"

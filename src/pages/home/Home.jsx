@@ -8,6 +8,8 @@ import appStore from '@src/store/appStore';
 import MoleculesSchedulesItems from '@components/molecules/MoleculesSchedulesItems';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Pagination } from 'antd';
+import useSEO from '@hooks/use-seo.js';
+import { SEO_CONFIG } from '@config/seo.js';
 
 const AtomsPanel = lazy(() => import('@components/atoms/AtomsPanel'));
 const AtomsTitle = lazy(() => import('@components/atoms/AtomsTitle'));
@@ -79,6 +81,32 @@ function Home() {
       setCurrentPage(1);
     }
   }, [dateKeys, selectedDate]);
+
+  // Configuración SEO única para esta página
+  useSEO({
+    title: 'Inicio - Venexporta',
+    description: 'Bienvenido a la plataforma de gestión y promoción exportadora de Venezuela.',
+    canonical: `${SEO_CONFIG.domain}`, // URL principal del dominio
+    og: {
+        type: 'website',
+        title: 'Inicio - Venexporta',
+        description: 'Bienvenido a la plataforma de gestión y promoción exportadora de Venezuela.',
+        url: `${SEO_CONFIG.domain}`,
+        image: SEO_CONFIG.media.ogImage,
+        width: '1200',
+        height: '630',
+        site_name: SEO_CONFIG.siteName,
+        locale: SEO_CONFIG.locale,
+        imageAlt: SEO_CONFIG.media.ogImageAlt,
+    },
+    twitter: {
+        card: 'summary_large_image',
+        title: 'Inicio - Venexporta',
+        description: 'Bienvenido a la plataforma de gestión y promoción exportadora de Venezuela.',
+        image: SEO_CONFIG.media.ogImage,
+        site: SEO_CONFIG.twitterSite || undefined,
+    },
+});
 
   return (
     <main aria-label="Pantalla de inicio" className="w-full">
