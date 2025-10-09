@@ -68,9 +68,9 @@ const AppointmentsReceived = () => {
           )}
           renderItemMeta={(item) => ({
             avatar: (
-              <span className="bg-primary p-3 rounded-full" role="img" aria-label="Calendario">
+              <p className="bg-primary p-3 rounded-full" role="img" aria-label="Calendario">
                 <Calendar1 color="#b2e713" />
-              </span>
+              </p>
             ),
             title: (
               <Link

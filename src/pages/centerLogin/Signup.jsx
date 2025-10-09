@@ -16,6 +16,8 @@ import ayuda from '@assets/logo/ayuda.jpg';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { CircleHelp } from 'lucide-react';
 import { useHelpPopover } from './hooks/useHelpPopover';
+import useSEO from '@hooks/use-seo.js';
+import { SEO_CONFIG } from '@config/seo.js';
 
 /**
  * Componente reutilizable y accesible para mostrar el formulario de registro de centros,
@@ -27,6 +29,31 @@ import { useHelpPopover } from './hooks/useHelpPopover';
  */
 function CenterRegister({ className = '', ...props }) {
   const { getTriggerProps } = useHelpPopover();
+
+  useSEO({
+    title: 'Crear Cuenta - Venexporta',
+    description: 'Regístrate en Venexporta y comienza a gestionar tus exportaciones.',
+    canonical: `${SEO_CONFIG.domain}signup`, // URL específica para registro
+    og: {
+      type: 'website',
+      title: 'Crear Cuenta - Venexporta',
+      description: 'Regístrate en Venexporta y comienza a gestionar tus exportaciones.',
+      url: `${SEO_CONFIG.domain}signup`,
+      image: SEO_CONFIG.media.ogImage,
+      width: '1200',
+      height: '630',
+      site_name: SEO_CONFIG.siteName,
+      locale: SEO_CONFIG.locale,
+      imageAlt: SEO_CONFIG.media.ogImageAlt,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: 'Crear Cuenta - Venexporta',
+      description: 'Regístrate en Venexporta y comienza a gestionar tus exportaciones.',
+      image: SEO_CONFIG.media.ogImage,
+      site: SEO_CONFIG.twitterSite || undefined,
+    },
+  });
 
   return (
     <section className={`hero is-fullheight ${className}`} {...props}>

@@ -30,6 +30,7 @@ const Loading = () => <div role="status" aria-label="Cargando dashboard">Loading
  */
 
 import { useDashboardColors } from './hooks/useDashboardColors';
+import { ACTIVIDAD_COLORS } from './helpers/chartColors';
 import { SubSectoresTable } from '@components/molecules/SubSectoresTable';
 import { ChartTooltipContent } from '@components/ui/chart';
 
@@ -258,84 +259,69 @@ function Dashboard() {
             </div>
             <div className="col-span-2">
               {cantSubSector && Array.isArray(cantSubSector.subSectoresEconomicos) && selectedSectorId && (() => {
+                // Un solo arreglo de subsectores con colores, reutilizado en ambos componentes
                 const subSectoresData = mapPieData(cantSubSector.subSectoresEconomicos, {
                   labelKey: 'sub_sector_productivo',
                   valueKey: 'total',
                   extra: item => ({
+                    sub_sector_productivo: item.sub_sector_productivo,
+                    total: item.total,
                     id_actividad_economica_sub_sector: item.id_actividad_economica_sub_sector,
                     id_sector_productivo_sub: item.id_sector_productivo_sub
                   }),
                   filter: item => item.sub_sector_productivo && selectedActividadId && item.id_sector_productivo_sub === selectedSectorId
                 });
-                // Asignar los mismos colores que la tabla
-                const barData = subSectoresData.map((d, i) => ({
-                  mes: d.label,
-                  empresas: d.value,
-                  fill: subSectoresPalette[i % subSectoresPalette.length]
+                // Asignar colores de ACTIVIDAD_COLORS a ambos componentes (como antes)
+                const subSectoresDataWithColors = subSectoresData.map((d, i) => ({
+                  ...d,
+                  fill: ACTIVIDAD_COLORS[i % ACTIVIDAD_COLORS.length]
                 }));
                 return (
-                  <MoleculesEmpresasBarChart
-                    data={barData}
-                    anio={String(anioEmpresas)}
-                    onChangeAnio={() => {}}
-                    aniosDisponibles={[anioEmpresas]}
-                    title="Sub Sectores Productivos"
-                    description="Total de empresas por sub sector productivo"
-                    useCustomColors={true}
-                    tooltipLabel="Subsector"
-                    showLegend={true} // oculta la leyenda
-                    sortDesc={true}
-                    tooltipContent={props => (
-                      <ChartTooltipContent
-                        {...props}
-                        label="Subsector"
-                        labelKey="mes"
-                        formatter={(value, name, item, idx, payload) => (
-                          <>
-                            <span
-                              style={{
-                                display: 'inline-block',
-                                width: 10,
-                                height: 10,
-                                borderRadius: 2,
-                                background: payload?.fill || '#8884d8',
-                                marginRight: 6,
-                                verticalAlign: 'middle',
-                              }}
-                            />
-                            <span className="font-semibold">{item?.payload?.mes}</span>: {value}
-                          </>
-                        )}
-                      />
-                    )}
-                  />
+                  <>
+                    <MoleculesEmpresasBarChart
+                      data={subSectoresDataWithColors.map(d => ({
+                        mes: d.label,
+                        empresas: d.value,
+                        fill: d.fill
+                      }))}
+                      anio={String(anioEmpresas)}
+                      onChangeAnio={() => {}}
+                      aniosDisponibles={[anioEmpresas]}
+                      title="Sub Sectores Productivos"
+                      description="Total de empresas por sub sector productivo"
+                      useCustomColors={true}
+                      tooltipLabel="Subsector"
+                      showLegend={true}
+                      sortDesc={true}
+                      tooltipContent={props => (
+                        <ChartTooltipContent
+                          {...props}
+                          label="Subsector"
+                          labelKey="mes"
+                          formatter={(value, name, item, idx, payload) => (
+                            <>
+                              <span
+                                style={{
+                                  display: 'inline-block',
+                                  width: 10,
+                                  height: 10,
+                                  borderRadius: 2,
+                                  background: payload?.fill || '#8884d8',
+                                  marginRight: 6,
+                                  verticalAlign: 'middle',
+                                }}
+                              />
+                              <span className="font-semibold">{item?.payload?.mes}</span>: {value}
+                            </>
+                          )}
+                        />
+                      )}
+                    />
+                    <SubSectoresTable data={subSectoresDataWithColors} />
+                  </>
                 );
               })()}
             </div>
-            {/* Tabla de subsectores productivos fuera del gráfico */}
-            {cantSubSector && Array.isArray(cantSubSector.subSectoresEconomicos) && selectedSectorId && (() => {
-              const subSectoresData = mapPieData(cantSubSector.subSectoresEconomicos, {
-                labelKey: 'sub_sector_productivo',
-                valueKey: 'total',
-                extra: item => ({
-                  sub_sector_productivo: item.sub_sector_productivo,
-                  total: item.total,
-                  id_actividad_economica_sub_sector: item.id_actividad_economica_sub_sector,
-                  id_sector_productivo_sub: item.id_sector_productivo_sub
-                }),
-                filter: item => item.sub_sector_productivo && selectedActividadId && item.id_sector_productivo_sub === selectedSectorId
-              });
-              // Asignar los mismos colores que el gráfico
-              const subSectoresDataWithColors = subSectoresData.map((d, i) => ({
-                ...d,
-                fill: subSectoresPalette[i % subSectoresPalette.length]
-              }));
-              return (
-                <div className="col-span-2">
-                  <SubSectoresTable data={subSectoresDataWithColors} />
-                </div>
-              );
-            })()}
           </div>
         </section>
 

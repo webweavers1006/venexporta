@@ -48,7 +48,7 @@ const CenterLoginRegister = () => {
     return (
         <section className="hero is-fullheight">
             <div className="hero-body is-centered">
-                <PopoverComponent trigger={<CircleHelp className='text-primary' />}>
+                <PopoverComponent className="z-100 cursor-pointer" trigger={<CircleHelp className='text-primary z-100 cursor-pointer' />}>
                     <Card>
                         <CardHeader className="text-center">
                             <CardTitle className="text-xl">{t("help_title")}</CardTitle>
@@ -56,7 +56,7 @@ const CenterLoginRegister = () => {
                         </CardHeader>
                         <CardContent>
                             <CardDescription>
-                                <img src={ayuda} alt="ayuda" />
+                                <img src={ayuda} className='rounded-xl' alt="Ayuda" />
                             </CardDescription>
                         </CardContent>
                     </Card>

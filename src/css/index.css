@@ -258,3 +258,80 @@ div.ant-table.css-dev-only-do-not-override-1yacf91{
   background-color: rgb(236, 236, 236)!important;
   border-radius: 8px;
 }
+
+/* Animaciones personalizadas */
+@keyframes float-slow {
+  0% { transform: translateY(0px) translateX(0px); }
+  33% { transform: translateY(-14px) translateX(6px); }
+  66% { transform: translateY(10px) translateX(-4px); }
+  100% { transform: translateY(0px) translateX(0px); }
+}
+
+.animate-float-slow {
+  animation: float-slow 12s ease-in-out infinite;
+}
+
+/* Animaciones adicionales para íconos decorativos */
+@keyframes drift-1 {
+  0% { transform: translate3d(0,0,0) rotate(0deg); }
+  20% { transform: translate3d(12px,-18px,0) rotate(8deg); }
+  40% { transform: translate3d(-8px,-28px,0) rotate(-6deg); }
+  60% { transform: translate3d(-14px,6px,0) rotate(3deg); }
+  80% { transform: translate3d(10px,14px,0) rotate(-4deg); }
+  100% { transform: translate3d(0,0,0) rotate(0deg); }
+}
+@keyframes drift-2 {
+  0% { transform: translate3d(0,0,0) scale(1); }
+  25% { transform: translate3d(-10px,16px,0) scale(1.05); }
+  50% { transform: translate3d(14px,8px,0) scale(0.95); }
+  75% { transform: translate3d(6px,-14px,0) scale(1.08); }
+  100% { transform: translate3d(0,0,0) scale(1); }
+}
+@keyframes float-arc {
+  0% { transform: translateY(0) translateX(0); }
+  50% { transform: translateY(-35px) translateX(12px); }
+  100% { transform: translateY(0) translateX(0); }
+}
+@keyframes spin-slow {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.animate-drift-1 { animation: drift-1 11s cubic-bezier(.55,.26,.45,.94) infinite; }
+.animate-drift-2 { animation: drift-2 9.5s ease-in-out infinite; }
+.animate-float-arc { animation: float-arc 7.5s ease-in-out infinite; }
+.animate-spin-slow { animation: spin-slow 24s linear infinite; }
+
+.motion-reduce\:animate-none { animation: none !important; }
+
+@keyframes fade-pulse {
+  0% { opacity: 0; }
+  12% { opacity: .35; }
+  45% { opacity: .65; }
+  70% { opacity: .35; }
+  100% { opacity: 0; }
+}
+
+.animate-fade-pulse { animation: fade-pulse 10s ease-in-out infinite; }
+
+/* Combinaciones movimiento + desvanecimiento */
+.animate-combo-drift-1 { animation: drift-1 11s cubic-bezier(.55,.26,.45,.94) infinite, fade-pulse 10s ease-in-out infinite; }
+.animate-combo-drift-2 { animation: drift-2 9.5s ease-in-out infinite, fade-pulse 10s ease-in-out infinite; }
+.animate-combo-float-arc { animation: float-arc 7.5s ease-in-out infinite, fade-pulse 10s ease-in-out infinite; }
+.animate-combo-spin { animation: spin-slow 24s linear infinite, fade-pulse 10s ease-in-out infinite; }
+
+/* Pulso para puntos circulares (crece y se reduce) */
+@keyframes pulse-dot {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.6); opacity: 0.95; }
+}
+
+.animate-pulse-dot {
+  animation: pulse-dot 1.6s ease-in-out infinite;
+  transform-origin: center;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-pulse-dot { animation: none !important; }
+}

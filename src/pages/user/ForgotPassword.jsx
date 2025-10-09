@@ -1,4 +1,3 @@
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import OrganismsForgotPassword from '@components/organisms/user/OrganismsForgotPassword';
@@ -6,6 +5,8 @@ import PopoverComponent from '@components/molecules/Popover';
 import ayuda from '@assets/logo/ayuda.jpg';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { CircleHelp } from 'lucide-react';
+import useSEO from '@hooks/use-seo.js';
+import { SEO_CONFIG } from '@config/seo.js';
 
 /**
  * Página de recuperación de contraseña.
@@ -18,6 +19,31 @@ import { CircleHelp } from 'lucide-react';
  * <ForgotPassword className="mi-clase" />
  */
 function ForgotPassword({ className = '', ...props }) {
+  useSEO({
+    title: 'Recuperar Contraseña - Venexporta',
+    description: 'Recupera el acceso a tu cuenta en Venexporta de forma rápida y segura.',
+    canonical: `${SEO_CONFIG.domain}forgot-password`, // URL específica para recuperar contraseña
+    og: {
+      type: 'website',
+      title: 'Recuperar Contraseña - Venexporta',
+      description: 'Recupera el acceso a tu cuenta en Venexporta de forma rápida y segura.',
+      url: `${SEO_CONFIG.domain}forgot-password`,
+      image: SEO_CONFIG.media.ogImage,
+      width: '1200',
+      height: '630',
+      site_name: SEO_CONFIG.siteName,
+      locale: SEO_CONFIG.locale,
+      imageAlt: SEO_CONFIG.media.ogImageAlt,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: 'Recuperar Contraseña - Venexporta',
+      description: 'Recupera el acceso a tu cuenta en Venexporta de forma rápida y segura.',
+      image: SEO_CONFIG.media.ogImage,
+      site: SEO_CONFIG.twitterSite || undefined,
+    },
+  });
+
   return (
     <section className={`hero is-fullheight ${className}`} {...props}>
       <div className="hero-body is-centered">

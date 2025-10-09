@@ -1,7 +1,26 @@
+/**
+ * Gráfico de barras reutilizable para empresas por sub sector productivo.
+ *
+ * Props principales:
+ * - data: array de datos para las barras
+ * - title: título del gráfico
+ * - description: descripción opcional
+ * - useCustomColors: si se usan colores personalizados
+ * - showLegend: mostrar leyenda
+ * - sortDesc: ordenar descendente
+ * - highlightValue: valor destacado centrado (ej: nombre del sector)
+ * - highlightBg: color de fondo del valor destacado
+ *
+ * Ejemplo de uso:
+ * <MoleculesEmpresasBarChart
+ *   data={barData}
+ *   title="Sub Sectores Productivos"
+ *   highlightValue="Sector Alimentos"
+ *   highlightBg="#2563eb"
+ * />
 
-// import PropTypes from "prop-types";
-import { TrendingUp } from "lucide-react";
-import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
+ */
+
 import {
   Card,
   CardContent,
@@ -10,6 +29,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
 
 import {
   ChartContainer,
@@ -45,6 +66,8 @@ export default function MoleculesBarChart({
   barProps = {},
   showLegend = false,
   sortDesc = false,
+  highlightValue,
+  highlightBg,
 }) {
   // Referencia para exportar el área del gráfico
   const exportRef = useRef(null);
@@ -140,7 +163,20 @@ export default function MoleculesBarChart({
               )}
             </div>
             {description && <div className="text-xs text-muted-foreground mb-1">{description}</div>}
-            <div className="text-sm font-semibold text-primary">
+            {/* Valor destacado centrado */}
+            {highlightValue && (
+              <div
+                className="flex justify-center my-2"
+              >
+                <span
+                  className="inline-block text-white rounded-lg px-5 py-1.5 font-bold text-lg min-w-[80px] max-w-[90%] text-center mx-auto"
+                  style={{ background: highlightBg || "#364153" }}
+                >
+                  {highlightValue}
+                </span>
+              </div>
+            )}
+            <div className="text-sm font-semibold text-gray-600">
               Total: {totalValue}
             </div>
           </div>
@@ -265,4 +301,6 @@ MoleculesBarChart.propTypes = {
   barProps: PropTypes.object,
   showLegend: PropTypes.bool,
   sortDesc: PropTypes.bool,
+  highlightValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  highlightBg: PropTypes.string,
 };
