@@ -8,12 +8,12 @@ const HomePage = () => {
     useSEO({
         title: SEO_CONFIG.defaults.title,
         description: SEO_CONFIG.defaults.description,
-        canonical: SEO_CONFIG.domain,
+        canonical: `${SEO_CONFIG.domain}home`,
         og: {
             type: 'website',
             title: SEO_CONFIG.defaults.title,
             description: 'Registro simplificado, acceso a eventos y ruedas de negocios globales, y soporte integral para exportadores.',
-            url: SEO_CONFIG.domain,
+            url: `${SEO_CONFIG.domain}home`,
             image: SEO_CONFIG.media.ogImage,
             width: '1200',
             height: '630',
@@ -32,7 +32,7 @@ const HomePage = () => {
             '@context': 'https://schema.org',
             '@type': 'Organization',
             name: SEO_CONFIG.organization.name,
-            url: SEO_CONFIG.domain,
+            url: `${SEO_CONFIG.domain}home`,
             logo: SEO_CONFIG.organization.logo,
             sameAs: SEO_CONFIG.organization.sameAs,
         },
