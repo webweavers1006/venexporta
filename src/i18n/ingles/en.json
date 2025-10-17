@@ -52,6 +52,7 @@
       "linkText": "Return to home"
         }
     },
+
     "layout": {
       "breadcrumb": {
         "home": "Home",
@@ -82,7 +83,6 @@
     "registerButton": "Register",
     "registerIconLabel": "Register icon",
     "registerAriaLabel": "Register for event",
-
     "modal": {
       "successTitle": "Successful Registration!",
       "successContent": "Thank you for confirming your interest in participating. In the coming days, you will be notified through the app with information about the next stage of the fair route!",
@@ -96,7 +96,6 @@
       "success": "Successfully registered for the event",
       "error": "Error during registration"
     }
-
   },
 
   "myEvents": {
@@ -119,6 +118,7 @@
     "cancelIconAria": "Cancel participation",
     "cancelAria": "Cancel participation in event"
   },
+
    "schedule": {
     "appointmentSuccess": "Appointment requested for block {{id}} on {{date}}",
     "title": "Business Roundtable",
@@ -135,13 +135,13 @@
       "confirmation": "Are you sure you want to request an appointment for the selected block?"
     }
   },
+
   "ok": "Confirm",
   "cancel": "Cancel",
 
   "roundtable": {
     "title": "Business Roundtable",
-    "subtitle": "Information about the business roundtable",
-    
+    "subtitle": "Information about the business roundtable",    
     "carouselSubtitle": "Select an event to view the companies in the roundtable",
     "filters": {
       "activityTitle": "Company Filters by Activity / Subsector",
@@ -211,14 +211,227 @@
     "status": "Status",    
     "cancelAria": "Cancel appointment"
   },
+
   "appointmentStatus": {
     "aceptado": "Accepted",
     "rechazado": "Rejected",
     "en_revision": "Under Review",
     "pendiente": "Pending",
     "cancelado": "Cancelled"
-  }
+  },
 
+  "appointments": {
+      "errorLoading": "Error loading appointments",
+      "acceptSuccess": "Appointment accepted successfully",
+      "rejectSuccess": "Appointment rejected successfully",
+      "processingError": "There was a problem processing the request",
+      "updateError": "Error updating appointment status",
+      "cancelSuccess": "Appointment cancelled successfully",
+      "cancelError": "Error cancelling the appointment"
+    },
+
+    "companyPanel": {
+      "heading": "Companies",
+      "subheading": "Information about the registered company",
+      "editButton": "Edit Company",
+      "fields": {
+        "name": "Name",
+        "rif": "Tax ID",
+        "activity": "Business Activity",
+        "propertyType": "Ownership Type",
+        "state": "State",
+        "municipality": "Municipality",
+        "parish": "Parish",
+        "address": "Address"
+      },
+      "products": {
+        "heading": "Products",
+        "button": "My Products",
+        "code": "Tariff Code",
+        "noCode": "No code",
+        "chapter": "Chapter",
+        "noChapter": "Not specified"
+      },
+      "contacts": {
+        "heading": "Contacts",
+        "button": "Add Contact"
+      },
+      "activities": {
+        "heading": "Economic Activities",
+        "button": "Add Economic Activity"
+      }
+    },
+
+    "companyForm": {
+      "dialogTitle": "Update Company",
+      "dialogDescription": "Update the company information here. Click save when you're done.",
+      "saveButton": "Save changes",
+      "success": "Company updated successfully.",
+      "error": "Error updating the company.",
+      "fields": {
+        "name": "Company Name",
+        "description": "Company Description",
+        "address": "Address",
+        "activityType": "Business Activity Type",
+        "propertyType": "Ownership Type",
+        "state": "State",
+        "municipality": "Municipality",
+        "parish": "Parish",
+        "selectOption": "Select an option"
+      }
+    },
+
+    "imageUpload": {
+      "invalidFormat": "The uploaded file is not in {{format}} format",
+      "invalidSize": "The uploaded file must not exceed 10MB",
+      "success": "Images uploaded successfully",
+      "uploadError": "Error uploading images",
+      "button": "Upload Image"
+    },
+
+    "myProducts": {
+      "panelTitle": "My Products",
+      "panelSubtitle": "Information about registered products",
+      "orientationTip": "It's recommended to rotate your phone horizontally for a better experience.",
+      "tableAriaLabel": "Table of registered products"
+    },
+
+    "contactsPanel": {
+      "heading": "Contacts",
+      "subheading": "Contact information",
+      "form": {
+        "title": "Contact Registration",
+        "description": "Fill in the required fields",
+        "submit": "Add contacts"
+      },
+      "list": {
+        "title": "Contact List",
+        "description": "Information about registered contacts"
+      },
+      "fields": {
+        "name": "Name",
+        "email": "Email",
+        "areaCode": "Area Code",
+        "areaCodePlaceholder": "Select area code",
+        "phone": "Phone",
+        "position": "Position"
+      }
+    },
+
+      "contactsTable": {
+      "delete": {
+        "confirmTitle": "Confirmation",
+        "confirmContent": "Are you sure you want to delete this contact?",
+        "success": "Contact deleted successfully",
+        "error": "Error deleting contact"
+      },
+      "columns": {
+        "actions": "Actions",
+        "deleteButton": "Delete",
+        "deleteAria": "Delete contact"
+      }
+    },
+
+    "activitiesPanel": {
+      "heading": "Economic Activities",
+      "subheading": "Information about economic activities",
+      "form": {
+        "title": "Economic Activity Registration",
+        "description": "Fill in the required fields",
+        "submit": "Add economic activity"
+      },
+      "list": {
+        "title": "List of Economic Activities",
+        "description": "Information about registered economic activities"
+      },
+      "fields": {
+        "activity": "Economic Activity",
+        "sector": "Productive Sector",
+        "subSector": "Sub-Sector"
+      },
+      "validation": {
+        "activity": "Economic activity is required",
+        "sector": "Productive sector is required",
+        "subSector": "Sub-sector is required"
+      },
+      "messages": {
+        "success": "Activity added successfully",
+        "error": "Error adding economic activity",
+        "unknownError": "Unknown error"
+      },
+      "common": {
+        "selectOption": "Select an option",
+        "yes": "Yes"
+      }
+        
+    },
+
+    "activitiesTable": {
+      "delete": {
+        "confirmContent": "Are you sure you want to delete this activity?",
+        "success": "Activity deleted successfully",
+        "error": "Error deleting the activity"
+      }
+  },
+
+  "sidebar": {
+  "navMain": {
+    "home": "Home",
+    "reports": {
+      "title": "Reports",
+      "items": {
+        "companiesReports": "Company Reports",
+        "dinamics": "Mass Dynamic Companies",
+        "appointments": "Appointment Reports"
+      }
+    },
+    "admin": {
+      "title": "Administrator",
+      "items": {
+        "dashboard": "Dashboard",
+        "requests": "Event Requests",
+        "companies": "Companies",
+        "schedules": "Event Schedules",
+        "qr": "Dynamic QR"
+      }
+    },
+    "events": {
+      "title": "Events",
+      "items": {
+        "available": "Available Events",
+        "myEvents": "My Events"
+      }
+    },
+    "roundtable": {
+      "title": "Roundtable",
+      "items": {
+        "companies": "Companies",
+        "received": "Received Meetings",
+        "sent": "Sent Meetings"
+      }
+    },
+    "company": {
+      "title": "My Company",
+      "items": {
+        "createCompany": "Create Company",
+        "company": "Company",
+        "contacts": "Contacts",
+        "activities": "Activities",
+        "createProduct": "Create Product",
+        "products": "Products"
+      }
+    }
+  },
+  "navSecondary": {
+    "aboutUs": "About Us"
+  },
+  "badge": {
+    "new": "New"
+  },
+  "team": {
+    "planActive": "Active"
+  }
+}
 
 
 

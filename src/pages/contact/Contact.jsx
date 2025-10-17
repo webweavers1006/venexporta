@@ -19,7 +19,12 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Loader2 } from "lucide-react"; // Importa el componente Loader2
 import columns from './columns/columnsCompanyActivities'; // Importa las columnas
 
+//✅Components traduction
+import { useTranslation } from "react-i18next";
+
 const RegisterActivities = () => {  
+  // Traducción
+  const { t } = useTranslation();
   const idCompany = useStore(appStore, state => state.idCompany);
   const { activitiesData, isLoading, loadActivitiesData, addContact, paises } = useContacts(idCompany);
 
@@ -52,12 +57,13 @@ const RegisterActivities = () => {
 
   return (
     <>
-      <AtomsPanel title={'Contactos'} subtitle={'Información de los contactos'} />
+      <AtomsPanel title={t("contactsPanel.heading")} subtitle={t("contactsPanel.subheading")}
+ />
       <div className="flex flex-col gap-6 mt-4">
         <Card>
           <CardHeader className="text-center">
-            <CardTitle className="text-xl">Registro de Contacto</CardTitle>
-            <CardDescription>Complete los campos requeridos</CardDescription>
+            <CardTitle className="text-xl">{t("contactsPanel.form.title")}</CardTitle>
+            <CardDescription>{t("contactsPanel.form.description")}</CardDescription>
           </CardHeader>
           <CardContent>
             <Form {...form}>
@@ -68,12 +74,12 @@ const RegisterActivities = () => {
                     control={form.control}
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Nombre</FormLabel>
+                        <FormLabel>{t("contactsPanel.fields.name")}</FormLabel>
                         <FormControl>
                           <div className="relative">
                             <Input
                               {...field}
-                              placeholder="Nombre"
+                              placeholder={t("contactsPanel.fields.name")}
                               maxLength={getMaxLength("nombre")}
                             />
                             <span className="absolute right-2 bottom-2 text-sm text-gray-500">
@@ -90,12 +96,12 @@ const RegisterActivities = () => {
                     control={form.control}
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Correo</FormLabel>
+                        <FormLabel>{t("contactsPanel.fields.email")}</FormLabel>
                         <FormControl>
                           <div className="relative">
                             <Input
                               {...field}
-                              placeholder="Correo"
+                              placeholder={t("contactsPanel.fields.email")}
                               maxLength={getMaxLength("correo")}
                             />
                             <span className="absolute right-2 bottom-2 text-sm text-gray-500">
@@ -113,7 +119,7 @@ const RegisterActivities = () => {
                     control={form.control}
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Código de Área</FormLabel>
+                        <FormLabel>{t("contactsPanel.fields.areaCode")}</FormLabel>
                         <FormControl>
                           <Select
                             {...field}
@@ -124,7 +130,7 @@ const RegisterActivities = () => {
                             }}
                           >
                             <SelectTrigger>
-                              <SelectValue placeholder="Seleccione código de área" />
+                              <SelectValue placeholder={t("contactsPanel.fields.areaCodePlaceholder")} />
                             </SelectTrigger>
                             <SelectContent>
                               {paises.map(p => (
@@ -147,12 +153,12 @@ const RegisterActivities = () => {
                     control={form.control}
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Teléfono</FormLabel>
+                        <FormLabel>{t("contactsPanel.fields.phone")}</FormLabel>
                         <FormControl>
                           <div className="relative">
                             <Input
                               {...field}
-                              placeholder="Teléfono"
+                              placeholder={t("contactsPanel.fields.phone")}
                               maxLength={getMaxLength("telefono")}
                             />
                             <span className="absolute right-2 bottom-2 text-sm text-gray-500">
@@ -169,12 +175,12 @@ const RegisterActivities = () => {
                     control={form.control}
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Puesto</FormLabel>
+                        <FormLabel>{t("contactsPanel.fields.position")}</FormLabel>
                         <FormControl>
                           <div className="relative">
                             <Input
                               {...field}
-                              placeholder="Puesto"
+                              placeholder={t("contactsPanel.fields.position")}
                               maxLength={getMaxLength("cargo")}
                             />
                             <span className="absolute right-2 bottom-2 text-sm text-gray-500">
@@ -187,7 +193,7 @@ const RegisterActivities = () => {
                     )}
                   />
                   <Button type="submit" className="w-full" disabled={isLoading}>
-                    {isLoading ? <Loader2 className="animate-spin" /> : 'Agregar contactos'}
+                    {isLoading ? <Loader2 className="animate-spin" /> : t("contactsPanel.form.submit")}
                   </Button>
                 </div>
               </form>
@@ -196,8 +202,8 @@ const RegisterActivities = () => {
         </Card>
         <Card>
           <CardHeader className="text-center">
-            <CardTitle className="text-xl">Lista de Contactos</CardTitle>
-            <CardDescription>Información de los contactos registrados</CardDescription>
+            <CardTitle className="text-xl">{t("contactsPanel.list.title")}</CardTitle>
+            <CardDescription>{t("contactsPanel.list.description")}</CardDescription>
           </CardHeader>
           <CardContent>
             <MoleculesTable config={configTable} columns={columns(loadActivitiesData)} />

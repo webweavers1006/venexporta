@@ -3,8 +3,12 @@ import { Upload, Modal, message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { uploadImages } from '@lib/api/apiIndex';
 
+//✅Components traduction
+import { useTranslation } from "react-i18next";
+
 // Utilidad para convertir un archivo a Base64
 const toBase64 = (file) => new Promise((resolve, reject) => {
+  
   const reader = new FileReader();
   reader.readAsDataURL(file);
   reader.onload = () => resolve(reader.result);
@@ -22,7 +26,7 @@ const validateFile = (file, fileType, fileNameType, setError) => {
     setError(true);
   }
   if (!isValidSize) {
-    console.log('El archivo cargado no puede pesar más de 10MB');
+    console.log(t("imageUpload.invalidSize"));
     setError(true);
   }
 
@@ -30,6 +34,8 @@ const validateFile = (file, fileType, fileNameType, setError) => {
 };
 
 const ImageUpload = ({ companyId, fileType, fileNameType, fileNumber, onImageChange, color, sendImage, title }) => {
+  // Traducción
+  const { t } = useTranslation();
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState('');
   const [previewTitle, setPreviewTitle] = useState('');
@@ -60,10 +66,10 @@ const ImageUpload = ({ companyId, fileType, fileNameType, fileNumber, onImageCha
   const handleUpload = async () => {
     try {
       await uploadImages(fileList, companyId);
-      message.success('Imágenes cargadas');
+      message.success(t("imageUpload.success"));
       setFileList([]);
     } catch (error) {
-      message.error('Error al cargar imágenes');
+      message.error(t("imageUpload.uploadError"));
     }
   };
 
@@ -78,15 +84,15 @@ const ImageUpload = ({ companyId, fileType, fileNameType, fileNumber, onImageCha
     }
     if (!isLt2M) {
       setError(true)
-      message.error('El archivo cargado no puede pesar mas de 10MB')
+      message.error(t("imageUpload.invalidSize"))
     } 
     if (sendImage) {
       try {
         await uploadImages([file], companyId);
-        message.success('Imágenes cargadas');
+        message.success(t("imageUpload.success"));
         setFileList([]);
       } catch (error) {
-        message.error('Error al cargar imágenes');
+        message.error(t("imageUpload.uploadError"));
       } 
     } 
     onSuccess(await toBase64(file));
@@ -96,7 +102,7 @@ const ImageUpload = ({ companyId, fileType, fileNameType, fileNumber, onImageCha
   const uploadButton = (
     <div>
       <PlusOutlined style={{ fontSize: 20, color: color}} />
-      <div style={{ marginTop: 8, color: color}}>{title?title:'Cargar Imagen'}</div>
+      <div style={{ marginTop: 8, color: color}}>{title?title: t("imageUpload.button")}</div>
     </div>
   );
 

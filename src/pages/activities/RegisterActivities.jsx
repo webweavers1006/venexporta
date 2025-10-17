@@ -16,6 +16,9 @@ import { postStepActivity } from '@src/lib/api/apiIndex';
 import { useRegisterActivities } from './hooks/useRegisterActivities';
 import { getMaxLength } from './helpers/getMaxLength';
 
+//✅Components traduction
+import { useTranslation } from "react-i18next";
+
 /**
  * Componente para registrar actividades económicas de una empresa.
  *
@@ -26,13 +29,15 @@ import { getMaxLength } from './helpers/getMaxLength';
  * @returns {JSX.Element} Formulario y tabla de actividades económicas.
  */
 const activitySchema = z.object({
-  idActividadEconomica: z.string().nonempty('La actividad económica es requerida'),
+  idActividadEconomica: z.string().nonempty(('La actividad económica es requerida'),),
   idSectorProductivo: z.string().nonempty('El sector productivo es requerido'),
   idSubSectorProductivo: z.string().nonempty('El sub-sector productivo es requerido'),
 });
 
 
 function RegisterActivities() {
+  // Traducción
+    const { t } = useTranslation();
   const {
     idCompany,
     activitiesData,
@@ -87,15 +92,15 @@ function RegisterActivities() {
     try {
       const response = await postStepActivity(datas);
       if (response) {
-        message.success('Actividad agregada correctamente');
+        message.success(t("activitiesPanel.messages.success"));
         form.reset();
         resetSelects();
         loadActivitiesData();
       } else {
-        message.error('Error al agregar actividad económica');
+        message.error(t("activitiesPanel.messages.error"));
       }
     } catch (error) {
-      message.error(error?.response?.data?.error?.message || 'Error desconocido');
+      message.error(error?.response?.data?.error?.message || t("activitiesPanel.messages.unknownError"));
     } finally {
       setIsLoading(false);
     }
@@ -103,12 +108,12 @@ function RegisterActivities() {
 
   return (
     <section aria-label="Registro de actividades económicas">
-      <AtomsPanel title={'Actividades Económicas'} subtitle={'Información de las actividades económicas'} />
+      <AtomsPanel title={t("activitiesPanel.heading")} subtitle={t("activitiesPanel.subheading")} />
       <div className="flex flex-col gap-6 mt-4">
         <Card>
           <CardHeader className="text-center">
-            <CardTitle className="text-xl">Registro de Actividad Económica</CardTitle>
-            <CardDescription>Complete los campos requeridos</CardDescription>
+            <CardTitle className="text-xl">{t("activitiesPanel.form.title")}</CardTitle>
+            <CardDescription>{t("activitiesPanel.form.description")}</CardDescription>
           </CardHeader>
           <CardContent>
             <Form {...form}>
@@ -119,7 +124,7 @@ function RegisterActivities() {
                     control={form.control}
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel htmlFor="actividad-economica-select">Actividad Económica</FormLabel>
+                        <FormLabel htmlFor="actividad-economica-select">{t("activitiesPanel.fields.activity")}</FormLabel>
                         <FormControl>
                           <Controller
                             name="idActividadEconomica"
@@ -132,7 +137,7 @@ function RegisterActivities() {
                                 id="actividad-economica-select"
                               >
                                 <SelectTrigger tabIndex={0} aria-label="Actividades económicas">
-                                  <SelectValue placeholder="Seleccione una opción" />
+                                  <SelectValue placeholder={t("activitiesPanel.common.selectOption")} />
                                 </SelectTrigger>
                                 <SelectContent>
                                   {activities.map((activity) => (
@@ -154,7 +159,7 @@ function RegisterActivities() {
                     control={form.control}
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel htmlFor="sector-productivo-select">Sector Productivo</FormLabel>
+                        <FormLabel htmlFor="sector-productivo-select">{t("activitiesPanel.fields.sector")}</FormLabel>
                         <FormControl>
                           <Controller
                             name="idSectorProductivo"
@@ -167,7 +172,7 @@ function RegisterActivities() {
                                 id="sector-productivo-select"
                               >
                                 <SelectTrigger tabIndex={0} aria-label="Sectores productivos">
-                                  <SelectValue placeholder="Seleccione una opción" />
+                                  <SelectValue placeholder={t("activitiesPanel.common.selectOption")} />
                                 </SelectTrigger>
                                 <SelectContent>
                                   {sectors.map((sector) => (
@@ -189,7 +194,7 @@ function RegisterActivities() {
                     control={form.control}
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel htmlFor="sub-sector-productivo-select">Sub-Sector Productivo</FormLabel>
+                        <FormLabel htmlFor="sub-sector-productivo-select">{t("activitiesPanel.fields.subSector")}</FormLabel>
                         <FormControl>
                           <Controller
                             name="idSubSectorProductivo"
@@ -202,7 +207,7 @@ function RegisterActivities() {
                                 id="sub-sector-productivo-select"
                               >
                                 <SelectTrigger tabIndex={0} aria-label="Sub-sectores productivos">
-                                  <SelectValue placeholder="Seleccione una opción" />
+                                  <SelectValue placeholder={t("activitiesPanel.common.selectOption")} />
                                 </SelectTrigger>
                                 <SelectContent>
                                   {subSectors.map((subSector) => (
@@ -220,7 +225,7 @@ function RegisterActivities() {
                     )}
                   />
                   <Button type="submit" className="w-full" disabled={isLoading} aria-busy={isLoading} aria-label="Agregar actividad económica">
-                    {isLoading ? <Loader2 className="animate-spin" aria-label="Cargando" /> : 'Agregar actividad económica'}
+                    {isLoading ? <Loader2 className="animate-spin" aria-label="Cargando" /> : t("activitiesPanel.form.submit")}
                   </Button>
                 </div>
               </form>
@@ -229,8 +234,8 @@ function RegisterActivities() {
         </Card>
         <Card>
           <CardHeader className="text-center">
-            <CardTitle className="text-xl">Lista de Actividades Económicas</CardTitle>
-            <CardDescription>Información de las actividades económicas registradas</CardDescription>
+            <CardTitle className="text-xl">{t("activitiesPanel.list.title")}</CardTitle>
+            <CardDescription>{t("activitiesPanel.list.description")}</CardDescription>
           </CardHeader>
           <CardContent>
             <MoleculesTable config={configTable} />

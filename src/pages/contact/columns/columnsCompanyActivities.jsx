@@ -2,75 +2,83 @@ import React from 'react';
 import { Button, Modal, message } from 'antd';
 import { deleteContact } from '@src/lib/api/apiIndex';
 
-const handleDelete = async (id, loadActivitiesData) => {
-  Modal.confirm({
-    title: 'Confirmación',
-    content: '¿Está seguro de que desea eliminar este contacto?',
-    okText: 'Sí',
-    cancelText: 'No',
-    onOk: async () => {
-      try {
-        await deleteContact(id);
-        message.success('El contacto se ha eliminado correctamente');
-        loadActivitiesData();
-      } catch (error) {
-        message.error('Error al eliminar el contacto');
-      }
-    },
+//✅Components traduction
+import { useTranslation } from "react-i18next";
+
+export const useContactsColumns = (loadActivitiesData) => {
+  const { t } = useTranslation();
+
+  const handleDelete = async (id) => {
+    Modal.confirm({
+      title: t('contactsTable.delete.confirmTitle'),
+      content: t('contactsTable.delete.confirmContent'),
+      okText: t('ok'),
+      cancelText: t('cancel'),
+      onOk: async () => {
+        try {
+          await deleteContact(id);
+          message.success(t('contactsTable.delete.success'));
+          if (typeof loadActivitiesData === 'function') loadActivitiesData();
+        } catch (error) {
+          message.error(t('contactsTable.delete.error'));
+        }
+      },
+    });
+  };
+
+  const getActivitiesColumn = () => ({
+    title: t('contactsPanel.fields.name'),
+    dataIndex: 'nombre',
+    key: 'nombre',
+    sorter: (a, b) => a.actividad_economica.localeCompare(b.actividad_economica),
   });
+
+  const getSectorColumn = () => ({
+    title: t('contactsPanel.fields.email'),
+    dataIndex: 'correo',
+    responsive: ['md'],
+    key: 'correo',
+    sorter: (a, b) => a.sector_productivo.localeCompare(b.sector_productivo),
+  });
+
+  const getSubActivtiesColumn = () => ({
+    title: t('contactsPanel.fields.phone'),
+    dataIndex: 'telefono',
+    responsive: ['md'],
+    key: 'telefono',
+    sorter: (a, b) => a.telefono.localeCompare(b.telefono),
+  });
+
+  const getCargoColumn = () => ({
+    title: t('contactsPanel.fields.position'),
+    dataIndex: 'cargo',
+    responsive: ['md'],
+    key: 'cargo',
+    sorter: (a, b) => a.telefono.localeCompare(b.telefono),
+  });
+
+  const getActionsColumn = () => ({
+    title: t('contactsTable.columns.actions'),
+    key: 'acciones',
+    render: (text, record) => (
+      <Button
+        type="primary"
+        danger
+        onClick={() => handleDelete(record.id)}
+        aria-label={t('contactsTable.columns.deleteAria')}
+      >
+        {t('contactsTable.columns.deleteButton')}
+      </Button>
+    ),
+  });
+
+  return [
+    getActivitiesColumn(),
+    getSectorColumn(),
+    getCargoColumn(),
+    getSubActivtiesColumn(),
+    getActionsColumn(),
+  ];
 };
 
-const getActivitiesColumn = () => ({
-  title: 'Nombre',
-  dataIndex: 'nombre',
-  key: 'nombre',
-  sorter: (a, b) => a.actividad_economica.localeCompare(b.actividad_economica),
-});
-
-const getSectorColumn = () => ({
-  title: 'Correo',
-  dataIndex: 'correo',
-  responsive: ['md'],
-  key: 'correo',
-  sorter: (a, b) => a.sector_productivo.localeCompare(b.sector_productivo),
-});
-
-const getSubActivtiesColumn = () => ({
-  title: 'Teléfono',
-  dataIndex: 'telefono',
-  responsive: ['md'],
-  key: 'telefono',
-  sorter: (a, b) => a.telefono.localeCompare(b.telefono),
-});
-
-const getCargoColumn = () => ({
-  title: 'Puesto',
-  dataIndex: 'cargo',
-  responsive: ['md'],
-  key: 'cargo',
-  sorter: (a, b) => a.telefono.localeCompare(b.telefono),
-});
-
-const getActionsColumn = (loadActivitiesData) => ({
-  title: 'Acciones',
-  key: 'acciones',
-  render: (text, record) => (
-    <Button
-      type="primary"
-      danger
-      onClick={() => handleDelete(record.id, loadActivitiesData)}
-    >
-      Borrar
-    </Button>
-  ),
-});
-
-const columns = (loadActivitiesData) => [
-  getActivitiesColumn(),
-  getSectorColumn(),
-  getCargoColumn(),
-  getSubActivtiesColumn(),
-  getActionsColumn(loadActivitiesData),
-];
-
-export default columns;
+export default useContactsColumns;

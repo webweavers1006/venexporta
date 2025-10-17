@@ -21,6 +21,9 @@ import { propiedad } from "@lib/data/propiedad";
 import { useState, useEffect, useCallback } from 'react';
 import { Textarea } from "@src/components/ui/textarea";
 
+//✅Components traduction
+import { useTranslation } from "react-i18next";
+
 // Hook personalizado para cargar países
 function usePaises() {
   const [paises, setPaises] = useState([]);
@@ -142,20 +145,24 @@ const UpdateCompanyDialog = ({ companyData, onClose, onUpdate, message }) => {
     };
     try {
       await updateCompanyData(formattedData, companyData.id);
-      alert("Empresa actualizada correctamente.");
+      alert(t("companyForm.success"));
       onUpdate();
       onClose();
     } catch (error) {
-      alert("Error al actualizar la empresa.");
+      alert(t("companyForm.error"));
     }
   };
+
+// Traducción
+  const { t } = useTranslation();
 
   return (
     <DialogContent className="max-w-3xl w-full">
       <DialogHeader>
-        <DialogTitle>Actualizar Empresa</DialogTitle>
+        <DialogTitle>{t("companyForm.dialogTitle")}</DialogTitle>
         <DialogDescription>
-          Actualice la información de la empresa aquí. Haga clic en guardar cuando haya terminado.
+          {t("companyForm.dialogDescription")}
+
           {message && (
             <span className="text-red-500 block text-center p-4 bg-red-200 rounded-lg">{message}</span>
           )}
@@ -179,9 +186,9 @@ const UpdateCompanyDialog = ({ companyData, onClose, onUpdate, message }) => {
               control={form.control}
               render={({ field }) => (
                 <FormItem className="col-span-2">
-                  <FormLabel>Nombre de la Empresa</FormLabel>
+                  <FormLabel>{t("companyForm.fields.name")}</FormLabel>
                   <FormControl>
-                    <Input {...field} placeholder="Nombre de la Empresa" />
+                    <Input {...field} placeholder={t("companyForm.fields.name")} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -192,9 +199,9 @@ const UpdateCompanyDialog = ({ companyData, onClose, onUpdate, message }) => {
               control={form.control}
               render={({ field }) => (
                 <FormItem className="col-span-2 sm:col-span-2">
-                  <FormLabel>Descripción de la Empresa</FormLabel>
+                  <FormLabel>{t("companyForm.fields.description")}</FormLabel>
                   <FormControl>
-                    <Textarea {...field} placeholder="Descripción de la Empresa" />
+                    <Textarea {...field} placeholder={t("companyForm.fields.description")} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -205,9 +212,9 @@ const UpdateCompanyDialog = ({ companyData, onClose, onUpdate, message }) => {
               control={form.control}
               render={({ field }) => (
                 <FormItem className="col-span-2 sm:col-span-1">
-                  <FormLabel>Dirección</FormLabel>
+                  <FormLabel>{t("companyForm.fields.address")}</FormLabel>
                   <FormControl>
-                    <Input {...field} placeholder="Dirección" />
+                    <Input {...field} placeholder={t("companyForm.fields.address")} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -216,18 +223,20 @@ const UpdateCompanyDialog = ({ companyData, onClose, onUpdate, message }) => {
             <SelectField
               name="idTipoActividadEmpresarial"
               control={form.control}
-              label="Tipo de Actividad Empresarial"
+              label={t("companyForm.fields.activityType")}
               options={actividadesEmpresariales}
-              placeholder="Seleccione una opción"
+              placeholder={t("companyForm.fields.selectOption")}
+
               getOptionLabel={opt => opt.tipo_actividad_empresarial}
               getOptionValue={opt => opt.id.toString()}
             />
             <SelectField
               name="idTipoPropiedad"
               control={form.control}
-              label="Tipo de Propiedad"
+              label={t("companyForm.fields.propertyType")}
               options={propiedad}
-              placeholder="Seleccione una opción"
+              placeholder={t("companyForm.fields.selectOption")}
+
               getOptionLabel={opt => opt.tipo_propiedad}
               getOptionValue={opt => opt.id}
             />
@@ -237,27 +246,30 @@ const UpdateCompanyDialog = ({ companyData, onClose, onUpdate, message }) => {
                 <SelectField
                   name="idEstado"
                   control={form.control}
-                  label="Estado"
+                  label={t("companyForm.fields.state")}
                   options={estados}
-                  placeholder="Seleccione una opción"
+                  placeholder={t("companyForm.fields.selectOption")}
+
                   getOptionLabel={opt => opt.estado}
                   getOptionValue={opt => opt.id.toString()}
                 />
                 <SelectField
                   name="idMunicipio"
                   control={form.control}
-                  label="Municipio"
+                  label={t("companyForm.fields.municipality")}
                   options={municipios}
-                  placeholder="Seleccione una opción"
+                  placeholder={t("companyForm.fields.selectOption")}
+
                   getOptionLabel={opt => opt.municipio}
                   getOptionValue={opt => opt.id.toString()}
                 />
                 <SelectField
                   name="idParroquia"
                   control={form.control}
-                  label="Parroquia"
+                  label={t("companyForm.fields.parish")}
                   options={parroquias}
-                  placeholder="Seleccione una opción"
+                  placeholder={t("companyForm.fields.selectOption")}
+
                   getOptionLabel={opt => opt.parroquia}
                   getOptionValue={opt => opt.id}
                 />
@@ -265,7 +277,7 @@ const UpdateCompanyDialog = ({ companyData, onClose, onUpdate, message }) => {
             )}
           </div>
           <DialogFooter>
-            <Button type="submit">Guardar cambios</Button>
+            <Button type="submit">{t("companyForm.saveButton")}</Button>
           </DialogFooter>
         </form>
       </Form>

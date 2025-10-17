@@ -3,6 +3,10 @@ import { updateAppointmentStatus, fetchRequestedAppointments } from '@src/lib/ap
 import { deleteAppointment } from '@src/lib/api/schedules/schedules';
 import { message } from "antd";
 
+//✅Components traduction
+import { useTranslation } from "react-i18next";
+
+
 /**
  * Hook para gestionar la lógica de citas recibidas y enviadas.
  * @param {Object} params
@@ -11,6 +15,8 @@ import { message } from "antd";
  * @returns {Object} Estado y acciones para las citas.
  */
 export function useAppointments({ idCompany, type }) {
+  // Traducción
+  const { t } = useTranslation();
   const [appointmentsData, setAppointmentsData] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -21,7 +27,7 @@ export function useAppointments({ idCompany, type }) {
       const data = await fetchRequestedAppointments(idCompany, tipo);
       setAppointmentsData(data);
     } catch (error) {
-      message.error("Error al obtener las citas");
+      message.error(t("appointments.errorLoading"));
     } finally {
       setLoading(false);
     }
@@ -36,12 +42,13 @@ export function useAppointments({ idCompany, type }) {
     try {
       const response = await updateAppointmentStatus(id, status, id_empresa_receptora, id_empresa_solicitante, fecha_solicitada);
       if (response.datosNuevos) {
-        message.success(status === 1 ? "Cita aceptada exitosamente" : "Cita rechazada exitosamente");
+        message.success(status === 1 ? t("appointments.acceptSuccess") : t("appointments.rejectSuccess") );
+
       } else {
-        message.error("Hubo un problema al procesar la solicitud");
+        message.error(t("appointments.processingError"));
       }
     } catch (error) {
-      message.error(error?.response?.data?.error?.message || "Error al actualizar el estado de la cita");
+      message.error(error?.response?.data?.error?.message || t("appointments.updateError"));
     } finally {
       loadAppointmentsData();
     }
@@ -51,9 +58,9 @@ export function useAppointments({ idCompany, type }) {
   const handleCancelAppointment = useCallback(async (id) => {
     try {
       await deleteAppointment(id);
-      message.success("Cita cancelada exitosamente");
+      message.success(t("appointments.cancelSuccess"));
     } catch (error) {
-      message.error("Error al cancelar la cita");
+      message.error(t("appointments.cancelError"));
     } finally {
       loadAppointmentsData();
     }

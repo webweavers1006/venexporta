@@ -11,7 +11,12 @@ import { fetchProductsByCompany } from '@src/lib/api/apiIndex';
 import appStore from '@store/appStore';
 import MoleculesList from "@components/molecules/MoleculesList";
 
+//✅Components traduction
+import { useTranslation } from "react-i18next";
+
 const CompanyInfo = ({ companyData, configTableContact, configTable, onUpdate }) => {
+  // Traducción
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const [carouselItems, setCarouselItems] = useState([]); // Estado para los productos del carrusel
   const idCompany = appStore.getState().idCompany; // Obtener idCompany desde appStore
@@ -42,41 +47,41 @@ const CompanyInfo = ({ companyData, configTableContact, configTable, onUpdate })
 
   const items = [
     {
-      label: 'Nombre',
+      label: t("companyPanel.fields.name"),
       children: companyData.empresa,
     },
     {
-      label: 'Rif',
+      label: t("companyPanel.fields.rif"),
       span: 'filled',
       children: companyData.rif,
     },
     {
-      label: 'Actividad Empresarial',
+      label: t("companyPanel.fields.activity"),
       span: 'filled',
       children: <Badge status="processing" text={companyData.tipo_actividad_empresarial} />,
     },
     {
-      label: 'Tipo Propiedad',
+      label: t("companyPanel.fields.propertyType"),
       span: 'filled',
       children: <Badge color='green' text={companyData.tipo_propiedad} />,
     },
     // Solo mostrar estos campos si idPais === 95
     ...(idPais === 95 ? [
       {
-        label: 'Estado',
+        label: t("companyPanel.fields.state"),
         children: companyData.estado,
       },
       {
-        label: 'Municipio',
+        label: t("companyPanel.fields.municipality"),
         children: companyData.municipio,
       },
       {
-        label: 'Parroquia',
+        label: t("companyPanel.fields.parish"),
         children: companyData.parroquia,
       },
     ] : []),
     {
-      label: 'Dirección',
+      label: t("companyPanel.fields.address"),
       span: 1,
       children: companyData.direccion,
     },
@@ -84,7 +89,7 @@ const CompanyInfo = ({ companyData, configTableContact, configTable, onUpdate })
 
   return (
     <>
-      <AtomsPanel title={'Empresa'} subtitle={'Información de la empresa registrada'}>
+      <AtomsPanel title={t("companyPanel.heading")} subtitle={t("companyPanel.subheading")}>
         {companyData.img_empresa ? (
           <Image src={companyData.img_empresa} alt="imagen" width={100} />
         ) : (
@@ -101,18 +106,18 @@ const CompanyInfo = ({ companyData, configTableContact, configTable, onUpdate })
       <div className="box bg-white rounded-2xl mt-4 p-4">
         <Dialog open={open} onOpenChange={setOpen} className="bg-white">
           <DialogTrigger asChild className="float-right">
-            <Button type="primary" onClick={() => setOpen(true)}>Editar Empresa</Button>
+            <Button type="primary" onClick={() => setOpen(true)}>{t("companyPanel.editButton")}</Button>
           </DialogTrigger>
           <UpdateCompanyDialog companyData={companyData} onClose={() => setOpen(false)} onUpdate={onUpdate} />
         </Dialog>
-        <Descriptions bordered title="Empresa" items={items} />
+        <Descriptions bordered title={t("companyPanel.heading")} items={items} />
       </div>
       {idPais === null || idPais === undefined || idPais === 95 ? (
         <div className="box bg-white rounded-2xl mt-4 p-4">
           <Link to="/products" className='float-right'>
-            <Button type="primary">Mis productos</Button>
+            <Button type="primary">{t("companyPanel.products.button")}</Button>
           </Link>
-          <h2 className="text-xl font-semibold text-zinc-900 mb-4">Productos</h2>
+          <h2 className="text-xl font-semibold text-zinc-900 mb-4">{t("companyPanel.products.heading")}</h2>
           {/* Mostrar los productos como lista en vez de carrusel */}
           <MoleculesList
             pageSize={3}
@@ -121,8 +126,8 @@ const CompanyInfo = ({ companyData, configTableContact, configTable, onUpdate })
               title: item.nombre,
               description: (
                 <>
-                  <p>codigo arancelario: {item.codigo_arancelario || "Sin codigo"}</p>
-                  <p>Capitulo: {item.capitulo || "No especificada"}</p>
+                  <p>{t("companyPanel.products.code")}: {item.codigo_arancelario || t("companyPanel.products.noCode")}</p>
+                  <p>{t("companyPanel.products.chapter")}: {item.capitulo || t("companyPanel.products.noChapter")}</p>
                 </>
               ),
             })}
@@ -139,16 +144,16 @@ const CompanyInfo = ({ companyData, configTableContact, configTable, onUpdate })
         </div>
       ) : null}
       <div className="box bg-white rounded-2xl mt-4 p-4">
-      <h2 className="text-xl font-semibold text-zinc-900">Contactos</h2>
+      <h2 className="text-xl font-semibold text-zinc-900">{t("companyPanel.contacts.heading")}</h2>
         <Link to="/contacts" className='float-right'>
-          <Button type="primary">Agregar Contacto</Button>
+          <Button type="primary">{t("companyPanel.contacts.button")}</Button>
         </Link>
         <MoleculesTable config={configTableContact} />
       </div>
       <div className="box bg-white rounded-2xl mt-4 p-4">
-        <h2 className="text-xl font-semibold text-zinc-900">Actividades Economicas</h2>
+        <h2 className="text-xl font-semibold text-zinc-900">{t("companyPanel.activities.heading")}</h2>
         <Link to="/activities" className='float-right'>
-          <Button type="primary">Agregar Actividad Economica</Button>
+          <Button type="primary">{t("companyPanel.activities.button")}</Button>
         </Link>
         <MoleculesTable config={configTable} />
       </div>

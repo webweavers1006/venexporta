@@ -2,33 +2,40 @@ import React from 'react';
 import { Button, Modal, message } from 'antd';
 import { deleteActivityByCompany } from '@src/lib/api/apiIndex';
 
-const handleDelete = async (id, loadActivitiesData) => {
+//✅Components traduction
+import { useTranslation } from "react-i18next";
+
+export const useActivitiesColumns = (loadActivitiesData) => {
+// Traducción
+const { t } = useTranslation();
+
+const handleDelete = async (id) => {
   Modal.confirm({
-    title: 'Confirmación',
-    content: '¿Está seguro de que desea eliminar esta actividad?',
-    okText: 'Sí',
-    cancelText: 'No',
+    title: t('contactsTable.delete.confirmTitle'),
+    content:  t('activitiesTable.delete.confirmContent'),
+    okText: t("activitiesPanel.common.yes"),
+    cancelText: t('cancel'),
     onOk: async () => {
       try {
         await deleteActivityByCompany(id);
-        message.success('La actividad se ha eliminado correctamente');
+        message.success(t('activitiesTable.delete.success'));
         loadActivitiesData();
       } catch (error) {
-        message.error('Error al eliminar la actividad');
+        message.error(t('activitiesTable.delete.error'));
       }
     },
   });
 };
 
 const getActivitiesColumn = () => ({
-  title: 'Actividad Economica',
+  title: t('activitiesPanel.fields.activity'),
   dataIndex: 'actividad_economica',
   key: 'actividad',
   sorter: (a, b) => a.actividad_economica.localeCompare(b.actividad_economica),
 });
 
 const getSectorColumn = () => ({
-  title: 'Sector Productivo',
+  title: t('activitiesPanel.fields.sector'),
   dataIndex: 'sector_productivo',
   responsive: ['md'],
   key: 'sector_productivo',
@@ -36,7 +43,7 @@ const getSectorColumn = () => ({
 });
 
 const getSubActivtiesColumn = () => ({
-  title: 'Sub Sector Productivo',
+  title:  t('activitiesPanel.fields.subSector'),
   dataIndex: 'sub_sector_productivo',
   responsive: ['md'],
   key: 'sub_sector_productivo',
@@ -44,7 +51,7 @@ const getSubActivtiesColumn = () => ({
 });
 
 const getActionsColumn = (loadActivitiesData) => ({
-  title: 'Acciones',
+  title:  t('contactsTable.columns.actions'),
   key: 'acciones',
   render: (text, record) => (
     <Button
@@ -52,16 +59,17 @@ const getActionsColumn = (loadActivitiesData) => ({
       danger
       onClick={() => handleDelete(record.id, loadActivitiesData)}
     >
-      Borrar
+       {t('contactsTable.columns.deleteButton')}
     </Button>
   ),
 });
 
-const columns = (loadActivitiesData) => [
-  getActivitiesColumn(),
-  getSectorColumn(),
-  getSubActivtiesColumn(),
-  getActionsColumn(loadActivitiesData),
-];
+ return [
+    getActivitiesColumn(),
+    getSectorColumn(),
+    getSubActivtiesColumn(),
+    getActionsColumn(),
+  ];
+};
 
-export default columns;
+export default useActivitiesColumns;

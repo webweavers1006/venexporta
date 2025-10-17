@@ -52,6 +52,7 @@
       "linkText": "Volver al inicio"
         }
     },
+
       "layout": {
         "breadcrumb": {
           "home": "Inicio",
@@ -82,7 +83,6 @@
     "registerButton": "Registrarse",
     "registerIconLabel": "Icono registrar",
     "registerAriaLabel": "Registrarse en evento",
-
     "modal": {
       "successTitle": "¡Registro Exitoso!",
       "successContent": "Gracias por confirmar tu interés en participar, en los próximos días se les notificará a través de la aplicación información de la siguiente etapa de la ruta para la feria!",
@@ -96,7 +96,6 @@
       "success": "Registrado exitosamente en el evento",
       "error": "Error al registrar"
     }
-
   },
 
    "myEvents": {
@@ -136,12 +135,13 @@
       "confirmation": "¿Está seguro de que desea solicitar una cita para el bloque seleccionado?"
     }
   },
+
   "ok": "Confirmar",
   "cancel": "Cancelar",
+
    "roundtable": {
     "title": "Rueda de Negocios",
-    "subtitle": "Información sobre la rueda de negocios",
-    
+    "subtitle": "Información sobre la rueda de negocios",    
     "carouselSubtitle": "Selecciona un evento para ver las empresas de la rueda de negocios",
     "filters": {
       "activityTitle": "Filtros de Empresa por Actividad / Sub sector",
@@ -211,13 +211,227 @@
     "event": "Evento",
     "cancelAria": "Cancelar cita"
   },
+
   "appointmentStatus": {
     "aceptado": "Aceptado",
     "rechazado": "Rechazado",
     "en_revision": "En revisión",
     "pendiente": "Pendiente",
     "cancelado": "Cancelado"
+  },
+
+  "appointments": {
+    "errorLoading": "Error al obtener las citas",
+    "acceptSuccess": "Cita aceptada exitosamente",
+    "rejectSuccess": "Cita rechazada exitosamente",
+    "processingError": "Hubo un problema al procesar la solicitud",
+    "updateError": "Error al actualizar el estado de la cita",
+    "cancelSuccess": "Cita cancelada exitosamente",
+    "cancelError": "Error al cancelar la cita"
+  },
+
+  "companyPanel": {
+    "heading": "Empresas",
+    "subheading": "Información de la empresa registrada",
+    "editButton": "Editar Empresa",
+    "fields": {
+      "name": "Nombre",
+      "rif": "RIF",
+      "activity": "Actividad Empresarial",
+      "propertyType": "Tipo Propiedad",
+      "state": "Estado",
+      "municipality": "Municipio",
+      "parish": "Parroquia",
+      "address": "Dirección"
+    },
+    "products": {
+      "heading": "Productos",
+      "button": "Mis productos",
+      "code": "Código arancelario",
+      "noCode": "Sin código",
+      "chapter": "Capítulo",
+      "noChapter": "No especificado"
+    },
+    "contacts": {
+      "heading": "Contactos",
+      "button": "Agregar Contacto"
+    },
+    "activities": {
+      "heading": "Actividades Económicas",
+      "button": "Agregar Actividad Económica"
+    }
+  },
+
+  "companyForm": {
+    "dialogTitle": "Actualizar Empresa",
+    "dialogDescription": "Actualice la información de la empresa aquí. Haga clic en guardar cuando haya terminado.",
+    "saveButton": "Guardar cambios",
+    "success": "Empresa actualizada correctamente.",
+    "error": "Error al actualizar la empresa.",
+    "fields": {
+      "name": "Nombre de la Empresa",
+      "description": "Descripción de la Empresa",
+      "address": "Dirección",
+      "activityType": "Tipo de Actividad Empresarial",
+      "propertyType": "Tipo de Propiedad",
+      "state": "Estado",
+      "municipality": "Municipio",
+      "parish": "Parroquia",
+      "selectOption": "Seleccione una opción"
+    }
+  },
+
+  "imageUpload": {
+    "invalidFormat": "El archivo cargado no está en el formato {{format}}",
+    "invalidSize": "El archivo cargado no puede pesar más de 10MB",
+    "success": "Imágenes cargadas",
+    "uploadError": "Error al cargar imágenes",
+    "button": "Cargar Imagen"
+  },
+
+   "myProducts": {
+    "panelTitle": "Mis Productos",
+    "panelSubtitle": "Información de los productos registrados",
+    "orientationTip": "Es recomendable poner el teléfono en horizontal para una mejor experiencia.",
+    "tableAriaLabel": "Tabla de productos registrados"
+  },
+
+  "contactsPanel": {
+    "heading": "Contactos",
+    "subheading": "Información de los contactos",
+    "form": {
+      "title": "Registro de Contacto",
+      "description": "Complete los campos requeridos",
+      "submit": "Agregar contactos"
+    },
+    "list": {
+      "title": "Lista de Contactos",
+      "description": "Información de los contactos registrados"
+    },
+    "fields": {
+      "name": "Nombre",
+      "email": "Correo",
+      "areaCode": "Código de Área",
+      "areaCodePlaceholder": "Seleccione código de área",
+      "phone": "Teléfono",
+      "position": "Puesto"
+    }
+  },
+
+    "contactsTable": {
+    "delete": {
+      "confirmTitle": "Confirmación",
+      "confirmContent": "¿Está seguro de que desea eliminar este contacto?",
+      "success": "El contacto se ha eliminado correctamente",
+      "error": "Error al eliminar el contacto"
+    },
+    "columns": {
+      "actions": "Acciones",
+      "deleteButton": "Borrar",
+      "deleteAria": "Eliminar contacto"
+    }
+  },
+
+  "activitiesPanel": {
+    "heading": "Actividades Económicas",
+    "subheading": "Información de las actividades económicas",
+      "form": {
+        "title": "Registro de Actividad Económica",
+        "description": "Complete los campos requeridos",
+        "submit": "Agregar actividad económica"
+      },
+      "list": {
+        "title": "Lista de Actividades Económicas",
+        "description": "Información de las actividades económicas registradas"
+      },
+      "fields": {
+        "activity": "Actividad Económica",
+        "sector": "Sector Productivo",
+        "subSector": "Sub-Sector Productivo"
+      },
+      "validation": {
+        "activity": "La actividad económica es requerida",
+        "sector": "El sector productivo es requerido",
+        "subSector": "El sub-sector productivo es requerido"
+      },
+      "messages": {
+        "success": "Actividad agregada correctamente",
+        "error": "Error al agregar actividad económica",
+        "unknownError": "Error desconocido"
+      },
+      
+      "common": {
+        "selectOption": "Seleccione una opción",
+        "yes": "Sí"            
+      }
+    },    
+
+  "activitiesTable": {
+    "delete": {
+      "confirmContent": "¿Está seguro de que desea eliminar esta actividad?",
+      "success": "La actividad se ha eliminado correctamente",
+      "error": "Error al eliminar la actividad"
+    }
+  },
+  
+  "sidebar": {
+  "navMain": {
+    "home": "Inicio",
+    "reports": {
+      "title": "Reportes",
+      "items": {
+        "companiesReports": "Reportes de Empresas",
+        "dinamics": "Dinámico Masivo Empresas",
+        "appointments": "Reportes de Citas"
+      }
+    },
+    "admin": {
+      "title": "Administrador",
+      "items": {
+        "dashboard": "Panel de control",
+        "requests": "Solicitudes de Eventos",
+        "companies": "Empresas",
+        "schedules": "Citas por eventos",
+        "qr": "QR Dinámico"
+      }
+    },
+    "events": {
+      "title": "Eventos",
+      "items": {
+        "available": "Eventos Disponibles",
+        "myEvents": "Mis Eventos"
+      }
+    },
+    "roundtable": {
+      "title": "Rueda de Negocios",
+      "items": {
+        "companies": "Empresas",
+        "received": "Reuniones Recibidas",
+        "sent": "Reuniones Enviadas"
+      }
+    },
+    "company": {
+      "title": "Mi Empresa",
+      "items": {
+        "createCompany": "Crear Empresa",
+        "company": "Empresa",
+        "contacts": "Contactos",
+        "activities": "Actividades Económicas",
+        "createProduct": "Crear Producto",
+        "products": "Productos"
+      }
+    }
+  },
+  "navSecondary": {
+    "aboutUs": "Quienes Somos"
+  },
+  "badge": {
+    "new": "Nuevo"
+  },
+  "team": {
+    "planActive": "Activo"
   }
+}
 
 
 

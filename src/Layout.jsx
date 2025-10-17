@@ -23,7 +23,7 @@ import './css/index.css'; // Asegúrate de importar tu archivo CSS
 import { useTranslation } from "react-i18next";
 
 const LayoutContent = () => {
-  // Traducción
+// Traducción
   const { t } = useTranslation();
   return (
 <SidebarProvider>
