@@ -57,6 +57,7 @@ export {
   fetchEventDetails,
   updateEventRequestStatus,
   deleteEventByCompany
+  ,postEvent
   ,fetchEventos
   ,fetchEventosByEmpresas
 } from './events/events';
