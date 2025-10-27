@@ -34,6 +34,8 @@ const ReportesCitas = lazy(() => import('@pages/admin/reportes/ReportesCitas'));
 const ReportsDinamics = lazy(() => import('@pages/admin/reportes/ReportesDinamicos'));
 const ReportesDinamicosEventosActividad = lazy(() => import('@pages/admin/reportes/ReportesDinamicosEventosActividad'));
 const HomePage = lazy(() => import('@pages/homepage/HomePage'));
+const CreateEvents = lazy(() => import('@pages/admin/events/CreateEvents'));
+const EventsManager = lazy(() => import('@pages/admin/events/EventsManager'));
 const QrDinamic = lazy(() => import('@pages/admin/QR/Qr'));
 
 const RoutesApp = () => {
@@ -59,6 +61,9 @@ const RoutesApp = () => {
                     <Route path="myevent/feed" element={<PrivateRoute component={MyFeedEvent} />} />
                     <Route path="event/feed/:id" element={<PrivateRoute component={EventInfo} />} />
                     <Route path="qr/dinamic" element={<PrivateRoute component={QrDinamic} />} />
+                    <Route path="event/create" element={<PrivateRoute component={CreateEvents} />} />
+                    <Route path="event/update:id" element={<PrivateRoute component={CreateEvents} />} />
+                    <Route path="event/manager" element={<PrivateRoute component={EventsManager} />} />
                     {/* idPais === 95 && */ (
                         <>
                             <Route path="product/register" element={<PrivateRoute component={RegisterProducts} />} />

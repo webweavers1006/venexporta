@@ -16,7 +16,8 @@ import {
   CalendarCheck,
   ClipboardPlus,
   TrendingUpDown,
-  QrCode
+  QrCode,
+  CalendarCog
 } from "lucide-react";
 import logo from '@assets/logo/isologoC.png';
 import avatar from "@assets/logo/avatar.png";
@@ -86,6 +87,13 @@ export const data = () => {
           title: "Solicitudes de Eventos",
           url: "requests/event",
           icon: CalendarCheck,
+          color: "#2D044A",
+          isActive: true,
+        },
+        {
+          title: "Gestor de eventos",
+          url: "event/manager",
+          icon: CalendarCog,
           color: "#2D044A",
           isActive: true,
         },

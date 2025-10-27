@@ -1,3 +1,6 @@
+import axios from 'axios';
+import { API_BASE_URL } from '@lib/api/variables';
+import { uploadImage } from '../apiIndex';
 // Función adicional: obtener todos los eventos (si la respuesta es diferente a fetchEvents)
 export const fetchEventos = async () => {
   try {
@@ -23,8 +26,7 @@ export const fetchEventosByEmpresas = async (empresaId) => {
     throw error;
   }
 };
-import axios from 'axios';
-import { API_BASE_URL } from '@lib/api/variables';
+
 
 export const fetchEvents = async () => {
   try {
@@ -94,6 +96,27 @@ export const deleteEventByCompany = async (id) => {
     return response.data;
   } catch (error) {
     console.error('Error deleting event by company:', error.response?.data?.error?.message || error.message);
+    throw error;
+  }
+};
+
+export const postEvent = async (payload) => {
+  try {
+    if (payload.img_evento && payload.img_evento !== 'no hay imagen cargada') {
+      const uploadedImage = await uploadImage(payload.img_evento);
+      if (uploadedImage && uploadedImage.data && uploadedImage.data.display_url) {
+        payload.img_evento = uploadedImage.data.display_url;
+      } else {
+        throw new Error('Error uploading image');
+      }
+    }
+
+    const response = await axios.post(`${API_BASE_URL}/eventos`, payload, {
+      headers: { 'Content-Type': 'application/json' },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error creating event:', error.response?.data?.error?.message || error.message);
     throw error;
   }
 };
