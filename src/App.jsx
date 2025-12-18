@@ -6,6 +6,7 @@ import logo from '@assets/logo/isologoA.png';
 import { fetchCompanyData } from '@src/lib/api/apiIndex';
 import { fetchRequestedAppointments } from '@src/lib/api/schedules/schedules';
 import { excludedPaths } from '@lib/data/routesRequisitos';
+import {fetchPermissions} from '@src/lib/api/permissions/permissions';
 import { Calendar } from "lucide-react";
 
 const RequisitosModal = lazy(() => import('@components/requisitosModal'));
@@ -15,6 +16,7 @@ const RoutesApp = lazy(() => import('@routes/RoutesApp'));
 function App() {
   const { idUser } = useAuthStore();
   const { idCompany, setCompany } = appStore();
+  const setPermissions = useAuthStore((state) => state.setPermissions);
   const [isLoading, setIsLoading] = useState(true);
   const [showMessage, setShowMessage] = useState(false);
   const [pendingCount, setPendingCount] = useState(0);
@@ -32,7 +34,18 @@ function App() {
       setIsLoading(false);
     };
     fetchCompanyDataAsync();
-  }, [idUser, idCompany, setCompany]);
+    (async () => {
+      if (idUser) {
+        try {
+          const perms = await fetchPermissions();
+          // store permissions in-memory via the auth store
+          setPermissions(perms || []);
+        } catch (error) {
+          console.error('Could not load permissions:', error);
+        }
+      }
+    })();
+  }, [idUser, idCompany, setCompany,  setPermissions]);
 
   useEffect(() => {
     const fetchAppointments = async () => {
