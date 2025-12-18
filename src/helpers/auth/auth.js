@@ -30,3 +30,16 @@ export function initAxiosInterceptors() {
     }
   );
 }
+
+// Busca un permiso por su campo `nombre` dentro del array `permissions`.
+// Devuelve true si se encuentra; tolerante a estructuras inesperadas.
+export function hasPermission(permissions, nombre) {
+  if (!Array.isArray(permissions) || !nombre) return false;
+  return permissions.some((p) => {
+    if (!p) return false;
+    // Algunos objetos pueden usar `nombre` o `name` o `code` según origen
+    const n = p.nombre || p.name || p.nombre_permiso || p.code;
+    if (!n) return false;
+    return String(n).toLowerCase() === String(nombre).toLowerCase();
+  });
+}
