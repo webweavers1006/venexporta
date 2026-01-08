@@ -24,10 +24,11 @@ import avatar from "@assets/logo/avatar.png";
 import useAuthStore from '@src/store/authStore';
 import { useStore } from 'zustand';
 import appStore from '@store/appStore';
+import { hasPermission } from '@src/helpers/auth/auth';
 
 // This is sample data.
 export const data = () => {
-  const { tipoUsuario } = useAuthStore();
+  const { tipoUsuario, permissions } = useAuthStore();
   const idCompany = useStore(appStore, state => state.idCompany);
   const idPais = useStore(appStore, state => state.idPais);
 
@@ -39,26 +40,26 @@ export const data = () => {
       color: "#2D044A",
       isActive: true,
     },
-    tipoUsuario === 'ADMINISTRADOR' && {
+    {
       title: "Reportes",
       icon: BriefcaseBusiness,
       badge : "Nuevo",
       color: "#2D044A",
-      isActive: true,
+      isActive: hasPermission(permissions, 'leer.reporte'),
       items: [
         {
           title: "Reportes de Empresas",
           url: "reports",
           icon: ClipboardPlus,
           color: "#2D044A",
-          isActive: true,
+          isActive: hasPermission(permissions, 'leer.reporte'),
         },
         {
           title: "Dinamico Masivo Empresas",
           url: "reports/dinamics",
           icon: TrendingUpDown,
           color: "#2D044A",
-          isActive: true,
+          isActive: hasPermission(permissions, 'leer.reporte'),
           
         },
         {
@@ -66,54 +67,57 @@ export const data = () => {
           url: "Reports/Appointments",
           icon: CalendarHeart,
           color: "#2D044A",
-          isActive: true,
+          isActive: hasPermission(permissions, 'leer.reporte'),
         }
       ],
     },
-    tipoUsuario === 'ADMINISTRADOR' && {
+    {
       title: "Administrador",
       icon: BriefcaseBusiness,
       color: "#2D044A",
-      isActive: true,
+      isActive: hasPermission(permissions, 'leer.administrativo'),
       items: [
         {
           title: "Panel de control",
           url: "dashboard",
           icon: PieChart,
           color: "#2D044A",
-          isActive: true,
+          isActive: hasPermission(permissions, 'leer.dashboard'),
         },
         {
           title: "Solicitudes de Eventos",
           url: "requests/event",
           icon: CalendarCheck,
           color: "#2D044A",
-          isActive: true,
+          isActive: hasPermission(permissions, 'leer.solicitudes_eventos'),
         },
         {
           title: "Gestor de eventos",
           url: "event/manager",
           icon: CalendarCog,
           color: "#2D044A",
-          isActive: true,
+          isActive: hasPermission(permissions, 'create.eventos'),
         },
         {
           title: "Empresas",
           url: "list/companies",
           icon: Building2,
           color: "#2D044A",
+          isActive: hasPermission(permissions, 'leer.empresas'),
         },
         {
           title: "Citas por eventos",
           url: "schedules/event",
           icon: Calendar,
           color: "#2D044A",
+          isActive: hasPermission(permissions, 'leer.citas_eventos'),
         },
         {
           title: "QR Dinámico",
           url: "qr/dinamic",
           icon: QrCode,
-          color: "#3f0d30",
+          color: "#2D044A",
+          isActive: hasPermission(permissions, 'leer.qr_dinamico'),
         },
         /*
         {

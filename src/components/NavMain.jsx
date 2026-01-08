@@ -22,11 +22,14 @@ import { Link } from "react-router";
 export function NavMain({
   items
 }) {
+  // Filtra items y subitems por la bandera `isActive`.
+  const visibleItems = (items || []).filter(item => item?.isActive !== false);
+
   return (
     (<SidebarGroup>
       <SidebarGroupLabel>Modulos</SidebarGroupLabel>
       <SidebarMenu>
-        {items.map((item) => (
+        {visibleItems.map((item) => (
           <Collapsible key={item.title} asChild>
             <SidebarMenuItem>
               <SidebarMenuButton asChild tooltip={item.title}>
@@ -37,7 +40,7 @@ export function NavMain({
                   </Link>
                 </CollapsibleTrigger>
               </SidebarMenuButton>
-              {item.items?.length ? (
+              { (item.items || []).filter(si => si?.isActive !== false).length ? (
                 <>
                   <CollapsibleTrigger asChild>
                     <SidebarMenuAction className="data-[state=open]:rotate-90">
@@ -47,7 +50,7 @@ export function NavMain({
                   </CollapsibleTrigger>
                   <CollapsibleContent>
                     <SidebarMenuSub>
-                      {item.items?.map((subItem) => (
+                      {item.items?.filter(si => si?.isActive !== false).map((subItem) => (
                         <SidebarMenuSubItem key={subItem.title}>
                           <SidebarMenuSubButton asChild>
                             <Link to={subItem.url}>
