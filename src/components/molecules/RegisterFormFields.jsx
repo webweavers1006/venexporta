@@ -10,7 +10,7 @@ const RegisterFormFields = ({ form, loading }) => {
         control={form.control}
         render={({ field }) => (
           <FormItem className="col-span-2 sm:col-span-1">
-            <FormLabel>Nombre</FormLabel>
+            <FormLabel>Nombres y Apellidos</FormLabel>
             <FormControl>
               <Input {...field} placeholder="Nombre completo" />
             </FormControl>
@@ -36,7 +36,7 @@ const RegisterFormFields = ({ form, loading }) => {
         control={form.control}
         render={({ field }) => (
           <FormItem className="col-span-2 sm:col-span-1">
-            <FormLabel>Numero de Identificación</FormLabel>
+            <FormLabel>Número de Identificación</FormLabel>
             <FormControl>
               <Input {...field} placeholder="Nº Identificación" />
             </FormControl>

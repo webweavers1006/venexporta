@@ -98,7 +98,7 @@ const CompanyFormFields = ({ form }) => {
         control={form.control}
         render={({ field }) => (
           <FormItem className="col-span-2 sm:col-span-1">
-            <FormLabel>Codigo de Area</FormLabel>
+            <FormLabel>Código de Área</FormLabel>
             <FormControl>
               <Controller
                 name="idPaisCodigo"
@@ -137,7 +137,7 @@ const CompanyFormFields = ({ form }) => {
         control={form.control}
         render={({ field }) => (
           <FormItem className="col-span-2 sm:col-span-1">
-            <FormLabel>Telefono de Contacto</FormLabel>
+            <FormLabel>Teléfono de Contacto</FormLabel>
             <div className="flex items-center gap-2">
               <FormControl>
                 <div className="flex items-center border border-gray-300 rounded-md w-20 text-center">
