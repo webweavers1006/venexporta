@@ -22,15 +22,32 @@ export default defineConfig(({ mode }) => {
       workbox: {
         skipWaiting: true,
         clientsClaim: true,
+        // Excluimos index.html del precache para que siempre se pida a la red (NetworkFirst)
+        globIgnores: ['**/index.html', '**/.htaccess'], 
         runtimeCaching: [
           {
-            urlPattern: ({ request }) => request.destination === 'document' || request.destination === 'script' || request.destination === 'style',
+            // Estrategia NetworkFirst para el documento principal (HTML)
+            // Esto asegura que siempre busquemos la última versión en el servidor
+            urlPattern: ({ request }) => request.destination === 'document',
             handler: 'NetworkFirst',
             options: {
-              cacheName: `dynamic-cache-v${appVersion}`,
+              cacheName: 'html-cache',
+              expiration: {
+                maxEntries: 10,
+                maxAgeSeconds: 24 * 60 * 60, // 1 día
+              },
+            },
+          },
+          {
+            // Estrategia para JS y CSS (Assets con hash)
+            // Como tienen hash, si cambian, la URL cambia. Podemos cachearlos agresivamente.
+            urlPattern: ({ request }) => request.destination === 'script' || request.destination === 'style',
+            handler: 'StaleWhileRevalidate', // O CacheFirst si confiamos plenamente en el hash
+            options: {
+              cacheName: `assets-cache-v${appVersion}`,
               expiration: {
                 maxEntries: 50,
-                maxAgeSeconds: 24 * 60 * 60, // 1 día
+                maxAgeSeconds: 30 * 24 * 60 * 60, // 30 días
               },
             },
           },
