@@ -6,11 +6,11 @@ RewriteRule ^(.*)$ ./index.html [L,QSA]
 RewriteRule .* - [env=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 
 <IfModule mod_headers.c>
-  # --- SEGURIDAD ---
+  <!-- # --- SEGURIDAD ---
   # Content-Security-Policy ajustada para permitir API externa, Dropbox, ImgBB y Google Fonts
   Header add Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://*.dropboxusercontent.com https://i.ibb.co; connect-src 'self' https://pruebs.venexporta-rn.com https://venexporta-rn.com https://api.dropboxapi.com https://content.dropboxapi.com https://api.imgbb.com; font-src 'self' data: https://fonts.gstatic.com;"
   Header set X-Frame-Options "DENY"
-  Header set X-Content-Type-Options "nosniff"
+  Header set X-Content-Type-Options "nosniff" -->
 
   # --- CONTROL DE CACHÉ PARA SPA & PWA ---
   
